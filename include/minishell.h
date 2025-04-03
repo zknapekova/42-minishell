@@ -1,37 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/03 17:33:31 by jgrigorj         ###   ########.fr       */
+/*   Created: 2025/04/03 16:54:22 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/04/03 17:31:06 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../include/minishell.h"
-#include "../libft/libft.h"
-#include <signal.h>
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-int	g_sigstate;
+// structures
 
-static void	loop(void)
-{
-	while (g_sigstate != SIGQUIT)
-	{
-		// ft_printf("Loop is looping/n");
-		continue ;
-	}
-	ft_printf("The end\n");
-}
+// typedef enum sig_state
+// {
+// 	SIGINT,
+// 	SIGILL,
+// 	SIGABRT,
+// 	SIGFPE,
+// 	SIGSEGV,
+// 	SIGTER,
+// 	SIGHUP,
+// 	SIGQUIT,
+// 	SIGTRAP,
+// 	SIGKILL,
+// 	SIGPIPE,
+// 	SIGALRM
+// }	t_sig;
+
+// function prototypes
+// signal
+void	sig_init(void);
 
 
-
-int	main(void)
-{
-	sig_init();
-	loop();
-	return (0);
-}
+#endif
