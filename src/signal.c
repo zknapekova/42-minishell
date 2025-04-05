@@ -6,23 +6,27 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:46:37 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/03 17:34:38 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/04 15:49:43 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h> //sigaction
 #include "../libft/libft.h"
 
-extern int g_sigstate;
+extern sig_atomic_t	g_sigstate;
 
 void	handle_signal(int signal)
 {
 	if (signal == SIGINT)
+	{
 		ft_printf("\nIntercepted SIGINT!\n");
+		g_sigstate = SIGINT;
+	}
 	if (signal == SIGQUIT)
 		g_sigstate = SIGQUIT;
 }
 
+// more signals are to be introduced later
 void	sig_init(void)
 {
 	struct sigaction	sa;
