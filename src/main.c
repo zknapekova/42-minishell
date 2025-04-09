@@ -11,8 +11,13 @@
 /* ************************************************************************** */
 
 #include "../include/main.h"
+#include <stdlib.h>
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
-	write(1, "test", 4);
+    if (argc != 1)
+        error_handler("No arguments are accepted");
+    (void)argv;
+    if (!init_env(env))
+        return(EXIT_FAILURE);
 }
