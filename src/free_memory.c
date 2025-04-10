@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/10 20:54:53 by zuknapek         ###   ########.fr       */
+/*   Created: 2025/04/10 20:35:54 by zuknapek          #+#    #+#             */
+/*   Updated: 2025/04/10 21:03:03 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#include "../include/main.h"
+#include <stdlib.h>
 
-typedef struct s_env_node
+static void	free_ll(t_data *data)
 {
-    char                *key_value;
-    struct s_env_node   *next;
-}   t_env_node;
+	t_env_node	*temp;
 
-//tato struktura moze byt pre vseobecne data, nie nevyhnutne iba pre env LL
-typedef struct s_data
+	if (data->head)
+	{
+		while (data->head)
+		{
+			temp = data->head->next;
+			free(data->head);
+			data->head = temp;
+		}
+	}
+}
+
+void	free_all(t_data *data)
 {
-	t_env_node	*head;	//pointer to head of LL
-}	t_data;
-
-void    error_handler(char *str);
-int 	init_env(char **env, t_data *data);
-void	free_all(t_data *data);
-
-#endif
+	free_ll(data);
+	free(data);
+}
