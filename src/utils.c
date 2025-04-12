@@ -1,19 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handler.c                                    :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/10 19:48:06 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/10 19:48:07 by zuknapek         ###   ########.fr       */
+/*   Created: 2025/04/12 17:41:41 by zuknapek          #+#    #+#             */
+/*   Updated: 2025/04/12 17:44:13 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
-
-void    error_handler(char *str)
+int	get_first_occurr_index(char *str, char c)
 {
-    ft_putstr_fd(str, 2);
-    ft_putstr_fd("\n", 2);
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == c)
+			return (i);
+	}
+	return (-1);
 }
