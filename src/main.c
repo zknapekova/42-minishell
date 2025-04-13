@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
 /*   Updated: 2025/04/12 19:11:53 by zuknapek         ###   ########.fr       */
@@ -11,12 +11,32 @@
 /* ************************************************************************** */
 
 #include "../include/main.h"
+#include "../include/minishell.h"
+#include "../libft/libft.h"
+#include <signal.h> // for the SIG type macro
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
 
+volatile sig_atomic_t	g_sigstate;
+
+static void	loop(void)
+{
+	while (g_sigstate != SIGQUIT)
+	{
+		// read input
+		// save it to the history
+		// parse input
+		// fork
+		// run command
+		continue ;
+	}
+	ft_printf("The end\n");
+}
+
 static t_data	*init_data() //tuto funkciu mozeme pouzit na inicializaciu premennych pre cely minishell
 {
+
 	t_data	*data;
 	
 	data = malloc(sizeof(t_data));
@@ -43,6 +63,8 @@ int	main(int argc, char **argv, char **env)
 	}
 	
 	replace_env_value(data, str);
+  sig_init();
+	loop();
 	free_all(data);
 	return (EXIT_SUCCESS);
 }
