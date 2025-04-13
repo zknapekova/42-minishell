@@ -34,6 +34,6 @@ t_env_node	*last_node(t_data *data);
 t_env_node	*search_env_list(t_data *data, char *var_name);
 void		free_all(t_data *data);
 int			get_first_occurr_index(char *str, char c);
-int			update_env_value(t_data *data, char *key_value);
+int			replace_env_value(t_data *data, char *key_value);
 
 #endif

@@ -17,6 +17,7 @@
 #include <errno.h>
 #include <string.h>
 
+
 t_env_node	*search_env_list(t_data *data, char *var_name)
 {
 	t_env_node	*temp;
@@ -56,6 +57,7 @@ int init_env(char **env, t_data *data)
 {
     t_env_node *node;
 	t_env_node *last;
+
 
 	node = new_node(data, *env);
 	if (!node)
@@ -110,6 +112,7 @@ int	extend_env_value(t_data *data, char *key_value, int dollar_ind)
 	char		**split_key_value;
 	int			eq_ind;
 	char		*message;
+
 	
 	var_name = ft_substr(key_value, 0, get_first_occurr_index(key_value, '='));
 	temp = data->head;
@@ -121,6 +124,7 @@ int	extend_env_value(t_data *data, char *key_value, int dollar_ind)
 			break;
 		temp = temp->next;
 	}
+
 	eq_ind = get_first_occurr_index(key_value, '=');
 	if (eq_ind == -1)
 	{
@@ -166,6 +170,7 @@ int	update_env_value(t_data *data, char *key_value)
 		if (!extend_env_value(data, key_value, dollar_ind))
 			return (0);
 	}
+
 	eq_ind = get_first_occurr_index(key_value, '=');
 	if (eq_ind == -1)
 		add_env(data, key_value);

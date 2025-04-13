@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
 /*   Updated: 2025/04/13 19:37:51 by zuknapek         ###   ########.fr       */
@@ -11,9 +11,29 @@
 /* ************************************************************************** */
 
 #include "../include/main.h"
+#include "../include/minishell.h"
+#include "../libft/libft.h"
+#include <signal.h> // for the SIG type macro
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+
+
+volatile sig_atomic_t	g_sigstate;
+
+static void	loop(void)
+{
+	while (g_sigstate != SIGQUIT)
+	{
+		// read input
+		// save it to the history
+		// parse input
+		// fork
+		// run command
+		continue ;
+	}
+	ft_printf("The end\n");
+}
 
 static t_data	*init_data() //tuto funkciu mozeme pouzit na inicializaciu premennych pre cely minishell
 {
@@ -25,12 +45,13 @@ static t_data	*init_data() //tuto funkciu mozeme pouzit na inicializaciu premenn
 	data->head = NULL;
 	return(data);
 }
+
 #include <stdio.h>
 int	main(int argc, char **argv, char **env)
 {
     t_data	*data;
-	char	str[50] = "USER33=aa$USERjgrigor";
-	
+
+	char	str[50] = "USER33=aa$USERjgrigor";	
 	if (argc != 1)
         return(error_handler("No arguments are accepted"), EXIT_FAILURE);
     (void)argv;
@@ -41,8 +62,10 @@ int	main(int argc, char **argv, char **env)
 	{
         return(free_all(data), EXIT_FAILURE);
 	}
-	
 	update_env_value(data, str);
+  sig_init();
+	loop();
+
 	free_all(data);
 	return (EXIT_SUCCESS);
 }
