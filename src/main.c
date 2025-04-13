@@ -6,7 +6,7 @@
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/12 19:11:53 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/04/13 19:37:51 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static t_data	*init_data() //tuto funkciu mozeme pouzit na inicializaciu premenn
 int	main(int argc, char **argv, char **env)
 {
     t_data	*data;
-	char	str[50] = "USER33=$USERjgrigor";
+	char	str[50] = "USER33=aa$USERjgrigor";
 	
 	if (argc != 1)
         return(error_handler("No arguments are accepted"), EXIT_FAILURE);
@@ -42,7 +42,7 @@ int	main(int argc, char **argv, char **env)
         return(free_all(data), EXIT_FAILURE);
 	}
 	
-	replace_env_value(data, str);
+	update_env_value(data, str);
 	free_all(data);
 	return (EXIT_SUCCESS);
 }

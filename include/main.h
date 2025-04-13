@@ -6,7 +6,7 @@
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/12 19:09:34 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/04/13 15:19:23 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ t_env_node	*last_node(t_data *data);
 t_env_node	*search_env_list(t_data *data, char *var_name);
 void		free_all(t_data *data);
 int			get_first_occurr_index(char *str, char c);
-int			replace_env_value(t_data *data, char *key_value);
+int			update_env_value(t_data *data, char *key_value);
 
 #endif
