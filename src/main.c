@@ -6,12 +6,11 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/12 19:11:53 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/04/13 17:13:59 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/main.h"
-#include "../include/minishell.h"
 #include "../libft/libft.h"
 #include <signal.h> // for the SIG type macro
 #include <stdlib.h>
@@ -45,6 +44,7 @@ static t_data	*init_data() //tuto funkciu mozeme pouzit na inicializaciu premenn
 	data->head = NULL;
 	return(data);
 }
+
 #include <stdio.h>
 int	main(int argc, char **argv, char **env)
 {
