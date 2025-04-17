@@ -6,7 +6,7 @@
 #    By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/17 15:05:03 by jgrigorj          #+#    #+#              #
-#    Updated: 2025/03/07 23:25:05 by jgrigorj         ###   ########.fr        #
+#    Updated: 2025/04/17 15:43:05 by jgrigorj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,9 +34,16 @@ PRINTF_SRC = ft_printf.c print_dec.c print_ptr.c print_undec.c utils.c \
 		utils2.c
 PRINTF_SRC := $(addprefix $(PRINTF_DIR)/, $(PRINTF_SRC))
 
+EPRINTF_DIR = ft_eprintf
+EPRINTF_SRC = ft_eprintf.c print_dec.c print_ptr.c print_undec.c utils.c \
+		print_hex.c print_percent.c print_str.c get_width_precision.c \
+		utils2.c
+EPRINTF_SRC := $(addprefix $(EPRINTF_DIR)/, $(EPRINTF_SRC))
+
 OBJ = $(SRC:.c=.o)
 
 PRINTF_OBJ = $(PRINTF_SRC:.c=.o)
+EPRINTF_OBJ = $(EPRINTF_SRC:.c=.o)
 
 
 # Target library
@@ -46,9 +53,9 @@ NAME = libft.a
 all: $(NAME)
 
 # Rule to create the library using the ar command
-$(NAME): $(OBJ) $(PRINTF_OBJ)
+$(NAME): $(OBJ) $(PRINTF_OBJ) $(EPRINTF_OBJ)
 	@echo "Creating static library in root: $(NAME)"
-	ar rcs $(NAME) $(OBJ) $(PRINTF_OBJ)
+	ar rcs $(NAME) $(OBJ) $(PRINTF_OBJ) $(EPRINTF_OBJ)
 
 # Rule to compile source files into object files
 %.o: %.c
@@ -56,7 +63,7 @@ $(NAME): $(OBJ) $(PRINTF_OBJ)
 
 # Clean up object files
 clean:
-	rm -f $(OBJ) $(PRINTF_OBJ)
+	rm -f $(OBJ) $(PRINTF_OBJ) $(EPRINTF_OBJ)
 
 # Clean up both object files and the library
 fclean: clean

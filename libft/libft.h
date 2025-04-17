@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 16:28:46 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/03/07 23:20:16 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/17 15:39:14 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ size_t	check_endline(char *buffer);
 
 // ft_printf
 int		ft_printf(const char *str, ...);
+int		ft_eprintf(const char *str, ...);
+
 
 // Define the structure with typedef
 typedef struct s_list
