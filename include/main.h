@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/17 17:14:43 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/18 20:36:45 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,5 @@ void		sig_init(void);
 
 // lexer
 t_token		*lexer(const char *input);
-
 
 #endif

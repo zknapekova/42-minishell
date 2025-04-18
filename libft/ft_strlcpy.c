@@ -6,13 +6,16 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 19:00:41 by jgrigorj          #+#    #+#             */
-/*   Updated: 2024/07/19 17:34:24 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/18 19:18:09 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
 // function follows the description in Linux man 5.10
+// copies (size - 1) characters from src to dest if src has
+// at least (size - 1) characters. Else, src_len characters are copied.
+// Return value: src_len
 size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 {
 	unsigned int	src_len;
