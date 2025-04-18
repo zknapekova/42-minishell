@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars_ops.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 19:47:56 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/12 19:21:18 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/04/17 15:53:34 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_env_node	*search_env_list(t_data *data, char *var_name)
 			temp = temp->next;
 		}
 	}
+	(void)var_name;
 	return (NULL);
 }
 
@@ -94,6 +95,7 @@ void	extend_env_value(t_data *data, char *key_value, int dollar_ind)
 	}
 	printf("temp_key_value %s temp key: %s temp_value: %s\n", temp->key_value, temp->key, temp->value);
 	//new_key_value = ft_strjoin(temp->value, )
+	(void)var_name;
 }
 
 //TODO: implement change of env value in two ways: export PATH="/new/path" but also export PATH=$PATH:/new/directory/path 

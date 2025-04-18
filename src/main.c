@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/13 17:13:59 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:16:56 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,21 @@ static void	loop(void)
 		// read input
 		// save it to the history
 		// parse input
+		t_token *token;
+
+		token = lexer("echo \"hello world\" && ls -l > out.txt");
+		while (token)
+		{
+			printf("Type: %d, Value: %s\n", token->type, token->value ? token->value : "NULL");
+			token = token->next;
+		}
+
 		// fork
 		// run command
 		continue ;
 	}
 	ft_printf("The end\n");
+	ft_eprintf("Test error message\n");
 }
 
 static t_data	*init_data() //tuto funkciu mozeme pouzit na inicializaciu premennych pre cely minishell
