@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/18 23:38:34 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/19 18:23:52 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	loop(void)
 		printf("Type: %d, Value: %s\n", token->type, token->value ? token->value : "NULL");
 		token = token->next;
 	}
-	while (g_sigstate != SIGQUIT)
+	while (g_sigstate != SIGQUIT && g_sigstate != SIGINT)
 	{
 		// read input
 		// save it to the history

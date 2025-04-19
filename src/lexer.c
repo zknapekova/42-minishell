@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/18 23:41:43 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/19 19:24:26 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,17 @@
 #include "../libft/libft.h" // for ft_strncpm
 // #include <aio.h> // defines size_t type
 #include <stdlib.h>  // here for the NULL and size_t definitions
+#include <signal.h> // for the SIG type macro
+
 
 // the lexer separates the command line into individual tokens
 // returns a linked list of tokens (*tokens) with elements of the t_token type
-
+extern sig_atomic_t	g_sigstate;
 static void		skipspace(const char *input, size_t *pos);
 static int		is_operator_char(char c);
 t_token_type	match_operator(const char *input, size_t *pos);
 char 			*parse_quoted(const char *input, size_t *pos, char quote);
-// char			*parse_word(const char *input, size_t *pos);
+char			*parse_word(const char *input, size_t *pos);
 
 t_token	*lexer(const char *input)
 {
@@ -31,12 +33,13 @@ t_token	*lexer(const char *input)
 	size_t			pos;
 	t_token_type	type;
 	char			quote;
-	char			*quoted;	
+	char			*quoted;
+	char			*word;
 
 	ft_printf("***lexer called***\n");
 	tokens = NULL;
 	pos = 0;
-	while (input[pos])
+	while (input[pos] &&  g_sigstate != SIGQUIT && g_sigstate != SIGINT)
 	{
 		skipspace(input, &pos);
 		if (!input[pos])
@@ -57,6 +60,7 @@ t_token	*lexer(const char *input)
 		}
 		else if (input[pos] == '\'' || input[pos] == '"')
 		{
+			ft_printf("Parse quoted\n");
 			quote = input[pos];
 			quoted = parse_quoted(input, &pos, quote);
 			if (!quoted)
@@ -67,7 +71,18 @@ t_token	*lexer(const char *input)
 			token_append(&tokens, new_token(TOKEN_WORD, quoted));
 			free (quoted);
 		}
-		// else parse_word
+		else
+		{
+			ft_printf("Parse word\n");
+			word = parse_word(input, &pos);
+			if (!word)
+			{
+				free_token_list(tokens);
+				return (NULL);
+			}
+			token_append(&tokens, new_token(TOKEN_WORD, word));
+			free (word);
+		}
 	}
 	token_append(&tokens, new_token(TOKEN_EOF, NULL));
 	return (tokens);
@@ -79,6 +94,12 @@ static void	skipspace(const char *input, size_t *pos)
 	while (input[*pos] == ' ')
 		(*pos)++;
 }
+
+// static int is_operator_char(char c)
+// {
+// 	ft_printf("is_operator_char called\n");
+// 	return (c == '|' || c == '&' || c == '<' || c == '>' || c == '(' || c == ')');
+// }
 
 static int	is_operator_char(char c)
 {
@@ -135,13 +156,19 @@ char *parse_quoted(const char *input, size_t *pos, char quote)
 	return (word);
 }
 
-// // parse unquoted word
-// char	*parse_word(const char *input, size_t *pos)
-// {
-// 	size_t	start;
+// parse unquoted word
+char	*parse_word(const char *input, size_t *pos)
+{
+	size_t	start;
+	char	*word;
 	
-// 	start = *pos;
-// 	while (input[*pos] && input[*pos] != ' ' && !is_operator_char(input[*pos]) && input[*pos] != '\'' && input[*pos] != '"')
-// 		(*pos)++;
-	
-// }
+	start = *pos;
+	word = NULL;
+	while (input[*pos] && input[*pos] != ' ' && !is_operator_char(input[*pos]) && input[*pos] != '\'' && input[*pos] != '"')
+		(*pos)++;
+	word = ft_strjoin_ed(word, &input[start], *pos - start);
+	if (!word)
+		return (error_handler("Error lexing word token"), NULL);
+	ft_printf("Word is: %s", word);
+	return (word);	
+}

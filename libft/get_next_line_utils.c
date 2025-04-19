@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 22:03:14 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/01/27 22:13:55 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/19 19:32:58 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,14 @@ char	*ft_strjoin_ed(char const *s1, char const *s2, int len2)
 	size_t	len1;
 	char	*str;
 
-	len1 = ft_strlen(s1);
+	len1 = 0;
+	if (s1)
+		len1 = ft_strlen(s1);
 	str = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
 	if (!str)
 	{
-		free((char *)s1);
+		if (s1)
+			free((char *)s1);
 		return (NULL);
 	}
 	if (s1)
