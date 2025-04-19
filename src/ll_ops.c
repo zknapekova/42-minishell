@@ -38,7 +38,7 @@ static int	lst_size(t_data *data)
 t_env_node	*new_node(t_data *data, char *key_value)
 {
 	t_env_node *new_node;
-	char		**split_str;
+	int         eq_ind;
 
     new_node = malloc(sizeof(t_env_node));
     if (!new_node)
@@ -47,11 +47,13 @@ t_env_node	*new_node(t_data *data, char *key_value)
 	}
 	new_node->key_value = key_value;
 	new_node->next = NULL;
-	split_str = ft_split(key_value, '=');
-	if (!split_str)
-		return (error_handler(strerror(errno)), NULL);
-	new_node->key = split_str[0];
-	new_node->value = split_str[1];
+	eq_ind = get_first_occurr_index(key_value, '=');
+	new_node->key = ft_substr(key_value, 0, eq_ind);
+	if (!new_node->key)
+	    return (error_handler(strerror(errno)), NULL);
+	new_node->value = ft_substr(key_value, eq_ind + 1, ft_strlen(key_value) - eq_ind);
+	if (!new_node->value)
+	    return (error_handler(strerror(errno)), NULL);
 	if (lst_size(data) == 0)
 		data->head = new_node;
 	return(new_node);
@@ -65,4 +67,31 @@ t_env_node	*last_node(t_data *data)
 	while (temp && temp->next)
 		temp = temp->next;
 	return(temp);
+}
+
+void    update_node(t_env_node *node, char *key_value, int eq_ind)
+{
+    if (node)
+    {
+        free(node->key_value);
+        free(node->value);
+        node->key_value = key_value;
+        node->value = ft_substr(key_value, eq_ind + 1, ft_strlen(key_value) - eq_ind);
+    }
+}
+
+int	add_env(t_data *data, char *key_value)
+{
+	t_env_node	*node;
+	t_env_node	*lastnode;
+
+	if (data->head && key_value)
+	{
+		node = new_node(data, key_value);
+		if (!node)
+			return (0);
+		lastnode = last_node(data);
+		lastnode->next = node;
+	}
+	return (1);
 }

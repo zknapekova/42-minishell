@@ -29,11 +29,16 @@ typedef struct s_data
 
 void    	error_handler(char *str);
 int 		init_env(char **env, t_data *data);
+t_data	    *init_data();
 t_env_node	*new_node(t_data *data, char *key_value);
 t_env_node	*last_node(t_data *data);
 t_env_node	*search_env_list(t_data *data, char *var_name);
+int	        add_env(t_data *data, char *key_value);
+void        update_node(t_env_node *node, char *key_value, int eq_ind);
 void		free_all(t_data *data);
 int			get_first_occurr_index(char *str, char c);
-int			replace_env_value(t_data *data, char *key_value);
+int         get_first_occurr_non_alnum(char *str, int start);
+int         validate_env_var_name(char *var_name);
+int	        handle_new_env_value(t_data *data, char *key_value);
 
 #endif

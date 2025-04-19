@@ -12,6 +12,7 @@
 
 #include "../include/main.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 static void	free_ll(t_data *data)
 {
@@ -22,6 +23,9 @@ static void	free_ll(t_data *data)
 		while (data->head)
 		{
 			temp = data->head->next;
+			free(data->head->key_value);
+            free(data->head->key);
+			free(data->head->value);
 			free(data->head);
 			data->head = temp;
 		}

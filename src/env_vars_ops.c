@@ -17,71 +17,14 @@
 #include <errno.h>
 #include <string.h>
 
-
-t_env_node	*search_env_list(t_data *data, char *var_name)
-{
-	t_env_node	*temp;
-	size_t		len;
-	
-	if (data->head && var_name)
-	{
-		temp = data->head;
-		len = ft_strlen(var_name);
-		while (temp)
-		{
-			if (ft_strncmp(temp->key, var_name, len) == 0)
-				return (temp);
-			temp = temp->next;
-		}
-	}
-	return (NULL);
-}
-
-int	add_env(t_data *data, char *key_value)
-{
-	t_env_node	*node;
-	t_env_node	*lastnode;
-	
-	if (data->head && key_value)
-	{
-		node = new_node(data, key_value);
-		if (!node)
-			return (0);
-		lastnode = last_node(data);
-		lastnode->next = node;
-	}
-	return (1);
-}
-
-int init_env(char **env, t_data *data)
-{
-    t_env_node *node;
-	t_env_node *last;
-
-
-	node = new_node(data, *env);
-	if (!node)
-		return (0);
-	while (*env)
-	{
-        node = new_node(data, *env);
-		if (!node)
-			return(0);
-        last = last_node(data);
-        last->next = node;
-        env++;
-	}
-    return (1);
-}
-
 char	*parse_env_value(t_env_node *node, char *key_value, int dollar_ind, int eq_ind)
 {
-	char		*new_key_value;
+	char		*new_value;
 	char		*temp;
 	char		*temp0;
 	char		*substr;
 
-	temp0 = ft_substr(key_value, eq_ind,  dollar_ind);
+	temp0 = ft_substr(key_value, eq_ind + 1,  dollar_ind - eq_ind - 1);
 	if (!temp0)
 		return(error_handler(strerror(errno)), NULL);
 	temp = ft_strjoin(temp0, node->value);
@@ -91,89 +34,130 @@ char	*parse_env_value(t_env_node *node, char *key_value, int dollar_ind, int eq_
 	substr = ft_substr(key_value, dollar_ind + ft_strlen(node->key) + 1, ft_strlen(key_value) - dollar_ind + ft_strlen(node->key) + 1);
 	if (!substr)
 		return (free(temp), error_handler(strerror(errno)), NULL);
-	new_key_value = ft_strjoin(temp, substr);
-	if (!new_key_value)
+	new_value = ft_strjoin(temp, substr);
+	if (!new_value)
 		return (free(temp), free(substr), error_handler(strerror(errno)), NULL);
 	free(substr);
 	free(temp);
+	return (new_value);
+}
+
+t_env_node	*search_env_list(t_data *data, char *key)
+{
+	t_env_node	*temp;
+	size_t		len;
+
+	if (data->head && key)
+	{
+		temp = data->head;
+		len = ft_strlen(key);
+		while (temp)
+		{
+			if (ft_strncmp(temp->key, key, len) == 0 && len == ft_strlen(temp->key))
+				return (temp);
+			temp = temp->next;
+		}
+	}
+	return (NULL);
+}
+
+char *get_key_value(char *var_to_extend, t_data *data, char *key_value, char *var_name)
+{
+    t_env_node	*extend_env_node;
+    char		*temp_key_value;
+	char		*new_key_value;
+	char		*new_value;
+    int         dollar_ind;
+
+    dollar_ind = get_first_occurr_index(key_value, '$');
+    extend_env_node = search_env_list(data, var_to_extend);
+    if (!extend_env_node)
+    {
+        temp_key_value = ft_substr(key_value, 0, dollar_ind);
+        new_value = ft_substr(key_value, get_first_occurr_non_alnum(key_value, dollar_ind + 1), \
+                ft_strlen(key_value) - get_first_occurr_non_alnum(key_value, dollar_ind + 1));
+    }
+    else
+	{
+		temp_key_value = ft_strjoin(var_name, "=");
+		new_value = parse_env_value(extend_env_node, key_value, dollar_ind, \
+		                get_first_occurr_index(key_value, '='));
+	}
+	new_key_value = ft_strjoin(temp_key_value, new_value);
+	free(temp_key_value);
+	free(new_value);
+	if (get_first_occurr_index(key_value, '$') == -1)
+	{
+	    free(key_value);
+	}
 	return (new_key_value);
 }
 
-
 #include <stdio.h>
-int	extend_env_value(t_data *data, char *key_value, int dollar_ind)
+int	extend_env_value(t_data *data, char *key_value, char *var_name, t_env_node *node_to_update)
 {
-	char		*var_name;
 	char		*var_to_extend;
-	t_env_node	*temp;
-	t_env_node	*node;
-	int			len;
 	char		*new_key_value;
-	char		**split_key_value;
-	int			eq_ind;
-	char		*message;
+	int		    eq_ind;
+	int		    dollar_ind;
 
-	
-	var_name = ft_substr(key_value, 0, get_first_occurr_index(key_value, '='));
-	temp = data->head;
-	while (temp)
-	{
-		len = ft_strlen(temp->key);
-		var_to_extend = ft_substr(key_value, dollar_ind + 1, len);
-		if (ft_strncmp(var_to_extend, temp->key, len) == 0)
-			break;
-		temp = temp->next;
-	}
-
+	dollar_ind = get_first_occurr_index(key_value, '$');
 	eq_ind = get_first_occurr_index(key_value, '=');
-	if (eq_ind == -1)
-	{
-		new_key_value = parse_env_value(temp, key_value, dollar_ind, 0);
-		message = ft_strjoin("bash: export: '", new_key_value);
-		return (error_handler("bash: export: "), 0);	
-	}
-	if (temp) //existuje premenna ktoru chceme dosadit?
-		new_key_value = parse_env_value(temp, key_value, dollar_ind, eq_ind);
-	else
-	{
-		new_key_value = ft_strjoin(var_name, "=");
-		if (!new_key_value)
-			return(error_handler(strerror(errno)), 0); 
-	}
-	node = search_env_list(data, var_name); // je to nova premenna alebo menime existujucu?
-	if (node)
-	{
-		node->key_value = new_key_value;
-		split_key_value = ft_split(new_key_value, '=');
-		if (!split_key_value)
+	var_to_extend = ft_substr(key_value, dollar_ind + 1, get_first_occurr_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
+	if (!var_to_extend)
+	    return(error_handler(strerror(errno)), 0);
+	new_key_value = get_key_value(var_to_extend, data, key_value, var_name);
+
+	free(var_to_extend);
+	free(key_value);
+    if (!new_key_value)
 			return(error_handler(strerror(errno)), 0);
-		node->key = split_key_value[0];
-		node->value = split_key_value[1];
+	if (!node_to_update && get_first_occurr_index(new_key_value, '$') == -1)
+	{
+	    if (!add_env(data, new_key_value))
+	    {
+	        return(error_handler(strerror(errno)), 0);
+	    }
 	}
-	else
-		add_env(data, new_key_value);
-	printf("new_key_value: %s\n", node->key_value);
-	printf("key: %s\n", node->key);
-	printf("value: %s\n", node->value);
+	else if (node_to_update && get_first_occurr_index(new_key_value, '$') == -1)
+	    update_node(node_to_update, new_key_value, eq_ind);
+	if (get_first_occurr_index(new_key_value, '$') != -1)
+	    extend_env_value(data, new_key_value, var_name, node_to_update);
 	return (1);
 }
 
 //This function should be called when prompt contains "export"
-int	update_env_value(t_data *data, char *key_value)
+int	handle_new_env_value(t_data *data, char *key_value)
 {
 	int		eq_ind;
 	int		dollar_ind;
-	
-	dollar_ind = get_first_occurr_index(key_value, '$');
-	if (dollar_ind != -1)
-	{
-		if (!extend_env_value(data, key_value, dollar_ind))
-			return (0);
-	}
+	char		*var_name;
+	t_env_node  *node_to_update;
 
+	dollar_ind = get_first_occurr_index(key_value, '$');
 	eq_ind = get_first_occurr_index(key_value, '=');
-	if (eq_ind == -1)
-		add_env(data, key_value);
-	
+	if (eq_ind != -1)
+	{
+	    var_name = ft_substr(key_value, 0, eq_ind);
+	    if (!var_name)
+	        return (error_handler(strerror(errno)), 0);
+	    if (!validate_env_var_name(var_name))
+	    {
+	        return (free(var_name), error_handler("Forbidden character in the name of variable"), 0);
+	    }
+	    node_to_update = search_env_list(data, var_name);
+	    if (!node_to_update && dollar_ind == -1)
+	        add_env(data, ft_strdup(key_value));
+	    else if (node_to_update && dollar_ind == -1)
+            update_node(node_to_update, ft_strdup(key_value), eq_ind);
+	    else if (dollar_ind != -1)
+	    {
+	        if (!extend_env_value(data, ft_strdup(key_value), var_name, node_to_update))
+			    return (free(var_name), 0);
+	    }
+	    free(var_name);
+	}
+	else if (eq_ind == -1)
+	    return (error_handler("bash: export: '{key_value}': not a valid identifier"), -1); // pouzit fciu ft_eprintf()
 	return (1);
 }

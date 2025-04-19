@@ -35,23 +35,12 @@ static void	loop(void)
 	ft_printf("The end\n");
 }
 
-static t_data	*init_data() //tuto funkciu mozeme pouzit na inicializaciu premennych pre cely minishell
-{
-	t_data	*data;
-	
-	data = malloc(sizeof(t_data));
-	if (!data)
-		return (error_handler(strerror(errno)), NULL);
-	data->head = NULL;
-	return(data);
-}
-
 #include <stdio.h>
 int	main(int argc, char **argv, char **env)
 {
     t_data	*data;
 
-	char	str[50] = "USER33=aa$USERjgrigor";	
+	char	str[50] = "my_var3=aa$USER:22$USE:hjhjh$USERdhajdhaj$USER";
 	if (argc != 1)
         return(error_handler("No arguments are accepted"), EXIT_FAILURE);
     (void)argv;
@@ -62,10 +51,10 @@ int	main(int argc, char **argv, char **env)
 	{
         return(free_all(data), EXIT_FAILURE);
 	}
-	update_env_value(data, str);
-  sig_init();
+	if (!handle_new_env_value(data, str))
+	    return(free_all(data), EXIT_FAILURE);
+    sig_init();
 	loop();
-
 	free_all(data);
 	return (EXIT_SUCCESS);
 }
