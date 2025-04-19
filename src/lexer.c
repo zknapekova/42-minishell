@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/18 20:42:26 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/18 23:41:43 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_token	*lexer(const char *input)
 	char			quote;
 	char			*quoted;	
 
-	ft_printf("lexer called\n");
+	ft_printf("***lexer called***\n");
 	tokens = NULL;
 	pos = 0;
 	while (input[pos])
@@ -43,7 +43,9 @@ t_token	*lexer(const char *input)
 			break ;
 		if (is_operator_char(input[pos]))
 		{
+			ft_printf("operator char found, pos %i\n", pos);
 			type = match_operator(input, &pos);
+			ft_printf("match_operator returned, pos %i\n", pos);
 			if (type == TOKEN_INVALID)
 			{
 				ft_eprintf("Syntax error near unexpected character: '%c'\n", \
@@ -73,7 +75,7 @@ t_token	*lexer(const char *input)
 
 static void	skipspace(const char *input, size_t *pos)
 {
-	ft_printf("skipspace called\n");
+	ft_printf("skipspace called, pos %i\n", *pos);
 	while (input[*pos] == ' ')
 		(*pos)++;
 }
@@ -89,7 +91,7 @@ static int	is_operator_char(char c)
 
 t_token_type	match_operator(const char *input, size_t *pos)
 {
-	ft_printf("match_operator called\n");
+	ft_printf("match_operator called, pos %i\n", *pos);
 	if (ft_strncmp(&input[*pos], "&&", 2) == 0)
 		return (*pos += 2, TOKEN_AND);
 	if (ft_strncmp(&input[*pos], "||", 2) == 0)

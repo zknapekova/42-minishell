@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/17 17:16:56 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/18 23:38:34 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,27 @@ volatile sig_atomic_t	g_sigstate;
 
 static void	loop(void)
 {
+	t_token	*token;
+	
+	token = lexer("   < echo \"hello world\"  'sdaf asdf' && ls -l > out.txt");
+	while (token)
+	{
+		printf("Type: %d, Value: %s\n", token->type, token->value ? token->value : "NULL");
+		token = token->next;
+	}
 	while (g_sigstate != SIGQUIT)
 	{
 		// read input
 		// save it to the history
 		// parse input
-		t_token *token;
+		// t_token *token;
 
-		token = lexer("echo \"hello world\" && ls -l > out.txt");
-		while (token)
-		{
-			printf("Type: %d, Value: %s\n", token->type, token->value ? token->value : "NULL");
-			token = token->next;
-		}
+		// token = lexer("echo \"hello world\"  'sdaf asdf' && ls -l > out.txt");
+		// while (token)
+		// {
+		// 	printf("Type: %d, Value: %s\n", token->type, token->value ? token->value : "NULL");
+		// 	token = token->next;
+		// }
 
 		// fork
 		// run command
