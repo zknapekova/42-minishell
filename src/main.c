@@ -6,12 +6,13 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/19 18:23:52 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/21 00:41:23 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/main.h"
 #include "../libft/libft.h"
+#include "../include/token.h"
 #include <signal.h> // for the SIG type macro
 #include <stdlib.h>
 #include <errno.h>
@@ -21,14 +22,16 @@ volatile sig_atomic_t	g_sigstate;
 
 static void	loop(void)
 {
-	t_token	*token;
+	t_token	*tokens;
 	
-	token = lexer("   < echo \"hello world\"  'sdaf asdf' && ls -l > out.txt");
-	while (token)
+	tokens = lexer("   < echo \"hello world\"  'sdaf asdf' && ls -l > out.txt");
+	while (tokens)
 	{
-		printf("Type: %d, Value: %s\n", token->type, token->value ? token->value : "NULL");
-		token = token->next;
+		printf("Type: %d, Value: %s\n", tokens->type, tokens->value ? tokens->value : "NULL");
+		tokens = tokens->next;
 	}
+	free_token_list(tokens);
+	tokens = NULL;
 	while (g_sigstate != SIGQUIT && g_sigstate != SIGINT)
 	{
 		// read input

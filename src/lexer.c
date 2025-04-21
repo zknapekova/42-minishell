@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/19 19:24:26 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/21 00:23:05 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,9 @@ t_token	*lexer(const char *input)
 static void	skipspace(const char *input, size_t *pos)
 {
 	ft_printf("skipspace called, pos %i\n", *pos);
-	while (input[*pos] == ' ')
+	while (ft_isspace(input[*pos]))
 		(*pos)++;
 }
-
-// static int is_operator_char(char c)
-// {
-// 	ft_printf("is_operator_char called\n");
-// 	return (c == '|' || c == '&' || c == '<' || c == '>' || c == '(' || c == ')');
-// }
 
 static int	is_operator_char(char c)
 {
@@ -131,7 +125,9 @@ t_token_type	match_operator(const char *input, size_t *pos)
 		return (*pos += 1, TOKEN_LPAREN);
 	if (input[*pos] == ')')
 		return (*pos += 1, TOKEN_RPAREN);
-	return (*pos -= 1, TOKEN_INVALID);
+	// return (*pos -= 1, TOKEN_INVALID); // does it make sense to step back?
+	return (TOKEN_INVALID);
+
 }
 
 // parse quoted string
@@ -164,11 +160,11 @@ char	*parse_word(const char *input, size_t *pos)
 	
 	start = *pos;
 	word = NULL;
-	while (input[*pos] && input[*pos] != ' ' && !is_operator_char(input[*pos]) && input[*pos] != '\'' && input[*pos] != '"')
+	while (input[*pos] && !ft_isspace(input[*pos]) && !is_operator_char(input[*pos]) && input[*pos] != '\'' && input[*pos] != '"')
 		(*pos)++;
 	word = ft_strjoin_ed(word, &input[start], *pos - start);
 	if (!word)
 		return (error_handler("Error lexing word token"), NULL);
 	ft_printf("Word is: %s", word);
-	return (word);	
+	return (word);
 }
