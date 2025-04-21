@@ -24,7 +24,7 @@ bonus: all
 
 # Build the minishell
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -I $(HEADER_PATH) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -lhistory -I $(HEADER_PATH) -o $(NAME)
 
 # Rule to compile .o files from .c files
 %.o: $(SRC_DIR)%.c

@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/21 19:05:24 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/21 19:29:18 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,37 +17,30 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <stdio.h> // for readline
+#include <readline/readline.h>
+#include <readline/history.h>
 
 volatile sig_atomic_t	g_sigstate;
 
 static void	loop(void)
 {
+	char	*line;
 	t_token	*tokens;
 
-	tokens = lexer("  &< echo abc\"hello world\"more_quotes'sdaf asdf >even_more && ls -l > out.txt");
-	print_tokens(tokens);
-	free_token_list(tokens);
-	tokens = NULL;
 	while (g_sigstate != SIGQUIT && g_sigstate != SIGINT)
 	{
 		// read input
-		// save it to the history
-		// parse input
-		// t_token *token;
+		line = readline("minishell> ");
+		tokens = lexer(line);
+		print_tokens(tokens);
+		free_token_list(tokens);
+		tokens = NULL;
+		free(line);
 
-		// token = lexer("echo \"hello world\"  'sdaf asdf' && ls -l > out.txt");
-		// while (token)
-		// {
-		// 	printf("Type: %d, Value: %s\n", token->type, token->value ? token->value : "NULL");
-		// 	token = token->next;
-		// }
-
-		// fork
-		// run command
 		continue ;
 	}
-	ft_printf("The end\n");
-	ft_eprintf("Test error message\n");
+	ft_printf("Bye!\n");
 }
 
 static t_data	*init_data() //tuto funkciu mozeme pouzit na inicializaciu premennych pre cely minishell
