@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/21 00:41:23 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/21 19:05:24 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,9 @@ volatile sig_atomic_t	g_sigstate;
 static void	loop(void)
 {
 	t_token	*tokens;
-	
-	tokens = lexer("   < echo \"hello world\"  'sdaf asdf' && ls -l > out.txt");
-	while (tokens)
-	{
-		printf("Type: %d, Value: %s\n", tokens->type, tokens->value ? tokens->value : "NULL");
-		tokens = tokens->next;
-	}
+
+	tokens = lexer("  &< echo abc\"hello world\"more_quotes'sdaf asdf >even_more && ls -l > out.txt");
+	print_tokens(tokens);
 	free_token_list(tokens);
 	tokens = NULL;
 	while (g_sigstate != SIGQUIT && g_sigstate != SIGINT)

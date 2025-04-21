@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/21 00:23:05 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/21 18:54:03 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,154 +17,65 @@
 #include <stdlib.h>  // here for the NULL and size_t definitions
 #include <signal.h> // for the SIG type macro
 
-
 // the lexer separates the command line into individual tokens
 // returns a linked list of tokens (*tokens) with elements of the t_token type
 extern sig_atomic_t	g_sigstate;
-static void		skipspace(const char *input, size_t *pos);
-static int		is_operator_char(char c);
-t_token_type	match_operator(const char *input, size_t *pos);
-char 			*parse_quoted(const char *input, size_t *pos, char quote);
-char			*parse_word(const char *input, size_t *pos);
+int	handle_word(const char *input, size_t *pos, t_token **tokens);
+int	handle_operator(const char *input, size_t *pos, t_token **tokens);
 
 t_token	*lexer(const char *input)
 {
 	t_token			*tokens;
 	size_t			pos;
-	t_token_type	type;
-	char			quote;
-	char			*quoted;
-	char			*word;
 
-	ft_printf("***lexer called***\n");
 	tokens = NULL;
 	pos = 0;
-	while (input[pos] &&  g_sigstate != SIGQUIT && g_sigstate != SIGINT)
+	while (input[pos] && g_sigstate != SIGQUIT && g_sigstate != SIGINT)
 	{
 		skipspace(input, &pos);
 		if (!input[pos])
 			break ;
-		if (is_operator_char(input[pos]))
+		if (is_oper_ch(input[pos]))
 		{
-			ft_printf("operator char found, pos %i\n", pos);
-			type = match_operator(input, &pos);
-			ft_printf("match_operator returned, pos %i\n", pos);
-			if (type == TOKEN_INVALID)
-			{
-				ft_eprintf("Syntax error near unexpected character: '%c'\n", \
-					input[pos]);
-				free_token_list(tokens);
-				return (NULL);
-			}
-			token_append(&tokens, new_token(type, NULL));
-		}
-		else if (input[pos] == '\'' || input[pos] == '"')
-		{
-			ft_printf("Parse quoted\n");
-			quote = input[pos];
-			quoted = parse_quoted(input, &pos, quote);
-			if (!quoted)
-			{
-				free_token_list(tokens);
-				return (NULL);
-			}
-			token_append(&tokens, new_token(TOKEN_WORD, quoted));
-			free (quoted);
+			if (!handle_operator(input, &pos, &tokens))
+				return (free_token_list(tokens), NULL);
 		}
 		else
 		{
-			ft_printf("Parse word\n");
-			word = parse_word(input, &pos);
-			if (!word)
-			{
-				free_token_list(tokens);
-				return (NULL);
-			}
-			token_append(&tokens, new_token(TOKEN_WORD, word));
-			free (word);
+			if (!handle_word(input, &pos, &tokens))
+				return (free_token_list(tokens), NULL);
 		}
 	}
 	token_append(&tokens, new_token(TOKEN_EOF, NULL));
 	return (tokens);
 }
 
-static void	skipspace(const char *input, size_t *pos)
+int	handle_operator(const char *input, size_t *pos, t_token **tokens)
 {
-	ft_printf("skipspace called, pos %i\n", *pos);
-	while (ft_isspace(input[*pos]))
-		(*pos)++;
-}
+	t_token_type	type;
 
-static int	is_operator_char(char c)
-{
-	ft_printf("is_operator_char called\n");
-	if (c == '|' || c == '&' || c == '<' || c == '>' || c == '(' || c == ')')
-		return (1);
-	else
+	type = match_operator(input, pos);
+	if (type == TOKEN_INVALID)
+	{
+		ft_eprintf("Syntax error near unexpected character: '%c'\n", \
+			input[*pos]);
 		return (0);
+	}
+	token_append(tokens, new_token(type, NULL));
+	return (1);
 }
 
-t_token_type	match_operator(const char *input, size_t *pos)
+int	handle_word(const char *input, size_t *pos, t_token **tokens)
 {
-	ft_printf("match_operator called, pos %i\n", *pos);
-	if (ft_strncmp(&input[*pos], "&&", 2) == 0)
-		return (*pos += 2, TOKEN_AND);
-	if (ft_strncmp(&input[*pos], "||", 2) == 0)
-		return (*pos += 2, TOKEN_OR);
-	if (ft_strncmp(&input[*pos], "<<", 2) == 0)
-		return (*pos += 2, TOKEN_HEREDOC);
-	if (ft_strncmp(&input[*pos], ">>", 2) == 0)
-		return (*pos += 2, TOKEN_REDIR_APP);
-	if (input[*pos] == '|')
-		return (*pos += 1, TOKEN_PIPE);
-	if (input[*pos] == '<')
-		return (*pos += 1, TOKEN_REDIR_IN);
-	if (input[*pos] == '>')
-		return (*pos += 1, TOKEN_REDIR_OUT);
-	if (input[*pos] == '(')
-		return (*pos += 1, TOKEN_LPAREN);
-	if (input[*pos] == ')')
-		return (*pos += 1, TOKEN_RPAREN);
-	// return (*pos -= 1, TOKEN_INVALID); // does it make sense to step back?
-	return (TOKEN_INVALID);
-
-}
-
-// parse quoted string
-char *parse_quoted(const char *input, size_t *pos, char quote)
-{
-	ft_printf("parse_quoted called\n");
-	size_t	start;
-	size_t	len;
 	char	*word;
 
-	start = ++(*pos);
-	while (input[*pos] && input[*pos] != quote)
-		(*pos)++;
-	if (input[*pos] != quote)
-		return (ft_eprintf("Unclosed quote: %c\n", quote), NULL);
-	len = *pos - start;
-	word = malloc(sizeof(char) * (len + 1));
+	if (input[*pos] == '\'' || input[*pos] == '"')
+		word = parse_quoted(input, pos, input[*pos]);
+	else
+		word = parse_word(input, pos);
 	if (!word)
-		return (error_handler("Error allocating quoted string"), NULL);
-	ft_strlcpy(word, &input[start], len + 1);
-	(*pos)++;
-	return (word);
-}
-
-// parse unquoted word
-char	*parse_word(const char *input, size_t *pos)
-{
-	size_t	start;
-	char	*word;
-	
-	start = *pos;
-	word = NULL;
-	while (input[*pos] && !ft_isspace(input[*pos]) && !is_operator_char(input[*pos]) && input[*pos] != '\'' && input[*pos] != '"')
-		(*pos)++;
-	word = ft_strjoin_ed(word, &input[start], *pos - start);
-	if (!word)
-		return (error_handler("Error lexing word token"), NULL);
-	ft_printf("Word is: %s", word);
-	return (word);
+		return (0);
+	token_append(tokens, new_token(TOKEN_WORD, word));
+	free(word);
+	return (1);
 }
