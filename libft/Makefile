@@ -6,7 +6,7 @@
 #    By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/17 15:05:03 by jgrigorj          #+#    #+#              #
-#    Updated: 2025/04/17 15:43:05 by jgrigorj         ###   ########.fr        #
+#    Updated: 2025/04/21 00:12:41 by jgrigorj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC = ft_bzero.c ft_isascii.c ft_memcpy.c ft_strchr.c ft_strlen.c \
 		ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
 		ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c \
 		ft_lstmap.c	get_next_line.c get_next_line_utils.c ft_atof.c \
-		ft_ftoa.c
+		ft_ftoa.c ft_isspace.c
 
 
 PRINTF_DIR = ft_printf
