@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/21 19:29:18 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/21 22:03:00 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,8 @@ static void	loop(void)
 
 static t_data	*init_data() //tuto funkciu mozeme pouzit na inicializaciu premennych pre cely minishell
 {
-
 	t_data	*data;
-	
+
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (error_handler(strerror(errno)), NULL);
