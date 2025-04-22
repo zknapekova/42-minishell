@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/21 22:03:00 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/22 22:00:15 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,19 @@
 
 volatile sig_atomic_t	g_sigstate;
 
-static void	loop(void)
+static void	loop(t_data *data)
 {
 	char	*line;
-	t_token	*tokens;
+	// t_token	*tokens;
 
 	while (g_sigstate != SIGQUIT && g_sigstate != SIGINT)
 	{
 		// read input
 		line = readline("minishell> ");
-		tokens = lexer(line);
-		print_tokens(tokens);
-		free_token_list(tokens);
-		tokens = NULL;
+		data->tokens = lexer(line);
+		print_tokens(data->tokens);
+		free_token_list(data->tokens);
+		data->tokens = NULL;
 		free(line);
 
 		continue ;
@@ -51,7 +51,9 @@ static t_data	*init_data() //tuto funkciu mozeme pouzit na inicializaciu premenn
 	if (!data)
 		return (error_handler(strerror(errno)), NULL);
 	data->head = NULL;
-	return(data);
+	data->tokens = NULL;
+	data->ast = NULL;
+	return (data);
 }
 
 #include <stdio.h>
@@ -73,7 +75,7 @@ int	main(int argc, char **argv, char **env)
 	
 	replace_env_value(data, str);
   sig_init();
-	loop();
+	loop(data);
 	free_all(data);
 	return (EXIT_SUCCESS);
 }

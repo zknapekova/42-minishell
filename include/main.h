@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/18 20:36:45 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/22 22:01:59 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,7 @@ typedef struct s_env_node
 	struct s_env_node	*next;
 }	t_env_node;
 
-//tato struktura moze byt pre vseobecne data, nie nevyhnutne iba pre env LL
-typedef struct s_data
-{
-	t_env_node	*head;	//pointer to head of LL
-}	t_data;
-
-// parsing and AST
+// *** parsing and AST ***
 
 // TOKEN_REDIR_IN,    // <
 // TOKEN_REDIR_OUT,   // >
@@ -72,7 +66,10 @@ typedef enum e_node_type
 typedef struct s_cmd_data
 {
 	char	**argv;
-    // Add redirection data later
+	// t_redir *redirections; // Linked list of I/O redirections
+    char **envp;         // Optional environment override
+    int input_fd;        // Input pipe or redirection
+    int output_fd;
 }	t_cmd_data;
 
 // t_cmd_data cmd is used only if type is NODE_COMMAND
@@ -84,6 +81,15 @@ typedef struct s_ast
 	t_cmd_data		cmd;
 }	t_ast;
 
+// *** main data structure ***
+//tato struktura moze byt pre vseobecne data, nie nevyhnutne iba pre env LL
+typedef struct s_data
+{
+	t_env_node	*head;	//pointer to head of LL
+	t_token		*tokens;
+	t_ast		*ast;
+}	t_data;
+
 
 void		error_handler(char *str);
 int			init_env(char **env, t_data *data);
@@ -94,7 +100,7 @@ void		free_all(t_data *data);
 int			get_first_occurr_index(char *str, char c);
 int			replace_env_value(t_data *data, char *key_value);
 
-// signal
+// *** signal ***
 void		sig_init(void);
 
 // lexer
