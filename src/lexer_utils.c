@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:31:14 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/21 19:02:49 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:21:57 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,27 +79,14 @@ char	*parse_word(const char *input, size_t *p)
 {
 	size_t	start;
 	char	*word;
-	char	*quoted;
 
 	start = *p;
 	word = NULL;
-	while (input[*p] && !ft_isspace(input[*p]) && !is_oper_ch(input[*p]))
-	{
-		while (input[*p] && !ft_isspace(input[*p]) && !is_oper_ch(input[*p]) \
+	while (input[*p] && !ft_isspace(input[*p]) && !is_oper_ch(input[*p]) \
 		&& input[*p] != '\'' && input[*p] != '"')
-			(*p)++;
-		word = ft_strjoin_ed(word, &input[start], *p - start);
-		if (!word)
-			return (error_handler("Error lexing word token"), NULL);
-		if (input[*p] == '\'' || input[*p] == '"')
-		{
-			quoted = parse_quoted(input, p, input[*p]);
-			if (!quoted)
-				return (free (word), \
-				error_handler("Error lexing word token"), NULL);
-			word = ft_strjoin_ed(word, quoted, ft_strlen(quoted));
-			free (quoted);
-		}
-	}
+		(*p)++;
+	word = ft_strjoin_ed(word, &input[start], *p - start);
+	if (!word)
+		return (error_handler("Error lexing word token"), NULL);
 	return (word);
 }

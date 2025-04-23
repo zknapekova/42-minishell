@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:13:29 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/21 18:36:52 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:12:28 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>  // here for the NULL and size_t definitions
 #include <string.h> // strdup for testing purposes
 
-t_token	*new_token(t_token_type type, const char *value)
+t_token	*new_token(t_token_type type, const char *value, t_quote_type quote_type)
 {
 	t_token	*token;
 
@@ -30,6 +30,7 @@ t_token	*new_token(t_token_type type, const char *value)
 		token->value = ft_strdup(value);
 	if (!value)
 		token->value = NULL;
+	token->quote_type = quote_type;
 	token->next = NULL;
 	return (token);
 }
@@ -68,9 +69,11 @@ void	print_tokens(t_token *tokens)
 	while (tokens)
 	{
 		if (tokens->value)
-			ft_printf("Type: %d, Value: %s\n", tokens->type, tokens->value);
+			ft_printf("Type: %d, Value: %s, Quote type: %d\n", tokens->type, \
+				tokens->value, tokens->quote_type);
 		else
-			ft_printf("Type: %d, Value: %s\n", tokens->type, "NULL");
+			ft_printf("Type: %d, Value: %s, Quote type: %d\n", tokens->type, \
+				"NULL", tokens->quote_type);
 		tokens = tokens->next;
 	}
 }
