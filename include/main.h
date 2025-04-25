@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/23 23:09:05 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/24 23:09:07 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,18 @@ typedef enum e_quote_type
 	QUOTE_DOUBLE
 }	t_quote_type;
 
+typedef enum e_word_join
+{
+	W_SPLIT,
+	W_JOIN
+}	t_word_join;
+
 typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
 	t_quote_type	quote_type;
+	t_word_join		word_join;
 	struct s_token	*next;
 }	t_token;
 

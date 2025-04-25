@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:13:29 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/23 17:00:01 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/24 23:35:01 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <string.h> // strdup for testing purposes
 
 t_token	*new_token(t_token_type type, const char *value, \
-	t_quote_type quote_type)
+	t_quote_type quote_type, t_word_join word_join)
 {
 	t_token	*token;
 
@@ -32,6 +32,7 @@ t_token	*new_token(t_token_type type, const char *value, \
 	if (!value)
 		token->value = NULL;
 	token->quote_type = quote_type;
+	token->word_join = word_join;
 	token->next = NULL;
 	return (token);
 }
@@ -70,11 +71,11 @@ void	print_tokens(t_token *tokens)
 	while (tokens)
 	{
 		if (tokens->value)
-			ft_printf("Type: %d, Value: %s, Quote type: %d\n", tokens->type, \
-				tokens->value, tokens->quote_type);
+			ft_printf("Type: %d, Value: %s, Quote type: %d, word_join: %d\n", tokens->type, \
+				tokens->value, tokens->quote_type, tokens->word_join);
 		else
-			ft_printf("Type: %d, Value: %s, Quote type: %d\n", tokens->type, \
-				"NULL", tokens->quote_type);
+			ft_printf("Type: %d, Value: %s, Quote type: %d, word_join: %d\n", tokens->type, \
+				"NULL", tokens->quote_type, tokens->word_join);
 		tokens = tokens->next;
 	}
 }

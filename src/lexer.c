@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/23 16:23:30 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/24 23:39:04 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_token	*lexer(const char *input)
 				return (free_token_list(tokens), NULL);
 		}
 	}
-	token_append(&tokens, new_token(TOKEN_EOF, NULL, QUOTE_NONE));
+	token_append(&tokens, new_token(TOKEN_EOF, NULL, QUOTE_NONE, W_SPLIT));
 	return (tokens);
 }
 
@@ -61,7 +61,7 @@ int	handle_operator(const char *input, size_t *pos, t_token **tokens)
 			input[*pos]);
 		return (0);
 	}
-	token_append(tokens, new_token(type, NULL, QUOTE_NONE));
+	token_append(tokens, new_token(type, NULL, QUOTE_NONE, W_SPLIT));
 	return (1);
 }
 
@@ -69,6 +69,7 @@ int	handle_word(const char *input, size_t *pos, t_token **tokens)
 {
 	char			*word;
 	t_quote_type	quote_type;
+	t_word_join		word_join;
 
 	if (input[*pos] == '\'' || input[*pos] == '"')
 	{
@@ -85,7 +86,11 @@ int	handle_word(const char *input, size_t *pos, t_token **tokens)
 	}
 	if (!word)
 		return (0);
-	token_append(tokens, new_token(TOKEN_WORD, word, quote_type));
+	if (input[*pos] == '\'' || input[*pos] == '"' || ft_isalnum(input[*pos]) || input[*pos] == '$')
+		word_join = W_JOIN;
+	else
+		word_join = W_SPLIT;
+	token_append(tokens, new_token(TOKEN_WORD, word, quote_type, word_join));
 	free(word);
 	return (1);
 }
