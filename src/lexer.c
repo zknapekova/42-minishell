@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/24 23:39:04 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/26 19:50:38 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,11 @@
 // the lexer separates the command line into individual tokens
 // returns a linked list of tokens (*tokens) with elements of the t_token type
 extern sig_atomic_t	g_sigstate;
-int	handle_word(const char *input, size_t *pos, t_token **tokens);
-int	handle_operator(const char *input, size_t *pos, t_token **tokens);
+static int			handle_word(const char *input, \
+	size_t *pos, t_token **tokens);
+static int			handle_operator(const char *input, \
+	size_t *pos, t_token **tokens);
+static t_word_join	word_join_or_split(char next_char);
 
 t_token	*lexer(const char *input)
 {
@@ -50,7 +53,7 @@ t_token	*lexer(const char *input)
 	return (tokens);
 }
 
-int	handle_operator(const char *input, size_t *pos, t_token **tokens)
+static int	handle_operator(const char *input, size_t *pos, t_token **tokens)
 {
 	t_token_type	type;
 
@@ -65,7 +68,7 @@ int	handle_operator(const char *input, size_t *pos, t_token **tokens)
 	return (1);
 }
 
-int	handle_word(const char *input, size_t *pos, t_token **tokens)
+static int	handle_word(const char *input, size_t *pos, t_token **tokens)
 {
 	char			*word;
 	t_quote_type	quote_type;
@@ -86,11 +89,20 @@ int	handle_word(const char *input, size_t *pos, t_token **tokens)
 	}
 	if (!word)
 		return (0);
-	if (input[*pos] == '\'' || input[*pos] == '"' || ft_isalnum(input[*pos]) || input[*pos] == '$')
-		word_join = W_JOIN;
-	else
-		word_join = W_SPLIT;
+	word_join = word_join_or_split(input[*pos]);
 	token_append(tokens, new_token(TOKEN_WORD, word, quote_type, word_join));
 	free(word);
 	return (1);
+}
+
+static t_word_join	word_join_or_split(char next_char)
+{
+	t_word_join	word_join;
+
+	if (next_char == '\'' || next_char == '"' \
+		|| ft_isalnum(next_char) || next_char == '$')
+		word_join = W_JOIN;
+	else
+		word_join = W_SPLIT;
+	return (word_join);
 }

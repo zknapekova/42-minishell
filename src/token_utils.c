@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:13:29 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/24 23:35:01 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/26 19:57:13 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ void	print_tokens(t_token *tokens)
 	while (tokens)
 	{
 		if (tokens->value)
-			ft_printf("Type: %d, Value: %s, Quote type: %d, word_join: %d\n", tokens->type, \
-				tokens->value, tokens->quote_type, tokens->word_join);
+			ft_printf("Type: %d, Value: %s, Quote type: %d, word_join: %d\n", \
+			tokens->type, tokens->value, tokens->quote_type, tokens->word_join);
 		else
-			ft_printf("Type: %d, Value: %s, Quote type: %d, word_join: %d\n", tokens->type, \
-				"NULL", tokens->quote_type, tokens->word_join);
+			ft_printf("Type: %d, Value: %s, Quote type: %d, word_join: %d\n", \
+			tokens->type, "NULL", tokens->quote_type, tokens->word_join);
 		tokens = tokens->next;
 	}
 }

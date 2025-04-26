@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:05:21 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/24 23:05:09 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/26 19:34:14 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,8 @@ int	check_operator(t_token *tokens)
 	{
 		if (tokens->type == TOKEN_LPAREN)
 			head = tokens->next;
-		if (head == tokens)
-		{
-			if (!check_first_token(tokens))
-				return (0);
-		}
+		if (head == tokens && !check_first_token(tokens))
+			return (0);
 		if (tokens->next->type == TOKEN_EOF \
 			|| tokens->next->type == TOKEN_RPAREN)
 		{
@@ -49,6 +46,9 @@ int	check_operator(t_token *tokens)
 	return (1);
 }
 
+// operators should not be at the beginnig of a line
+// or just after opening parenthesis
+
 int	check_first_token(t_token *tokens)
 {
 	if (tokens->type == TOKEN_AND)
@@ -63,6 +63,9 @@ syntax error near unexpected token `|'\n"), 0);
 	return (1);
 }
 
+// chcecks if there is an operator or a redirection at the end 
+// of the command or before closing parenthesis
+
 int	check_last_token(t_token *tokens)
 {
 	if (tokens->type == TOKEN_AND)
@@ -74,12 +77,20 @@ syntax error: missing command after `||'\n"), 0);
 	if (tokens->type == TOKEN_PIPE)
 		return (ft_eprintf("minishell: \
 syntax error: missing command after `|'\n"), 0);
-	if (tokens->type == TOKEN_REDIR_IN)
-		return (ft_eprintf("minishell: \
+	if (tokens->type == TOKEN_REDIR_IN || tokens->type == TOKEN_REDIR_OUT \
+		|| tokens->type == TOKEN_REDIR_APP)
+	{
+		if (tokens->next->type == TOKEN_EOF)
+			return (ft_eprintf("minishell: \
 syntax error near unexpected token `newline'\n"), 0);
+		if (tokens->next->type == TOKEN_RPAREN)
+			return (ft_eprintf("minishell: \
+syntax error near unexpected token `)'\n"), 0);
+	}
 	return (1);
 }
 
+// checks if the operators are between commands
 int	check_chained_oper(t_token *tokens)
 {
 	if (tokens->next->type == TOKEN_AND)
