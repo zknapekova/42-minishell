@@ -21,7 +21,7 @@
 
 volatile sig_atomic_t	g_sigstate;
 
-static void	loop(void)
+/*static void	loop(void)
 {
 	while (g_sigstate != SIGQUIT)
 	{
@@ -33,14 +33,14 @@ static void	loop(void)
 		continue ;
 	}
 	ft_printf("The end\n");
-}
+}*/
 
 #include <stdio.h>
 int	main(int argc, char **argv, char **env)
 {
     t_data	*data;
 
-	char	str[50] = "my_var3=aa$USER:22$USE:hjhjh$USERdhajdhaj$USER";
+	char	str[50] = "my_var3$USER$USER=$USER";
 	if (argc != 1)
         return(error_handler("No arguments are accepted"), EXIT_FAILURE);
     (void)argv;
@@ -53,8 +53,10 @@ int	main(int argc, char **argv, char **env)
 	}
 	if (!handle_new_env_value(data, str))
 	    return(free_all(data), EXIT_FAILURE);
-    sig_init();
-	loop();
+	t_env_node *extend_env_node = search_env_list(data, "my_var3zknapeko");
+	printf("%s\n", extend_env_node->key_value);
+    //sig_init();
+	//loop();
 	free_all(data);
 	return (EXIT_SUCCESS);
 }

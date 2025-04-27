@@ -12,15 +12,16 @@
 
 #include "../libft/libft.h"
 
-int	get_first_occurr_index(char *str, char c)
+int	get_first_occurr_index(char *str, char c, int start)
 {
 	int	i;
 
-	i = -1;
-	while (str[++i])
+	i = start;
+	while (str[i])
 	{
 		if (str[i] == c)
 			return (i);
+	    i++;
 	}
 	return (-1);
 }
@@ -48,7 +49,7 @@ int validate_env_var_name(char *var_name)
            return (0);
     while (var_name[i])
     {
-        if (!ft_isalnum(var_name[i]) && var_name[i] != '_')
+        if (!ft_isalnum(var_name[i]) && var_name[i] != '_' && var_name[i] != '$')
             return(0);
         i++;
     }

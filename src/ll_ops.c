@@ -47,7 +47,7 @@ t_env_node	*new_node(t_data *data, char *key_value)
 	}
 	new_node->key_value = key_value;
 	new_node->next = NULL;
-	eq_ind = get_first_occurr_index(key_value, '=');
+	eq_ind = get_first_occurr_index(key_value, '=', 0);
 	new_node->key = ft_substr(key_value, 0, eq_ind);
 	if (!new_node->key)
 	    return (error_handler(strerror(errno)), NULL);
@@ -94,4 +94,33 @@ int	add_env(t_data *data, char *key_value)
 		lastnode->next = node;
 	}
 	return (1);
+}
+
+//will be used for unset cmd
+// unset var1 var2 ->multiple variables can be specified
+int delete_node(t_data *data, char *key)
+{
+    t_env_node  *prev;
+    t_env_node  *temp;
+
+    if (data->head && key)
+    {
+        temp = data->head;
+        prev = data->head;
+        while (temp)
+        {
+            if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0 && ft_strlen(key) == ft_strlen(temp->key))
+            {
+                prev->next = temp->next;
+                free(temp->key_value);
+                free(temp->value);
+                free(temp->key);
+                free(temp);
+                return (1);
+            }
+            prev = temp;
+            temp = temp->next;
+        }
+    }
+    return (0);
 }
