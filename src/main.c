@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/13 19:37:51 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/04/27 19:06:45 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **env)
 {
     t_data	*data;
 
-	char	str[50] = "my_var3$USER$USER=$USER";
+	char	str[50] = "1my_var3$USER$USERaa=$USER";
 	if (argc != 1)
         return(error_handler("No arguments are accepted"), EXIT_FAILURE);
     (void)argv;
@@ -53,8 +53,8 @@ int	main(int argc, char **argv, char **env)
 	}
 	if (!handle_new_env_value(data, str))
 	    return(free_all(data), EXIT_FAILURE);
-	t_env_node *extend_env_node = search_env_list(data, "my_var3zknapeko");
-	printf("%s\n", extend_env_node->key_value);
+	t_env_node *extend_env_node = search_env_list(data, "my_var3zuknapek");
+	printf("final resut: %s\n", extend_env_node->key_value);
     //sig_init();
 	//loop();
 	free_all(data);

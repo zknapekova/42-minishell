@@ -6,7 +6,7 @@
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 17:23:43 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/12 19:09:27 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/04/27 15:14:44 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_env_node	*new_node(t_data *data, char *key_value)
 	}
 	new_node->key_value = key_value;
 	new_node->next = NULL;
-	eq_ind = get_first_occurr_index(key_value, '=', 0);
+	eq_ind = get_first_ind(key_value, '=', 0);
 	new_node->key = ft_substr(key_value, 0, eq_ind);
 	if (!new_node->key)
 	    return (error_handler(strerror(errno)), NULL);
