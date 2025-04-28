@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/24 23:09:07 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/28 16:10:18 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,17 @@ typedef enum e_node_type
 
 typedef enum e_redir_type
 {
-	R_INPUT,
-	R_OUTPUT,
-	R_APPEND,
-	R_HEREDOC
+	REDIR_INPUT,
+	REDIR_OUTPUT,
+	REDIR_APPEND,
+	REDIR_HEREDOC,
+	REDIR_DUP
 }	t_redir_type;
 
 typedef struct s_redir
 {
 	t_redir_type	type;
+	int				fd;
 	char			*filename;
 	struct s_redir	*next;
 }	t_redir;
@@ -97,9 +99,6 @@ typedef struct s_cmd_data
 {
 	char	**argv;
 	t_redir *redirections; // Linked list of I/O redirections
-	// char **envp;         // Optional environment override
-	int input_fd;        // Input pipe or redirection
-	int output_fd;
 }	t_cmd_data;
 
 // t_cmd_data cmd is used only if type is NODE_COMMAND
@@ -108,7 +107,7 @@ typedef struct s_ast
 	t_node_type		type;
 	struct s_ast	*left;
 	struct s_ast	*right;
-	t_cmd_data		cmd;
+	t_cmd_data		*cmd_data;
 }	t_ast;
 
 // *** main data structure ***
@@ -138,5 +137,6 @@ t_token		*lexer(const char *input);
 
 // parser
 t_ast		*parser(t_token *tokens);
+void		free_ast(t_ast *node);
 
 #endif
