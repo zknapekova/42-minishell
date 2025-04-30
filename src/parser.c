@@ -6,15 +6,14 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:28:09 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/28 16:47:26 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/28 23:14:00 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/main.h"
 #include "../libft/libft.h"
 #include "../include/token.h"
-
-// t_ast	*new_ast_node(void);
+#include "../include/parser_utils.h"
 
 t_ast	*parser(t_token *tokens)
 {
@@ -22,6 +21,7 @@ t_ast	*parser(t_token *tokens)
 
 	if (!check_tokens(tokens))
 		return (NULL);
+	ast = parse_and_or(tokens);
 	return (NULL);
 }
 
@@ -42,4 +42,9 @@ t_ast	*new_ast_node(t_node_type type)
 	new_node->left = NULL;
 	new_node->right = NULL;
 	return (new_node);
+}
+
+t_ast	*parse_and_or(t_token *tokens)
+{
+	
 }
