@@ -5,7 +5,7 @@
 
 int	is_token_pipe(t_token *tokens);
 int	is_token_and(t_token *tokens);
-int	is_token_of(t_token *tokens);
+int	is_token_or(t_token *tokens);
 int	is_token_lparen(t_token *tokens);
 int	is_token_rparen(t_token *tokens);
 int	is_token_word(t_token *tokens);
@@ -14,5 +14,6 @@ int	is_token_redirout(t_token *tokens);
 int	is_token_append(t_token *tokens);
 int	is_token_heredoc(t_token *tokens);
 int	is_token_pipe(t_token *tokens);
+void	advance_token(t_token **tokens);
 
 #endif
