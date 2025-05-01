@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
+#include "../include/env_vars.h"
 #include "../libft/libft.h"
 #include "stdlib.h"
 #include <stdio.h>
