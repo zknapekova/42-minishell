@@ -110,6 +110,7 @@ int update_env_list(char *key_value, int eq_ind, t_data *data, int dollar_ind)
     char		*var_name;
     t_env_node  *node_to_update;
 
+    printf("%s\n", key_value);
     var_name = ft_substr(key_value, 0, eq_ind);
     if (!var_name)
         return (error_handler(strerror(errno)), 0);
