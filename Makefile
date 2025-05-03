@@ -3,7 +3,8 @@ CFLAGS = -Wall -Werror -Wextra
 
 SRC_DIR = src/
 SRCS = main.c error_handler.c env_vars_ops.c free_memory.c ll_ops.c utils.c signal.c lexer.c  \
-	token_utils.c lexer_utils.c parser.c token_check.c token_check2.c
+	token_utils.c lexer_utils.c parser.c token_check.c token_check2.c parser_utils.c parser_utils2.c \
+	parser_utils3.c parser_arg_utils.c
 
 SRC = $(addprefix $(SRC_DIR), $(SRCS))
 OBJS = $(SRC:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:28:09 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/30 20:53:48 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:54:36 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,27 @@ t_ast	*parse_subshell(t_token **tokens)
 
 t_ast	*parse_cmd(t_token **tokens)
 {
+	t_cmd_data	*cmd;
+	t_redir		*redir_list;
+	t_redir		*redir_node;
+	
+	cmd = malloc(sizeof(t_cmd_data));
+	if (!cmd)
+		return (error_handler("Failed to allocate cmd inside parse_cmd\n"), NULL);
+	cmd->argv = NULL;
+	cmd->redirections = NULL;
+	while (*tokens && (is_token_word(*tokens) || is_token_redir(*tokens)))
+	{
+		while (is_token_word(*tokens))
+		{
+			append_arg(&cmd->argv, (*tokens)->value, (*tokens)->quote_type, (*tokens)->word_join);
+			advance_token(tokens);
+		}
+		if (is_token_redir(*tokens))
+		{
+			redir_node = parse_redirection()
+		}
+	}
+	
 	
 }

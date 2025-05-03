@@ -1,0 +1,4 @@
+redirection located anywhere in the command (same result in these three cases)
+echo hello > out.txt
+> out.txt echo hello
+echo > out.txt hello

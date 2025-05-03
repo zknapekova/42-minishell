@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 23:09:07 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/28 23:09:18 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:49:19 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 int	is_token_word(t_token *tokens)
 {
 	if (tokens && tokens->type == TOKEN_WORD)
+		return (1);
+	else
+		return (0);
+}
+
+int	is_token_redir(t_token *tokens)
+{
+	if (tokens && (tokens->type == TOKEN_REDIR_IN) || tokens->type == TOKEN_REDIR_OUT \
+	||tokens->type == TOKEN_HEREDOC || tokens->type == TOKEN_REDIR_APP)
 		return (1);
 	else
 		return (0);

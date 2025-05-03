@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/28 23:00:03 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/02 16:13:40 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,21 @@ typedef struct s_redir
 	struct s_redir	*next;
 }	t_redir;
 
+typedef struct s_arg
+{
+	char	*value;
+	t_quote_type	quote_type;
+	t_word_join		word_join;
+	struct s_arg	*next;
+} t_arg;
+
+// t_arg	*argv is a linked list of argument data (to be expanded later)
+// t_arg *argv will be used to generate the **argv
 // **argv is the standard argument vector passed to execve()
 // Example: ["ls", "-la", "/home", NULL]
 typedef struct s_cmd_data
 {
-	char	**argv;
+	t_arg	*argv;
 	t_redir *redirections; // Linked list of I/O redirections
 }	t_cmd_data;
 
