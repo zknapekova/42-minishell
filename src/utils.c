@@ -6,7 +6,7 @@
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 17:41:41 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/27 18:58:47 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:48:31 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	get_first_ind(char *str, char c, int start)
 	return (-1);
 }
 
-int get_first_occurr_non_alnum(char *str, int start)
+int get_first_non_alnum(char *str, int start)
 {
     int i;
 

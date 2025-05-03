@@ -11,7 +11,7 @@ typedef struct s_env_node
 
 typedef struct s_data
 {
-	t_env_node	*head;	//pointer to head of LL
+	t_env_node	*head;
 }	t_data;
 
 t_env_node	*new_node(t_data *data, char *key_value);
@@ -26,7 +26,7 @@ int         handle_new_node(t_env_node *node_to_update, t_data *data, char *key_
 char	    *parse_env_value(t_env_node *node, char *key_value, int dollar_ind, int eq_ind);
 char        *get_key_value(char *var_to_extend, t_data *data, char *key_value, char *var_name);
 int	        get_first_ind(char *str, char c, int start);
-int         get_first_occurr_non_alnum(char *str, int start);
+int         get_first_non_alnum(char *str, int start);
 int 		validate_env_var_name(char *key_value, int eq_ind);
 int	        handle_new_env_value(t_data *data, char *key_value);
 void    	error_handler(char *str);
