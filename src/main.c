@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/23 17:26:46 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/03 19:23:51 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@ static void	loop(t_data *data)
 		data->tokens = lexer(line);
 		print_tokens(data->tokens);
 		data->ast = parser(data->tokens);
+		// if (!data->ast)
+		// {
+		// 	error_handler("Parser failed :'(");
+		// 	break;
+		// }
+			
 		free_token_list(data->tokens);
 		data->tokens = NULL;
 		free(line);

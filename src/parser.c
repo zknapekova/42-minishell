@@ -1,34 +1,34 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 17:28:09 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/02 17:54:36 by jgrigorj         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   parser.c                                           :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2025/04/23 17:28:09 by jgrigorj          #+#    #+#             */
+// /*   Updated: 2025/05/03 19:05:37 by jgrigorj         ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
 
 #include "../include/main.h"
 #include "../libft/libft.h"
 #include "../include/token.h"
 #include "../include/parser_utils.h"
 
-t_ast	*new_ast_node(t_node_type type);
+// t_ast	*new_ast_node(t_node_type type);
 
-t_ast	*parse_or(t_token **tokens);
-t_ast	*parse_and(t_token **tokens);
-t_ast	*parse_pipeline(t_token **tokens);
-t_ast	*parse_cmd_or_subshell(t_token **tokens);
-t_ast	*parse_subshell(t_token **tokens);
-t_ast	*parse_cmd(t_token **tokens);
+// t_ast	*parse_or(t_token **tokens);
+// t_ast	*parse_and(t_token **tokens);
+// t_ast	*parse_pipeline(t_token **tokens);
+// t_ast	*parse_cmd_or_subshell(t_token **tokens);
+// t_ast	*parse_subshell(t_token **tokens);
+// t_ast	*parse_cmd(t_token **tokens);
 
 t_ast	*parser(t_token *tokens)
 {
-	t_ast	*ast;
+// 	t_ast	*ast;
 
-	if (!check_tokens(tokens))
+	if (!tokens || !check_tokens(tokens))
 		return (NULL);
 	ast = parse_and_or(tokens);
 	return (NULL);
@@ -157,6 +157,7 @@ t_ast	*parse_cmd(t_token **tokens)
 	t_cmd_data	*cmd;
 	t_redir		*redir_list;
 	t_redir		*redir_node;
+	t_ast		*cmd_node;
 	
 	cmd = malloc(sizeof(t_cmd_data));
 	if (!cmd)
@@ -165,16 +166,22 @@ t_ast	*parse_cmd(t_token **tokens)
 	cmd->redirections = NULL;
 	while (*tokens && (is_token_word(*tokens) || is_token_redir(*tokens)))
 	{
-		while (is_token_word(*tokens))
+		if (is_token_redir(*tokens))
+		{
+			// redir_node = NULL;
+			redir_node = parse_redirection(tokens);
+		}
+		else if (is_token_word(*tokens))
 		{
 			append_arg(&cmd->argv, (*tokens)->value, (*tokens)->quote_type, (*tokens)->word_join);
 			advance_token(tokens);
 		}
-		if (is_token_redir(*tokens))
-		{
-			redir_node = parse_redirection()
-		}
+		// handle command substitution $(cmd)
+		// handle subshell (...)
+		
 	}
-	
-	
+	cmd_node = new_ast_node(NODE_COMMAND);
+	if (!cmd_node)
+		
+	return ()
 }
