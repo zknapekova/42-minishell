@@ -2,7 +2,8 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra
 
 SRC_DIR = src/
-SRCS = main.c error_handler.c env_vars_ops.c env_vars_utils.c free_memory.c ll_ops.c utils.c signal.c init.c validators.c
+SRCS = main.c error_handler.c env_vars_ops.c env_vars_utils.c free_memory.c ll_ops.c utils.c signal.c init.c \
+		validators.c env_vars_handler.c 
 
 
 SRC = $(addprefix $(SRC_DIR), $(SRCS))

@@ -6,7 +6,7 @@
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 17:23:43 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/27 15:14:44 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/04 15:49:03 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,25 @@ static int	lst_size(t_data *data)
 
 t_env_node	*new_node(t_data *data, char *key_value)
 {
-	t_env_node *new_node;
-	int         eq_ind;
+	t_env_node	*new_node;
+	int			eq_ind;
 
-    new_node = malloc(sizeof(t_env_node));
-    if (!new_node)
-	{
-        return (error_handler(strerror(errno)), NULL);
-	}
+	new_node = malloc(sizeof(t_env_node));
+	if (!new_node)
+		return (error_handler(strerror(errno)), NULL);
 	new_node->key_value = key_value;
 	new_node->next = NULL;
 	eq_ind = get_first_ind(key_value, '=', 0);
 	new_node->key = ft_substr(key_value, 0, eq_ind);
 	if (!new_node->key)
-	    return (error_handler(strerror(errno)), NULL);
-	new_node->value = ft_substr(key_value, eq_ind + 1, ft_strlen(key_value) - eq_ind);
+		return (error_handler(strerror(errno)), NULL);
+	new_node->value = ft_substr(key_value, eq_ind + 1, \
+			ft_strlen(key_value) - eq_ind);
 	if (!new_node->value)
-	    return (error_handler(strerror(errno)), NULL);
+		return (error_handler(strerror(errno)), NULL);
 	if (lst_size(data) == 0)
 		data->head = new_node;
-	return(new_node);
+	return (new_node);
 }
 
 t_env_node	*last_node(t_data *data)
@@ -66,18 +65,19 @@ t_env_node	*last_node(t_data *data)
 	temp = data->head;
 	while (temp && temp->next)
 		temp = temp->next;
-	return(temp);
+	return (temp);
 }
 
-void    update_node(t_env_node *node, char *key_value, int eq_ind)
+void	update_node(t_env_node *node, char *key_value, int eq_ind)
 {
-    if (node)
-    {
-        free(node->key_value);
-        free(node->value);
-        node->key_value = key_value;
-        node->value = ft_substr(key_value, eq_ind + 1, ft_strlen(key_value) - eq_ind);
-    }
+	if (node)
+	{
+		free(node->key_value);
+		free(node->value);
+		node->key_value = key_value;
+		node->value = ft_substr(key_value, eq_ind + 1, \
+			ft_strlen(key_value) - eq_ind);
+	}
 }
 
 int	add_env(t_data *data, char *key_value)
@@ -94,33 +94,4 @@ int	add_env(t_data *data, char *key_value)
 		lastnode->next = node;
 	}
 	return (1);
-}
-
-//will be used for unset cmd
-// unset var1 var2 ->multiple variables can be specified
-int delete_node(t_data *data, char *key)
-{
-    t_env_node  *prev;
-    t_env_node  *temp;
-
-    if (data->head && key)
-    {
-        temp = data->head;
-        prev = data->head;
-        while (temp)
-        {
-            if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0 && ft_strlen(key) == ft_strlen(temp->key))
-            {
-                prev->next = temp->next;
-                free(temp->key_value);
-                free(temp->value);
-                free(temp->key);
-                free(temp);
-                return (1);
-            }
-            prev = temp;
-            temp = temp->next;
-        }
-    }
-    return (0);
 }

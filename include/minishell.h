@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:54:22 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/03 17:31:06 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/04 16:58:40 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,5 @@
 // function prototypes
 // signal
 void	sig_init(void);
-
 
 #endif

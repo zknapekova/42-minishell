@@ -6,7 +6,7 @@
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/27 19:06:45 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/04 17:05:04 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-
+#include <stdio.h>
 
 volatile sig_atomic_t	g_sigstate;
 
-/*static void	loop(void)
+static void	loop(void)
 {
 	while (g_sigstate != SIGQUIT)
 	{
@@ -33,28 +33,24 @@ volatile sig_atomic_t	g_sigstate;
 		continue ;
 	}
 	ft_printf("The end\n");
-}*/
+}
 
-#include <stdio.h>
 int	main(int argc, char **argv, char **env)
 {
-    t_data	*data;
+	t_data	*data;
 
-	/*if (argc != 1)
-        return(error_handler("No arguments are accepted"), EXIT_FAILURE);
-    (void)argv;*/
-    (void)argc;
+	if (argc != 1)
+		return (error_handler("No arguments are accepted"), EXIT_FAILURE);
+	(void)argv;
 	data = init_data();
 	if (!data)
-		return(EXIT_FAILURE);
-    if (!init_env(env, data))
-	{
-        return(free_all(data), EXIT_FAILURE);
-	}
+		return (EXIT_FAILURE);
+	if (!init_env(env, data))
+		return (free_all(data), EXIT_FAILURE);
 	if (!handle_new_env_value(data, argv[1]))
-	    return(free_all(data), EXIT_FAILURE);
-    //sig_init();
-	//loop();
+		return (free_all(data), EXIT_FAILURE);
+	sig_init();
+	loop();
 	free_all(data);
 	return (EXIT_SUCCESS);
 }
