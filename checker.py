@@ -31,6 +31,6 @@ for i in range(len(test_cases)):
 
     if ("All heap blocks were freed -- no leaks are possible" in valgrind_process.stderr):
         print("✅ No memory leaks ✅")
-        print("######################################")
     else:
         print(f"❌ Memory leaks found! ❌")
+    print("######################################")
