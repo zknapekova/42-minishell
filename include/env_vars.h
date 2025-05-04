@@ -6,7 +6,7 @@
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 17:00:09 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/04 17:00:35 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:28:34 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,5 @@ int			get_first_non_alnum(char *str, int start);
 int			validate_env_var_name(char *key_value, int eq_ind);
 int			handle_new_env_value(t_data *data, char *key_value);
 void		error_handler(char *str);
+
 #endif

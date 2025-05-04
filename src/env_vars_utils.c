@@ -6,7 +6,7 @@
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 16:17:55 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/03 16:56:40 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:47:29 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,26 @@ char	*get_key_value(char *var_to_extend, t_data *data, char *key_value, \
 	if (!search_env_list(data, var_to_extend))
 	{
 		temp_key_value = ft_substr(key_value, 0, dollar_ind);
+		if (!var_name)
+			return (temp_key_value);
 		new_value = ft_substr(key_value, get_first_non_alnum(key_value, \
 			dollar_ind + 1), ft_strlen(key_value) - \
 			get_first_non_alnum(key_value, dollar_ind + 1));
 	}
 	else
 	{
-		temp_key_value = ft_strjoin(var_name, "=");
-		new_value = parse_env_value(search_env_list(data, var_to_extend), \
-		key_value, dollar_ind, get_first_ind(key_value, '=', 0));
+		if (var_name)
+		{
+			temp_key_value = ft_strjoin(var_name, "=");
+			new_value = parse_env_value(search_env_list(data, var_to_extend), \
+			key_value, dollar_ind, get_first_ind(key_value, '=', 0));
+		}
+		else
+		{
+			temp_key_value = ft_substr(key_value, 0, dollar_ind);
+			new_value = parse_env_value(search_env_list(data, var_to_extend), \
+			key_value, dollar_ind, -1);
+		}
 	}
 	if (!temp_key_value || !new_value)
 		return (error_handler(strerror(errno)), NULL);

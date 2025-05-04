@@ -6,7 +6,7 @@
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 15:33:35 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/04 15:43:11 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:31:34 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	update_env_list(char *key_value, int eq_ind, t_data *data, int dollar_ind)
 	char		*var_name;
 	t_env_node	*node_to_update;
 
-	printf("%s\n", key_value);
 	var_name = ft_substr(key_value, 0, eq_ind);
 	if (!var_name)
 		return (error_handler(strerror(errno)), 0);
@@ -92,4 +91,43 @@ int	handle_new_env_value(t_data *data, char *key_value)
 		return (error_handler("minishell: export: 'key_value': not a \
 			valid identifier"), 0);
 	return (update_env_list(key_value, eq_ind, data, dollar_ind));
+}
+
+int	export(t_data *data, char *input)
+{
+	if (input)
+	{
+		if (!handle_new_env_value(data, input))
+			return (0);
+	}
+	return (1); //TO DO
+}
+#include <stdio.h>
+int	echo(char *input, t_data *data, int n_param)
+{
+	int		dollar_ind;
+	char	*var_to_extend;
+	char	*result;
+	
+	dollar_ind = get_first_ind(input, '$', 0);
+	if (dollar_ind != -1)
+	{
+		var_to_extend = ft_substr(input, dollar_ind + 1, \
+			get_first_non_alnum(input, dollar_ind + 1) - dollar_ind - 1);
+		if (!var_to_extend)
+			return (error_handler(strerror(errno)), 0);
+		result = get_key_value(var_to_extend, data, input, NULL);
+	}
+	else
+		result = ft_strdup(input);
+	if (!result)
+		return (error_handler(strerror(errno)), 0);
+	if (write(1, result, ft_strlen(result)) == -1)
+		return (error_handler(strerror(errno)), 0);
+	if (n_param)
+	{
+		if (write(1, "\n", 1) == -1)
+			return (error_handler(strerror(errno)), 0);
+	}
+	return (free(result), 1);
 }

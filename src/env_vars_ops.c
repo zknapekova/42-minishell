@@ -6,7 +6,7 @@
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 19:47:56 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/04 15:36:32 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/04 17:43:46 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	extend_env_value(t_data *data, char *key_value, char *var_name, \
 	free (key_value);
 	if (!new_key_value)
 		return (error_handler(strerror(errno)), 0);
-	if (get_first_ind(new_key_value, '$', 0) == -1)
+	if (get_first_ind(new_key_value, '$', 0) == -1 && eq_ind != -1)
 	{
 		if (!handle_new_node(node_to_update, data, new_key_value))
 			return (0);
