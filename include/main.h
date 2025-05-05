@@ -6,12 +6,18 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/02 16:13:40 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/05 19:10:53 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAIN_H
 # define MAIN_H
+
+typedef enum e_bool
+{
+	true = 1,
+	false = 0
+}	t_bool;
 
 typedef struct s_env_node
 {
@@ -85,11 +91,14 @@ typedef enum e_redir_type
 	REDIR_DUP
 }	t_redir_type;
 
+// the char *target is the filename or heredoc limiter or fd for >& syntax
+// the t_bool is_fd_target is for the >& syntax
 typedef struct s_redir
 {
 	t_redir_type	type;
 	int				fd;
-	char			*filename;
+	char			*target;
+	t_bool			is_fd_target;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -146,7 +155,9 @@ void		sig_init(void);
 t_token		*lexer(const char *input);
 
 // parser
-t_ast		*parser(t_token *tokens);
+t_ast		*parser(t_token **tokens);
 void		free_ast(t_ast *node);
+void	free_cmd(t_cmd_data *cmd);
+
 
 #endif

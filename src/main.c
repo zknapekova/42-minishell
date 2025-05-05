@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/03 19:23:51 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/05 19:37:49 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	loop(t_data *data)
 		line = readline("minishell> ");
 		data->tokens = lexer(line);
 		print_tokens(data->tokens);
-		data->ast = parser(data->tokens);
+		data->ast = parser(&(data->tokens));
 		// if (!data->ast)
 		// {
 		// 	error_handler("Parser failed :'(");
@@ -44,7 +44,7 @@ static void	loop(t_data *data)
 		free_token_list(data->tokens);
 		data->tokens = NULL;
 		free(line);
-
+		free_ast(data->ast);
 		continue ;
 	}
 	ft_printf("Bye!\n");
