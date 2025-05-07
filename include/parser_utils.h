@@ -20,6 +20,6 @@ void	append_arg(t_arg **head, const char *value, t_quote_type qtype, t_word_join
 void	free_args(t_arg *head);
 void	append_redir(t_redir **redir_list, t_redir *new_redir);
 void	free_redir(t_redir *head);
-
+void	print_ast(t_ast *node, int depth);
 
 #endif

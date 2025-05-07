@@ -6,13 +6,14 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/05 19:37:49 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:21:59 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/main.h"
 #include "../libft/libft.h"
 #include "../include/token.h"
+#include "../include/parser_utils.h"
 #include <signal.h> // for the SIG type macro
 #include <stdlib.h>
 #include <errno.h>
@@ -33,18 +34,13 @@ static void	loop(t_data *data)
 		// read input
 		line = readline("minishell> ");
 		data->tokens = lexer(line);
-		print_tokens(data->tokens);
+		// print_tokens(data->tokens);
 		data->ast = parser(&(data->tokens));
-		// if (!data->ast)
-		// {
-		// 	error_handler("Parser failed :'(");
-		// 	break;
-		// }
-			
+		print_ast(data->ast, 0);
 		free_token_list(data->tokens);
 		data->tokens = NULL;
 		free(line);
-		free_ast(data->ast);
+		// free_ast(data->ast);
 		continue ;
 	}
 	ft_printf("Bye!\n");

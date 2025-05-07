@@ -85,12 +85,13 @@ t_ast	*parse_and(t_token **tokens)
 
 	left = parse_pipeline(tokens);
 	while (is_token_and(*tokens))
-	{	
+	{
 		advance_token(tokens);
 		right = parse_pipeline(tokens);
 		and_node = new_ast_node(NODE_AND);
 		if (!and_node)
-			return (error_handler("Failed to allocate new ast NODE_AND\n"), NULL);
+			return (error_handler("Failed to allocate new ast NODE_AND\n"), \
+			NULL);
 		and_node->left = left;
 		and_node->right = right;
 		left = and_node;
@@ -105,7 +106,7 @@ t_ast	*parse_pipeline(t_token **tokens)
 	t_ast	*pipe_node;
 
 	left = parse_cmd_or_subshell(tokens);
-	while (is_token_and(*tokens))
+	while (is_token_pipe(*tokens))
 	{	
 		advance_token(tokens);
 		right = parse_cmd_or_subshell(tokens);
@@ -221,6 +222,6 @@ t_redir	*parse_redirection(t_token **tokens)
 		return (free(redir), error_handler("Failed to copy filename in parse_redirection\n"), NULL);
 	redir->fd = -1; // We can further expand it to handle things like 2> error.log
 	redir->next = NULL;
-
+	advance_token(tokens);
 	return (redir);
 }

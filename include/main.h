@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/05 19:10:53 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:49:31 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ typedef struct s_arg
 typedef struct s_cmd_data
 {
 	t_arg	*argv;
-	t_redir *redirections; // Linked list of I/O redirections
+	t_redir *redirections;
 }	t_cmd_data;
 
 // t_cmd_data cmd is used only if type is NODE_COMMAND
