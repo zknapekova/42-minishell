@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:00:55 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/06 17:36:54 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:13:18 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	print_cmd_data(t_cmd_data *cmd, int depth)
 {
 	if (!cmd)
 		return ;
-	print_argv(cmd->argv, depth);
+	if (cmd->argv)
+		print_argv(cmd->argv, depth);
 	if (cmd->redirections)
 		print_redir(cmd->redirections, depth);
 }
@@ -62,7 +63,8 @@ void	print_ast(t_ast *node, int depth)
 		return ;
 	print_indent(depth);
 	ft_printf("**node type: %s\n", node_type_to_str(node->type));
-	if (node->type == NODE_COMMAND && node->cmd_data)
+	if ((node->type == NODE_COMMAND || node->type == NODE_SUBSHELL) \
+	&& node->cmd_data)
 		print_cmd_data(node->cmd_data, depth + 1);
 	ft_printf("\n");
 	print_ast(node->left, depth + 1);

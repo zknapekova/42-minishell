@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/06 17:21:59 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/07 22:48:23 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ static void	loop(t_data *data)
 		// read input
 		line = readline("minishell> ");
 		data->tokens = lexer(line);
+		free(line);
 		// print_tokens(data->tokens);
 		data->ast = parser(&(data->tokens));
 		print_ast(data->ast, 0);
 		free_token_list(data->tokens);
 		data->tokens = NULL;
-		free(line);
-		// free_ast(data->ast);
-		continue ;
+		free_ast(data->ast);
+		// continue ;
 	}
 	ft_printf("Bye!\n");
 }
@@ -63,7 +63,7 @@ static t_data	*init_data() //tuto funkciu mozeme pouzit na inicializaciu premenn
 int	main(int argc, char **argv, char **env)
 {
     t_data	*data;
-	char	str[50] = "USER33=$USERjgrigor";
+	// char	str[50] = "USER33=$USERjgrigor";
 	
 	if (argc != 1)
         return(error_handler("No arguments are accepted"), EXIT_FAILURE);
@@ -71,12 +71,13 @@ int	main(int argc, char **argv, char **env)
 	data = init_data();
 	if (!data)
 		return(EXIT_FAILURE);
-    if (!init_env(env, data))
-	{
-        return(free_all(data), EXIT_FAILURE);
-	}
+    // if (!init_env(env, data))
+	// {
+    //     return(free_all(data), EXIT_FAILURE);
+	// }
 	
-	replace_env_value(data, str);
+	// replace_env_value(data, str);
+	(void)env;
   sig_init();
 	loop(data);
 	free_all(data);

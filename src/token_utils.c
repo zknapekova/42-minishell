@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:13:29 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/26 19:57:13 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/07 22:05:50 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,18 @@ t_token	*new_token(t_token_type type, const char *value, \
 	token = malloc(sizeof(t_token));
 	if (!token)
 	{
-		error_handler("New token creation failed");
+		error_handler("New token creation failed\n");
 		return (NULL);
 	}
 	token->type = type;
+	token->value = NULL;
 	if (value)
+	{
 		token->value = ft_strdup(value);
-	if (!value)
-		token->value = NULL;
+		if (!token->value)
+			return (free(token), \
+			error_handler("New token creation failed\n"), NULL);
+	}
 	token->quote_type = quote_type;
 	token->word_join = word_join;
 	token->next = NULL;
@@ -41,6 +45,8 @@ void	token_append(t_token **head, t_token *new_token)
 {
 	t_token	*cur;
 
+	if (!new_token)
+		return ;
 	if (!*head)
 		*head = new_token;
 	else

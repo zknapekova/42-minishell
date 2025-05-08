@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "libft.h": "c"
+        "libft.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c"
     }
 }

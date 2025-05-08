@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:52:37 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/05 18:43:53 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:01:21 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 void	append_redir(t_redir **redir_list, t_redir *new_redir)
 {
 	t_redir	*cur;
-	
+
+	if (!new_redir)
+		return ;
 	if (!*redir_list)
 	{
 		*redir_list = new_redir;
@@ -33,6 +35,7 @@ void	append_redir(t_redir **redir_list, t_redir *new_redir)
 void	free_redir(t_redir *head)
 {
 	t_redir	*next;
+	
 	while (head)
 	{
 		next = head->next;

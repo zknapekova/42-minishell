@@ -21,9 +21,10 @@ t_ast	*parse_or(t_token **tokens);
 t_ast	*parse_and(t_token **tokens);
 t_ast	*parse_pipeline(t_token **tokens);
 t_ast	*parse_cmd_or_subshell(t_token **tokens);
-t_ast	*parse_subshell(t_token **tokens);
-t_ast	*parse_cmd(t_token **tokens);
+t_ast	*parse_subshell(t_token **tokens, t_redir *leading_redir);
+t_ast	*parse_cmd(t_token **tokens, t_redir *leading_redir);
 t_redir	*parse_redirection(t_token **tokens);
+t_redir	*collect_redirections(t_token **tokens);
 
 t_ast	*parser(t_token **tokens)
 {
@@ -45,12 +46,13 @@ t_ast	*new_ast_node(t_node_type type)
 	if (!new_node)
 		return (error_handler("Failed to allocate new ast node\n"), NULL);
 	new_node->type = type;
-	new_node->cmd_data = malloc(sizeof(t_cmd_data));
-	if (!new_node->cmd_data)
-	{
-		free(new_node);
-		return (error_handler("Failed to allocate cmd_data\n"), NULL);
-	}
+	// new_node->cmd_data = malloc(sizeof(t_cmd_data));
+	new_node->cmd_data = NULL;
+	// if (!new_node->cmd_data)
+	// {
+	// 	free(new_node);
+	// 	return (error_handler("Failed to allocate cmd_data\n"), NULL);
+	// }
 	new_node->left = NULL;
 	new_node->right = NULL;
 	return (new_node);
@@ -122,17 +124,28 @@ t_ast	*parse_pipeline(t_token **tokens)
 
 t_ast	*parse_cmd_or_subshell(t_token **tokens)
 {
+	t_redir	*leading_redir;
+
+	leading_redir = NULL;
+	if (is_token_redir(*tokens))
+	{
+		leading_redir = collect_redirections(tokens);
+		if (!leading_redir)
+			return (error_handler("Error in parsing leading redirections"), \
+			NULL);
+	}
 	if (is_token_lparen(*tokens))
-		return (parse_subshell(tokens));
+		return (parse_subshell(tokens, leading_redir));
 	else
-		return (parse_cmd(tokens));
+		return (parse_cmd(tokens, leading_redir));
 }
 
-t_ast	*parse_subshell(t_token **tokens)
+t_ast	*parse_subshell(t_token **tokens, t_redir *leading_redir)
 {
-	t_ast	*subtree;
-	t_ast	*subshell_node;
-	
+	t_ast		*subtree;
+	t_ast		*subshell_node;
+	t_redir		*trailing_redir;
+
 	if (!is_token_lparen(*tokens))
 		return (error_handler("Expected '('\n"), NULL);
 	advance_token(tokens);
@@ -153,45 +166,60 @@ t_ast	*parse_subshell(t_token **tokens)
 	}
 	subshell_node->left = subtree;
 	subshell_node->right = NULL;
+	subshell_node->cmd_data = malloc(sizeof(t_cmd_data));
+	if (!subshell_node->cmd_data)
+		return (free(subshell_node), free_ast(subtree), \
+		free_redir(leading_redir), NULL);
+	subshell_node->cmd_data->argv = NULL;
+	subshell_node->cmd_data->redirections = leading_redir;
+	trailing_redir = collect_redirections(tokens);
+	append_redir(&subshell_node->cmd_data->redirections, trailing_redir);
 	return (subshell_node);
 }
 
-t_ast	*parse_cmd(t_token **tokens)
+t_ast	*parse_cmd(t_token **tokens, t_redir *leading_redir)
 {
-	t_cmd_data	*cmd;
-	t_redir		*redir;
+	// t_cmd_data	*cmd;
+	t_redir		*trailing_redir;
 	t_ast		*cmd_node;
-	
-	cmd = malloc(sizeof(t_cmd_data));
-	if (!cmd)
-		return (error_handler("Failed to allocate cmd inside parse_cmd\n"), NULL);
-	cmd->argv = NULL;
-	cmd->redirections = NULL;
+	t_ast		*node_subshell;
+
+	cmd_node = new_ast_node(NODE_COMMAND);
+	if (!cmd_node)
+		return (error_handler("Failed to allocate cmd_node\n"), NULL);
+	// cmd_node->type = NODE_COMMAND;
+	cmd_node->left = NULL; // change if subshell is found -> cmd_node->left = parse_subshell
+	cmd_node->right = NULL;
+	cmd_node->cmd_data = malloc(sizeof(t_cmd_data));
+	if (!cmd_node->cmd_data)
+		return (free_ast(cmd_node), \
+		error_handler("Failed to allocate cmd inside parse_cmd\n"), NULL);
+	cmd_node->cmd_data->argv = NULL;
+	cmd_node->cmd_data->redirections = leading_redir;
 	while (*tokens && (is_token_word(*tokens) || is_token_redir(*tokens)))
 	{
-		if (is_token_redir(*tokens))
+		trailing_redir = collect_redirections(tokens);
+		append_redir(&cmd_node->cmd_data->redirections, trailing_redir);
+		if (is_token_word(*tokens))
 		{
-			redir = parse_redirection(tokens);
-			if (!redir)
-				return (error_handler("Failed to parse redirection\n"), NULL);
-			append_redir(&cmd->redirections, redir);
-		}
-		else if (is_token_word(*tokens))
-		{
-			append_arg(&cmd->argv, (*tokens)->value, (*tokens)->quote_type, (*tokens)->word_join);
+			append_arg(&cmd_node->cmd_data->argv, (*tokens)->value, \
+			(*tokens)->quote_type, (*tokens)->word_join);
 			advance_token(tokens);
 		}
 		// handle command substitution $(cmd)
 		// handle subshell (...)
 		// free_redir(redir);
 	}
-	cmd_node = new_ast_node(NODE_COMMAND);
-	if (!cmd_node)
-		return (free_cmd(cmd), error_handler("Failed to allocate cmd_node\n"), NULL);
-	cmd_node->type = NODE_COMMAND;
-	cmd_node->left = NULL; // change if subshell is found -> cmd_node->left = parse_subshell
-	cmd_node->right = NULL;
-	cmd_node->cmd_data = cmd;
+	if (is_token_lparen(*tokens))
+	{
+		node_subshell = parse_subshell(tokens, NULL);
+		if (!node_subshell)
+			return (free_ast(cmd_node), \
+			error_handler("Failed to parse node_subshell\n"), NULL);
+		cmd_node->left = node_subshell;
+		// return (free_ast(cmd_node), \
+		// 	error_handler("Subshells as command arguments are not supported\n"), NULL);
+	}
 	return (cmd_node);
 }
 
@@ -212,7 +240,7 @@ t_redir	*parse_redirection(t_token **tokens)
 		redir->type = REDIR_APPEND;
 	else if (is_token_heredoc(*tokens))
 		redir->type = REDIR_HEREDOC;
-	else 
+	else
 		return (free (redir), error_handler("Unknown redirection type"), NULL);
 	advance_token(tokens);
 	if (!(*tokens) || (*tokens)->type != TOKEN_WORD)
@@ -224,4 +252,20 @@ t_redir	*parse_redirection(t_token **tokens)
 	redir->next = NULL;
 	advance_token(tokens);
 	return (redir);
+}
+
+t_redir	*collect_redirections(t_token **tokens)
+{
+	t_redir	*redir_list;
+	t_redir	*redir;
+
+	redir_list = NULL;
+	while (is_token_redir(*tokens))
+	{
+		redir = parse_redirection(tokens);
+		if (!redir)
+			return (error_handler("Failed to parse redirection\n"), NULL);
+		append_redir(&redir_list, redir);
+	}
+	return (redir_list);
 }

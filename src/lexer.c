@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/26 19:50:38 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/07 22:45:57 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_token	*lexer(const char *input)
 static int	handle_operator(const char *input, size_t *pos, t_token **tokens)
 {
 	t_token_type	type;
+	t_token			*tok;
 
 	type = match_operator(input, pos);
 	if (type == TOKEN_INVALID)
@@ -64,7 +65,10 @@ static int	handle_operator(const char *input, size_t *pos, t_token **tokens)
 			input[*pos]);
 		return (0);
 	}
-	token_append(tokens, new_token(type, NULL, QUOTE_NONE, W_SPLIT));
+	tok = new_token(type, NULL, QUOTE_NONE, W_SPLIT);
+	if (!tok)
+		return (error_handler("Token creation failed\n"), 0);
+	token_append(tokens, tok);
 	return (1);
 }
 
@@ -73,6 +77,7 @@ static int	handle_word(const char *input, size_t *pos, t_token **tokens)
 	char			*word;
 	t_quote_type	quote_type;
 	t_word_join		word_join;
+	t_token			*tok;
 
 	if (input[*pos] == '\'' || input[*pos] == '"')
 	{
@@ -90,8 +95,11 @@ static int	handle_word(const char *input, size_t *pos, t_token **tokens)
 	if (!word)
 		return (0);
 	word_join = word_join_or_split(input[*pos]);
-	token_append(tokens, new_token(TOKEN_WORD, word, quote_type, word_join));
+	tok = new_token(TOKEN_WORD, word, quote_type, word_join);
 	free(word);
+	if (!tok)
+		return (error_handler("Token creation failed\n"), 0);
+	token_append(tokens, tok);
 	return (1);
 }
 
