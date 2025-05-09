@@ -39,3 +39,13 @@ int	get_first_non_alnum(char *str, int start)
 	}
 	return (i);
 }
+
+char	*add_new_line(char *str)
+{
+	char	*res;
+
+	res = NULL;
+	if (str)
+		res = ft_strjoin(str, "\n");
+	return (res);
+}

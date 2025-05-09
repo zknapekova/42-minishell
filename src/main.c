@@ -50,8 +50,13 @@ int	main(int argc, char **argv, char **env)
 		return (free_all(data), EXIT_FAILURE);
 	//sig_init();
 	//loop();
-	char input[50] = "aa$USERdd";
-	echo(input, data, 0);
+	char *input2[3];
+	input2[0] = ft_strdup("OLD_PWD");
+	input2[1] = ft_strdup("PWD");
+	input2[2] = NULL;
+	unset(data, input2);
+	env_cmd(data);
+	pwd(data); //it should return pwd even if PWD env variable is deleted
 	free_all(data);
 	return (EXIT_SUCCESS);
 }

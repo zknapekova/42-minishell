@@ -36,5 +36,8 @@ t_env_node	*search_env_list(t_data *data, char *var_name);
 void		free_all(t_data *data);
 int			handle_new_env_value(t_data *data, char *key_value);
 int			export(t_data *data, char *input);
+int			pwd(t_data *data);
+int			env_cmd(t_data *data);
+int			unset(t_data *data, char **args);
 
 #endif

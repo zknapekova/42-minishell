@@ -24,6 +24,7 @@ typedef struct s_env_node
 typedef struct s_data
 {
 	t_env_node	*head;
+	char		*pwd;
 }	t_data;
 
 t_env_node	*new_node(t_data *data, char *key_value);
@@ -50,5 +51,6 @@ int			get_first_non_alnum(char *str, int start);
 int			validate_env_var_name(char *key_value, int eq_ind);
 int			handle_new_env_value(t_data *data, char *key_value);
 void		error_handler(char *str);
+char		*add_new_line(char *str);
 
 #endif

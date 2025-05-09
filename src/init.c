@@ -37,6 +37,7 @@ int	init_env(char **env, t_data *data)
 	node = new_node(data, env_cp);
 	if (!node)
 		return (0);
+	env++;
 	while (*env)
 	{
 		env_cp = ft_strdup(*env);

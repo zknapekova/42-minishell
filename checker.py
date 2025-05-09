@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 test_cases = ["my_var3$USER$USER$USER=$USER", "my_var4=$USERafds", "HOME=aaUSER:22USER:f", "HOME=aa$USER:22$USER:f",
-              "my_var3=aa$USER:22$USER:f",
+              "my_var3=aa$USER:22$USER:f", "my_var4=$USER",
               "my_var3=aa$USER:22$USE:hjhjh", "my_var3aa$USER:22USE:f ",
               "2my_var3=aa$USER:22$USE:hjhjh$USERdhajdhaj$USER", "my_var3**=aa$USER:22$USE:hjhjh$USERdhajdhaj$USER",
               "my_var3**=aa$USER:22$USE:hjhjh$USERdhajdhaj$USER"]
