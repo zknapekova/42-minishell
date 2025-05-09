@@ -2,6 +2,7 @@
 #include "../libft/libft.h"
 #include <errno.h>
 #include <string.h>
+#include <unistd.h>
 
 
 int	print_env_list(t_data *data)
@@ -43,20 +44,22 @@ int	env_cmd(t_data *data)
 	return (1);
 }
 
-int	pwd(t_data *data)
+int	pwd(void)
 {
-	t_env_node	*res;
-	char		*print_res;
+	char	*cwd;
+	char	*cwd_print;
 
-	res = search_env_list(data, "PWD");
-	if (!res)
-		return (0);
-	print_res = add_new_line(res->value);
-	if (!print_res)
-		return (0);
-	if (write(1, print_res, ft_strlen(print_res)) == -1)
-		return (error_handler(strerror(errno)), free(print_res), 0);
-	return (free(print_res), 1);
+	cwd = malloc(1024 * sizeof(char));
+	if (!cwd)
+		return (error_handler(strerror(errno)), 0);
+	if (getcwd(cwd, 1024) == NULL)
+		return (error_handler("getcwd failed"), free (cwd), 0);
+	cwd_print = add_new_line(cwd);
+	free(cwd);
+	if (write(1, cwd_print, ft_strlen(cwd_print)) == -1)
+		return (error_handler(strerror(errno)), free(cwd_print), 0);
+	free(cwd_print);
+	return (1);
 }
 
 int	unset(t_data *data, char **args)
