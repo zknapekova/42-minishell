@@ -40,5 +40,6 @@ int			export(t_data *data, char *input);
 int			pwd(void);
 int			env_cmd(t_data *data);
 int			unset(t_data *data, char **args);
+int			echo(char *input, t_data *data, int n_param);
 
 #endif

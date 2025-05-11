@@ -21,7 +21,7 @@
 
 volatile sig_atomic_t	g_sigstate;
 
-static void	loop(void)
+/*static void	loop(void)
 {
 	while (g_sigstate != SIGQUIT)
 	{
@@ -33,8 +33,9 @@ static void	loop(void)
 		continue ;
 	}
 	ft_printf("The end\n");
-}
-int		echo(char *input, t_data *data, int n_param);
+}*/
+
+int	cd(char *path);
 
 int	main(int argc, char **argv, char **env)
 {
@@ -48,8 +49,9 @@ int	main(int argc, char **argv, char **env)
 		return (EXIT_FAILURE);
 	if (!init_env(env, data))
 		return (free_all(data), EXIT_FAILURE);
-	sig_init();
-	loop();
+	//sig_init();
+	//loop();
+	cd(".");
 	free_all(data);
 	return (EXIT_SUCCESS);
 }

@@ -46,6 +46,7 @@ static char	*echo_extend_env_value(t_data *data, char *key_value)
 	return (new_key_value);
 }
 
+//in case of multiple strings these should be joined into 1, for instance input = "word1 word2"
 int	echo(char *input, t_data *data, int n_param)
 {
 	int		dollar_ind;
@@ -60,7 +61,7 @@ int	echo(char *input, t_data *data, int n_param)
 		return (error_handler(strerror(errno)), 0);
 	if (write(1, result, ft_strlen(result)) == -1)
 		return (error_handler(strerror(errno)), 0);
-	if (n_param)
+	if (!n_param)
 	{
 		if (write(1, "\n", 1) == -1)
 			return (error_handler(strerror(errno)), 0);
