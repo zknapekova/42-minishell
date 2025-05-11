@@ -6,7 +6,7 @@
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/09 20:49:06 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/11 19:51:57 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ volatile sig_atomic_t	g_sigstate;
 	ft_printf("The end\n");
 }*/
 
-int	cd(char *path);
+int	cd(char **input, t_data *data);
 
 int	main(int argc, char **argv, char **env)
 {
@@ -51,7 +51,10 @@ int	main(int argc, char **argv, char **env)
 		return (free_all(data), EXIT_FAILURE);
 	//sig_init();
 	//loop();
-	cd(".");
+	char	*test[2];
+	test[0]="~/Documents";
+	test[1]=NULL;
+	printf("status: %d\n", cd(test, data));
 	free_all(data);
 	return (EXIT_SUCCESS);
 }

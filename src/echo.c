@@ -3,7 +3,7 @@
 #include <errno.h>
 #include <string.h>
 
-static char	*echo_get_key_value(char *var_to_extend, t_data *data, char *key_value)
+char	*echo_get_key_value(char *var_to_extend, t_data *data, char *key_value)
 {
 	char	*new_value;
 	int		dollar_ind;
@@ -21,7 +21,7 @@ static char	*echo_get_key_value(char *var_to_extend, t_data *data, char *key_val
 	return (new_value);
 }
 
-static char	*echo_extend_env_value(t_data *data, char *key_value)
+char	*echo_extend_env_value(t_data *data, char *key_value)
 {
 	char	*var_to_extend;
 	char	*new_key_value;
