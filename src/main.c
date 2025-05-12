@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/07 22:48:23 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:13:48 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ volatile sig_atomic_t	g_sigstate;
 static void	loop(t_data *data)
 {
 	char	*line;
-	// t_token	*tokens;
+	t_token	*temp_token_list;
 
 	while (g_sigstate != SIGQUIT && g_sigstate != SIGINT)
 	{
@@ -35,10 +35,11 @@ static void	loop(t_data *data)
 		line = readline("minishell> ");
 		data->tokens = lexer(line);
 		free(line);
+		temp_token_list = data->tokens;
 		// print_tokens(data->tokens);
-		data->ast = parser(&(data->tokens));
+		data->ast = parser(&temp_token_list);
 		print_ast(data->ast, 0);
-		free_token_list(data->tokens);
+		free_token_list(&(data->tokens));
 		data->tokens = NULL;
 		free_ast(data->ast);
 		// continue ;

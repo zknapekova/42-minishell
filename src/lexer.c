@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/07 22:45:57 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:17:28 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_token	*lexer(const char *input)
 
 	tokens = NULL;
 	pos = 0;
-	while (input[pos] && g_sigstate != SIGQUIT && g_sigstate != SIGINT)
+	while (input[pos])
 	{
 		skipspace(input, &pos);
 		if (!input[pos])
@@ -41,12 +41,12 @@ t_token	*lexer(const char *input)
 		if (is_oper_ch(input[pos]))
 		{
 			if (!handle_operator(input, &pos, &tokens))
-				return (free_token_list(tokens), NULL);
+				return (free_token_list(&tokens), NULL);
 		}
 		else
 		{
 			if (!handle_word(input, &pos, &tokens))
-				return (free_token_list(tokens), NULL);
+				return (free_token_list(&tokens), NULL);
 		}
 	}
 	token_append(&tokens, new_token(TOKEN_EOF, NULL, QUOTE_NONE, W_SPLIT));

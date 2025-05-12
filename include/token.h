@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:32:07 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/24 23:24:57 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/12 18:40:00 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 t_token			*new_token(t_token_type type, const char *value, \
 	t_quote_type quote, t_word_join word_join);
 void			token_append(t_token **head, t_token *new_token);
-void			free_token_list(t_token *head);
+void			free_token_list(t_token **head);
 void			print_tokens(t_token *tokens);
 void			skipspace(const char *input, size_t *pos);
 int				is_oper_ch(char c);

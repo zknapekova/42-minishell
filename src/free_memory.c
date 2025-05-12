@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:35:54 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/05 19:10:40 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/12 18:43:48 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	free_ll(t_data *data)
 void	free_all(t_data *data)
 {
 	free_ll(data);
-	free_token_list(data->tokens);
+	free_token_list(&(data->tokens));
 	free(data);
 }
 

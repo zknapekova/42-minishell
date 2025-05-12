@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:13:29 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/07 22:05:50 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:18:58 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,44 @@ void	token_append(t_token **head, t_token *new_token)
 	}
 }
 
-void	free_token_list(t_token *head)
+// void	free_token_list(t_token **head)
+// {
+// 	t_token	*tmp;
+// 	int		i = 0;
+
+// 	while (*head)
+// 	{
+		
+// 		tmp = *head;
+// 		*head = (*head)->next;
+// 		if (tmp->value)
+// 			free(tmp->value);
+// 		free (tmp);
+// 		ft_printf("token freed, %i\n", i);
+// 		i++;
+// 	}
+// 	*head = NULL;
+// }
+
+void	free_token_list(t_token **head)
 {
 	t_token	*tmp;
+	int		i = 0;
 
-	while (head)
+	if (!(*head))
+		return ;
+	while (*head)
 	{
-		tmp = head;
-		head = head->next;
+		tmp = *head;
+		*head = (*head)->next;
+		// ft_printf("Freeing token: %p, next: %p\n", (void *)tmp, (void *)(*head));
 		if (tmp->value)
 			free(tmp->value);
-		free (tmp);
+		free(tmp);
+		// ft_printf("token freed, %i\n", i);
+		i++;
 	}
+	*head = NULL;
 }
 
 void	print_tokens(t_token *tokens)
