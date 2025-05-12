@@ -6,12 +6,13 @@
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:35:54 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/10 21:03:03 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/04 15:53:25 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/main.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 static void	free_ll(t_data *data)
 {
@@ -22,6 +23,9 @@ static void	free_ll(t_data *data)
 		while (data->head)
 		{
 			temp = data->head->next;
+			free(data->head->key_value);
+			free(data->head->key);
+			free(data->head->value);
 			free(data->head);
 			data->head = temp;
 		}

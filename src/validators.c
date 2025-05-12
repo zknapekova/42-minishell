@@ -1,19 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handler.c                                    :+:      :+:    :+:   */
+/*   validators.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/10 19:48:06 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/04 15:54:09 by zuknapek         ###   ########.fr       */
+/*   Created: 2025/05/03 18:03:20 by zuknapek          #+#    #+#             */
+/*   Updated: 2025/05/03 18:38:57 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
+#include "../include/env_vars.h"
+#include <stdlib.h>
 
-void	error_handler(char *str)
+int	validate_env_var_name(char *key_value, int eq_ind)
 {
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd("\n", 2);
+	int		i;
+	char	*var_name;
+
+	i = 0;
+	var_name = ft_substr(key_value, 0, eq_ind);
+	if (ft_isdigit(var_name[i]))
+		return (free(var_name), 0);
+	while (var_name[i])
+	{
+		if (!ft_isalnum(var_name[i]) && var_name[i] != '_' \
+			&& var_name[i] != '$')
+			return (free(var_name), 0);
+		i++;
+	}
+	return (free(var_name), 1);
 }
