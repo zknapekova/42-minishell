@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:00:55 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/07 20:13:18 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:00:57 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	print_cmd_data(t_cmd_data *cmd, int depth)
 		return ;
 	if (cmd->argv)
 		print_argv(cmd->argv, depth);
-	if (cmd->redirections)
-		print_redir(cmd->redirections, depth);
+	if (cmd->redirs)
+		print_redir(cmd->redirs, depth);
 }
 
 void	print_ast(t_ast *node, int depth)

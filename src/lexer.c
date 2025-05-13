@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/12 19:17:28 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/12 20:22:15 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static int			handle_word(const char *input, \
 static int			handle_operator(const char *input, \
 	size_t *pos, t_token **tokens);
 static t_word_join	word_join_or_split(char next_char);
+static t_quote_type	get_quote_type(char current_char);
 
 t_token	*lexer(const char *input)
 {
@@ -81,10 +82,7 @@ static int	handle_word(const char *input, size_t *pos, t_token **tokens)
 
 	if (input[*pos] == '\'' || input[*pos] == '"')
 	{
-		if (input[*pos] == '\'')
-			quote_type = QUOTE_SINGLE;
-		if (input[*pos] == '"')
-			quote_type = QUOTE_DOUBLE;
+		quote_type = get_quote_type(input[*pos]);
 		word = parse_quoted(input, pos, input[*pos]);
 	}
 	else
@@ -113,4 +111,17 @@ static t_word_join	word_join_or_split(char next_char)
 	else
 		word_join = W_SPLIT;
 	return (word_join);
+}
+
+static t_quote_type	get_quote_type(char current_char)
+{
+	t_quote_type	quote_type;
+
+	if (current_char == '\'')
+		quote_type = QUOTE_SINGLE;
+	else if (current_char == '"')
+		quote_type = QUOTE_DOUBLE;
+	else
+		quote_type = QUOTE_NONE;
+	return (quote_type);
 }

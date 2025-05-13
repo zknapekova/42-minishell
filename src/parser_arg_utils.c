@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:18:00 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/02 16:32:59 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:48:42 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include "../include/token.h"
 #include "../include/parser_utils.h"
 
-void	append_arg(t_arg **head, const char *value, t_quote_type qtype, t_word_join wjoin)
+void	append_arg(t_arg **head, const char *value, \
+	t_quote_type qtype, t_word_join wjoin)
 {
 	t_arg	*new_arg;
 	t_arg	*curr;
@@ -25,14 +26,15 @@ void	append_arg(t_arg **head, const char *value, t_quote_type qtype, t_word_join
 		return (error_handler("Failed to allocate new_arg\n"));
 	new_arg->value = ft_strdup(value);
 	if (!new_arg->value)
-		return (free (new_arg), error_handler("ft_strdup failed in append_arg\n"));
+		return (free (new_arg), \
+		error_handler("ft_strdup failed in append_arg\n"));
 	new_arg->quote_type = qtype;
 	new_arg->word_join = wjoin;
 	new_arg->next = NULL;
 	if (*head == NULL)
 	{
 		*head = new_arg;
-		return;
+		return ;
 	}
 	curr = *head;
 	while (curr->next)
@@ -43,6 +45,7 @@ void	append_arg(t_arg **head, const char *value, t_quote_type qtype, t_word_join
 void	free_args(t_arg *head)
 {
 	t_arg	*next;
+
 	while (head)
 	{
 		next = head->next;
@@ -50,4 +53,16 @@ void	free_args(t_arg *head)
 		free (head);
 		head = next;
 	}
+}
+
+t_cmd_data	*init_cmd_data(t_redir *leading_redir)
+{
+	t_cmd_data	*cmd_data;
+
+	cmd_data = malloc(sizeof(t_cmd_data));
+	if (!cmd_data)
+		return (error_handler("Failed to allocate cmd_data\n"), NULL);
+	cmd_data->argv = NULL;
+	cmd_data->redirs = leading_redir;
+	return (cmd_data);
 }

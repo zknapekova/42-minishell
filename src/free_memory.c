@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:35:54 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/12 18:43:48 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:24:05 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,28 +37,14 @@ void	free_all(t_data *data)
 	free(data);
 }
 
-// static void	free_redir(t_redir *redir)
-// {
-// 	t_redir	*temp;
-
-// 	while (redir)
-// 	{
-// 		temp = redir->next;
-// 		if (redir->filename)
-// 			free (redir->filename);
-// 		free (redir);
-// 		redir = temp;
-// 	}
-// }
-
 void	free_cmd(t_cmd_data *cmd)
 {
 	if (!cmd)
 		return ;
 	if (cmd->argv)
 		free_args(cmd->argv);
-	if (cmd->redirections)
-		free_redir(cmd->redirections);
+	if (cmd->redirs)
+		free_redir(cmd->redirs);
 	free(cmd);
 }
 

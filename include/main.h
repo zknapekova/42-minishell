@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/07 20:10:08 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:37:59 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ typedef enum e_redir_type
 	REDIR_OUTPUT,
 	REDIR_APPEND,
 	REDIR_HEREDOC,
-	REDIR_DUP
+	REDIR_DUP,
+	REDIR_INVALID
 }	t_redir_type;
 
 // the char *target is the filename or heredoc limiter or fd for >& syntax
@@ -117,7 +118,7 @@ typedef struct s_arg
 typedef struct s_cmd_data
 {
 	t_arg	*argv;
-	t_redir	*redirections;
+	t_redir	*redirs;
 }	t_cmd_data;
 
 // t_cmd_data cmd is used only if type is NODE_COMMAND or NODE_SUBSHELL
