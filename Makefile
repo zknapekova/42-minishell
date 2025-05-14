@@ -1,17 +1,33 @@
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
 
-SRC_DIR = src/
-SRCS = main.c error_handler.c env_vars_ops.c free_memory.c ll_ops.c utils.c signal.c lexer.c  \
-	token_utils.c lexer_utils.c parser.c parser2.c token_check.c token_check2.c parser_utils.c parser_utils2.c \
+LEXER_DIR = src/lexer/
+LEXER_SRC = lexer.c lexer_utils.c
+
+ENV_DIR = src/env/
+ENV_SRC = env_vars_ops.c ll_ops.c utils.c
+
+PARSER_DIR = src/parser/
+PARSER_SRC = token_utils.c parser.c parser2.c token_check.c token_check2.c parser_utils.c parser_utils2.c \
 	parser_utils3.c parser_arg_utils.c parser_redir_utils.c print_ast.c
 
-SRC = $(addprefix $(SRC_DIR), $(SRCS))
+SIGNAL_DIR = src/signal/
+SIGNAL_SRC = signal.c
+
+GENERAL_DIR = src/general/
+GENERAL_SRC = main.c error_handler.c free_memory.c
+
+SRC = $(addprefix $(GENERAL_DIR), $(GENERAL_SRC)) $(addprefix $(SIGNAL_DIR), $(SIGNAL_SRC)) $(addprefix $(PARSER_DIR), $(PARSES_SRC)) \
+		$(addprefix $(ENV_DIR), $(ENV_SRC)) $(addprefix $(LEXER_DIR), $(LEXER_SRC))
+
 OBJS = $(SRC:.c=.o)
 
 HEADER_PATH = include/
 
 NAME = minishell
+
+LIBFT_DIR = ./lib/libft/
+LIBFT_DIR = ./libft/
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
