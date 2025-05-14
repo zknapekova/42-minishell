@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/13 17:44:36 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:31:38 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static void	loop(t_data *data)
 	{
 		// ***read input
 		line = readline("minishell> ");
+		if (!line)
+			break ;
 		data->tokens = lexer(line);
 		free(line);
 		temp_token_list = data->tokens;
