@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:31:14 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/15 16:28:28 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/16 01:02:29 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,12 @@ char	*parse_word(const char *input, size_t *p)
 	word = NULL;
 	while (input[*p] && !ft_isspace(input[*p]) && !is_oper_ch(input[*p]) \
 		&& input[*p] != '\'' && input[*p] != '"')
+	{
+		if (input[*p] == ';')
+			return (ft_eprintf("Syntax error near \
+unexpected character: '%c'\n", input[*p]), NULL);
 		(*p)++;
+	}
 	word = ft_strjoin_ed(word, &input[start], *p - start);
 	if (!word)
 		return (error_handler("Error lexing word token"), NULL);
