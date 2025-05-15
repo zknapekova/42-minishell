@@ -6,14 +6,14 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/14 19:31:38 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:26:27 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../libft/libft.h"
-#include "../include/token.h"
-#include "../include/parser_utils.h"
+#include "main.h"
+#include "libft.h"
+#include "token.h"
+#include "parser_utils.h"
 #include <signal.h> // for the SIG type macro
 #include <stdlib.h>
 #include <errno.h>

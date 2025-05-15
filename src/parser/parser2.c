@@ -6,14 +6,14 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:39:33 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/14 19:22:15 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:31:54 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../libft/libft.h"
-#include "../include/token.h"
-#include "../include/parser_utils.h"
+#include "main.h"
+#include "libft.h"
+#include "token.h"
+#include "parser_utils.h"
 
 t_ast	*parse_cmd_or_subshell(t_token **tokens)
 {

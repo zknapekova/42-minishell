@@ -6,13 +6,13 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:35:54 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/13 18:24:05 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:26:55 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../include/token.h"
-#include "../include/parser_utils.h"
+#include "main.h"
+#include "token.h"
+#include "parser_utils.h"
 #include <stdlib.h>
 
 static void	free_ll(t_data *data)

@@ -6,12 +6,12 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:00:55 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/13 17:00:57 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:32:08 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../libft/libft.h" // for ft_printf
+#include "main.h"
+#include "libft.h" // for ft_printf
 
 void		print_indent(int depth);
 const char	*node_type_to_str(t_node_type type);

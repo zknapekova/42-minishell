@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ll_ops.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 17:23:43 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/12 19:09:27 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:28:05 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../libft/libft.h"
+#include "main.h"
+#include "libft.h"
 #include "stdlib.h"
 #include <stdio.h>
 #include <errno.h>

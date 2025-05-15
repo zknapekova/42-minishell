@@ -6,13 +6,13 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/14 17:12:20 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:28:49 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../include/token.h"
-#include "../libft/libft.h" // for ft_strncpm
+#include "main.h"
+#include "token.h"
+#include "libft.h" // for ft_strncpm
 // #include <aio.h> // defines size_t type
 #include <stdlib.h>  // here for the NULL and size_t definitions
 #include <signal.h> // for the SIG type macro

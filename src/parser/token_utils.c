@@ -6,12 +6,12 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:13:29 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/12 20:24:31 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:32:44 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../libft/libft.h"
+#include "main.h"
+#include "libft.h"
 #include <stdlib.h>  // here for the NULL and size_t definitions
 #include <string.h> // strdup for testing purposes
 

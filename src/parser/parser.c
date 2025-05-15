@@ -6,14 +6,14 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:32:45 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/13 18:41:16 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:31:38 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../libft/libft.h"
-#include "../include/token.h"
-#include "../include/parser_utils.h"
+#include "main.h"
+#include "libft.h"
+#include "token.h"
+#include "parser_utils.h"
 
 // t_ast	*parse_or(t_token **tokens);
 // t_ast	*parse_and(t_token **tokens);

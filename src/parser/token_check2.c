@@ -6,13 +6,13 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:05:21 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/26 19:34:14 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:32:35 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../libft/libft.h"
-#include "../include/token.h"
+#include "main.h"
+#include "libft.h"
+#include "token.h"
 
 int	check_first_token(t_token *tokens);
 int	check_last_token(t_token *tokens);

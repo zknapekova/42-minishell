@@ -6,15 +6,15 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:31:14 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/23 16:21:57 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:28:28 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>  // here for the NULL and size_t definitions
-#include "../include/main.h"
-#include "../include/token.h"
+#include "main.h"
+#include "token.h"
 // for ft_strncpm, ft_strlcpy, ft_isspace, ft_eprintf
-#include "../libft/libft.h" 
+#include "libft.h" 
 
 void	skipspace(const char *input, size_t *pos)
 {

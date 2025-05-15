@@ -6,12 +6,12 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 19:47:56 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/04/17 15:53:34 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:27:55 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../libft/libft.h"
+#include "main.h"
+#include "libft.h"
 #include "stdlib.h"
 #include <stdio.h>
 #include <errno.h>

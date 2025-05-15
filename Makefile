@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -Iinclude -I$(LIBFT_DIR)
 
 LEXER_DIR = src/lexer/
 LEXER_SRC = lexer.c lexer_utils.c
@@ -17,17 +17,16 @@ SIGNAL_SRC = signal.c
 GENERAL_DIR = src/general/
 GENERAL_SRC = main.c error_handler.c free_memory.c
 
-SRC = $(addprefix $(GENERAL_DIR), $(GENERAL_SRC)) $(addprefix $(SIGNAL_DIR), $(SIGNAL_SRC)) $(addprefix $(PARSER_DIR), $(PARSES_SRC)) \
-		$(addprefix $(ENV_DIR), $(ENV_SRC)) $(addprefix $(LEXER_DIR), $(LEXER_SRC))
+SRC = \
+	$(addprefix $(GENERAL_DIR), $(GENERAL_SRC)) \
+	$(addprefix $(SIGNAL_DIR), $(SIGNAL_SRC)) \
+	$(addprefix $(PARSER_DIR), $(PARSER_SRC)) \
+	$(addprefix $(ENV_DIR), $(ENV_SRC)) \
+	$(addprefix $(LEXER_DIR), $(LEXER_SRC))
 
 OBJS = $(SRC:.c=.o)
 
-HEADER_PATH = include/
-
 NAME = minishell
-
-LIBFT_DIR = ./lib/libft/
-LIBFT_DIR = ./libft/
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -40,10 +39,10 @@ bonus: all
 
 # Build the minishell
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -lhistory -I $(HEADER_PATH) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -lhistory -o $(NAME)
 
-# Rule to compile .o files from .c files
-%.o: $(SRC_DIR)%.c
+# Compile .o files from .c files
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Build the libft library
@@ -67,5 +66,6 @@ re: fclean all
 debug:
 	@echo "OBJS = $(OBJS)"
 	@echo "LIBFT = $(LIBFT)"
+	@echo "INCLUDE DIR = include"
 
 .PHONY: all clean fclean re debug bonus

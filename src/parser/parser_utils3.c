@@ -6,15 +6,15 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 16:31:41 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/13 18:54:39 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:31:19 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
+#include "main.h"
 #include <stdlib.h> // for malloc
-#include "../libft/libft.h" //for ft_printf
-#include "../include/token.h"
-#include "../include/parser_utils.h"
+#include "libft.h" //for ft_printf
+#include "token.h"
+#include "parser_utils.h"
 
 int	is_token_word(t_token *tokens)
 {

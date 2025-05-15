@@ -6,14 +6,13 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:18:00 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/13 18:48:42 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:30:03 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../libft/libft.h" //for ft_strdup
-#include "../include/token.h"
-#include "../include/parser_utils.h"
+#include "main.h"
+#include "libft.h" //for ft_strdup
+#include "parser_utils.h"
 
 void	append_arg(t_arg **head, const char *value, \
 	t_quote_type qtype, t_word_join wjoin)

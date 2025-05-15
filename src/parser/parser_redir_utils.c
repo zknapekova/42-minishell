@@ -6,14 +6,14 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:52:37 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/13 18:51:14 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:30:41 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
-#include "../libft/libft.h" //for ft_strdup
-#include "../include/token.h"
-#include "../include/parser_utils.h"
+#include "main.h"
+#include "libft.h" //for ft_strdup
+#include "token.h"
+#include "parser_utils.h"
 
 void	append_redir(t_redir **redir_list, t_redir *new_redir)
 {

@@ -6,11 +6,11 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 23:09:07 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/13 18:53:42 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:30:53 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/main.h"
+#include "main.h"
 
 int	is_token_redir(t_token *tokens)
 {
