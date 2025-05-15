@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/13 17:37:59 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:00:25 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,15 @@ typedef enum e_redir_type
 	REDIR_OUTPUT,
 	REDIR_APPEND,
 	REDIR_HEREDOC,
-	REDIR_DUP,
 	REDIR_INVALID
 }	t_redir_type;
+
+typedef struct s_redir_target
+{
+	char					*value;
+	t_quote_type			quote_type;
+	struct s_redir_target	*next;
+}	t_redir_target;
 
 // the char *target is the filename or heredoc limiter or fd for >& syntax
 // the t_bool is_fd_target is for the >& syntax
@@ -98,7 +104,7 @@ typedef struct s_redir
 {
 	t_redir_type	type;
 	int				fd;
-	char			*target;
+	t_redir_target	*target;
 	t_bool			is_fd_target;
 	struct s_redir	*next;
 }	t_redir;
@@ -109,7 +115,7 @@ typedef struct s_arg
 	t_quote_type	quote_type;
 	t_word_join		word_join;
 	struct s_arg	*next;
-} t_arg;
+}	t_arg;
 
 // t_arg	*argv is a linked list of argument data (to be expanded later)
 // t_arg *argv will be used to generate the **argv

@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:00:55 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/15 16:32:08 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/16 00:36:59 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 void		print_indent(int depth);
 const char	*node_type_to_str(t_node_type type);
 const char	*redir_type_to_str(t_redir_type type);
+const char	*quote_type_to_str(t_quote_type type);
 
 void	print_argv(t_arg *argv, int depth)
 {
@@ -26,7 +27,7 @@ void	print_argv(t_arg *argv, int depth)
 	while (argv)
 	{
 		if (argv->value)
-			ft_printf("%s, ", argv->value);
+			ft_printf("%s, quote: %s ", argv->value, quote_type_to_str(argv->quote_type));
 		argv = argv->next;
 	}
 	ft_printf("\n");
@@ -34,15 +35,24 @@ void	print_argv(t_arg *argv, int depth)
 
 void	print_redir(t_redir *redir, int depth)
 {
+	t_redir_target	*cur_target;
+
 	if (!redir)
 		return ;
+	cur_target = redir->target;
 	print_indent(depth);
 	ft_printf("**redir:\n");
 	while (redir)
 	{
 		print_indent(depth + 1);
-		if (redir->target)
-			ft_printf("type: %s, target: %s\n", redir_type_to_str(redir->type), redir->target);
+		ft_printf("type: %s, target: ", redir_type_to_str(redir->type));
+		while (cur_target && cur_target->value)
+		{
+			ft_printf("%s, quote %s; ", \
+				cur_target->value, quote_type_to_str(cur_target->quote_type));
+			cur_target = cur_target->next;
+		}
+		ft_printf("\n");
 		redir = redir->next;
 	}
 }
@@ -102,5 +112,16 @@ const char	*redir_type_to_str(t_redir_type type)
 		return ("APPEND");
 	else if (type == REDIR_HEREDOC)
 		return ("HEREDOC");
+	return ("UNKNOWN");
+}
+
+const char	*quote_type_to_str(t_quote_type type)
+{
+	if (type == QUOTE_DOUBLE)
+		return ("DOUBLE");
+	else if (type == QUOTE_SINGLE)
+		return ("SINGLE");
+	else if (type == QUOTE_NONE)
+		return ("NONE");
 	return ("UNKNOWN");
 }
