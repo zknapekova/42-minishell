@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:00:55 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/16 00:36:59 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/17 20:48:57 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void	print_redir(t_redir *redir, int depth)
 
 	if (!redir)
 		return ;
-	cur_target = redir->target;
 	print_indent(depth);
 	ft_printf("**redir:\n");
 	while (redir)
 	{
+		cur_target = redir->target;
 		print_indent(depth + 1);
 		ft_printf("type: %s, target: ", redir_type_to_str(redir->type));
 		while (cur_target && cur_target->value)

@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:39:33 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/15 16:31:54 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:42:45 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ t_ast	*parse_subshell(t_token **tokens, t_redir *leading_redir)
 t_ast	*parse_cmd(t_token **tokens, t_redir *leading_redir)
 {
 	t_ast		*cmd_node;
-	// t_ast		*node_subshell;
 
 	cmd_node = new_ast_node(NODE_COMMAND);
 	if (!cmd_node)
@@ -80,8 +79,8 @@ t_ast	*parse_cmd(t_token **tokens, t_redir *leading_redir)
 	}
 	if (is_token_lparen(*tokens))
 	{
-		return (free_ast(cmd_node), \
-			error_handler("Subshells are not supported as command arguments\n"), NULL);
+		return (free_ast(cmd_node), error_handler("Subshells are not \
+supported as command arguments\n"), NULL);
 	}
 	return (cmd_node);
 }

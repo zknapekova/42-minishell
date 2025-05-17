@@ -29,6 +29,7 @@ t_cmd_data	*init_cmd_data(t_redir *leading_redir);
 void	append_redir(t_redir **redir_list, t_redir *new_redir);
 void	free_redir(t_redir *head);
 void	print_ast(t_ast *node, int depth);
+void	print_redir(t_redir *redir, int depth);
 const char	*node_type_to_str(t_node_type type);
 t_redir	*parse_redirection(t_token **tokens);
 t_redir	*collect_redirs(t_token **tokens);

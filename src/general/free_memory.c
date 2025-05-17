@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:35:54 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/15 16:26:55 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:53:37 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,25 @@ void	free_ast(t_ast *node)
 	free_ast(node->right);
 	free_cmd(node->cmd_data);
 	free(node);
+}
+
+
+void	free_redir(t_redir *head)
+{
+	t_redir	*next;
+	t_redir_target	*next_target;
+
+	while (head)
+	{
+		next = head->next;
+		while (head->target)
+		{
+			next_target = head->target->next;
+			free (head->target->value);
+			free (head->target);
+			head->target = next_target;
+		}
+		free (head);
+		head = next;
+	}
 }
