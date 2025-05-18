@@ -9,7 +9,7 @@ ENV_SRC = env_vars_ops.c ll_ops.c utils.c
 
 PARSER_DIR = src/parser/
 PARSER_SRC = token_utils.c parser.c parser2.c token_check.c token_check2.c parser_utils.c parser_utils2.c \
-	parser_utils3.c parser_arg_utils.c parser_redir_utils.c print_ast.c
+	parser_utils3.c parser_arg_utils.c parser_redir_utils.c print_ast.c print_ast_utils.c
 
 SIGNAL_DIR = src/signal/
 SIGNAL_SRC = signal.c

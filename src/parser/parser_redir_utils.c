@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:52:37 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/17 20:52:05 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/18 21:57:18 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ t_redir	*parse_redirection(t_token **tokens)
 {
 	t_redir	*redir;
 
-	if (!is_token_redir(*tokens) || !(*tokens)->next)
-		return (error_handler("Invalid token in parse_redirection()\n"), NULL);
 	redir = malloc(sizeof(t_redir));
 	if (!redir)
 		return (error_handler("Failed to allocate redir\n"), NULL);
@@ -98,7 +96,8 @@ t_redir_type	get_redir_type(t_token **tokens)
 	return (type);
 }
 
-static void	append_target(t_redir_target **head, const char *value, t_quote_type qtype)
+static void	append_target(t_redir_target **head, \
+	const char *value, t_quote_type qtype)
 {
 	t_redir_target	*new_target;
 	t_redir_target	*curr;
@@ -115,12 +114,10 @@ static void	append_target(t_redir_target **head, const char *value, t_quote_type
 	if (*head == NULL)
 	{
 		*head = new_target;
-		ft_printf("new_target addr: %p, value: %s\n", (void *)new_target, new_target->value);
 		return ;
 	}
 	curr = *head;
 	while (curr->next)
 		curr = curr->next;
 	curr->next = new_target;
-	ft_printf("new_target addr: %p, value: %s\n", (void *)new_target, new_target->value);
 }

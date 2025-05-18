@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:00:55 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/17 20:48:57 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/18 21:37:41 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	print_argv(t_arg *argv, int depth)
 	while (argv)
 	{
 		if (argv->value)
-			ft_printf("%s, quote: %s ", argv->value, quote_type_to_str(argv->quote_type));
+			ft_printf("%s, quote %s; ", \
+				argv->value, quote_type_to_str(argv->quote_type));
 		argv = argv->next;
 	}
 	ft_printf("\n");
@@ -85,43 +86,4 @@ void	print_indent(int depth)
 {
 	while (depth-- > 0)
 		ft_printf("  ");
-}
-
-const char	*node_type_to_str(t_node_type type)
-{
-	if (type == NODE_COMMAND)
-		return ("COMMAND");
-	else if (type == NODE_PIPE)
-		return ("PIPE");
-	else if (type == NODE_AND)
-		return ("AND");
-	else if (type == NODE_OR)
-		return ("OR");
-	else if (type == NODE_SUBSHELL)
-		return ("SUBSHELL");
-	return ("UNKNOWN");
-}
-
-const char	*redir_type_to_str(t_redir_type type)
-{
-	if (type == REDIR_INPUT)
-		return ("IN");
-	else if (type == REDIR_OUTPUT)
-		return ("OUT");
-	else if (type == REDIR_APPEND)
-		return ("APPEND");
-	else if (type == REDIR_HEREDOC)
-		return ("HEREDOC");
-	return ("UNKNOWN");
-}
-
-const char	*quote_type_to_str(t_quote_type type)
-{
-	if (type == QUOTE_DOUBLE)
-		return ("DOUBLE");
-	else if (type == QUOTE_SINGLE)
-		return ("SINGLE");
-	else if (type == QUOTE_NONE)
-		return ("NONE");
-	return ("UNKNOWN");
 }
