@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 15:49:34 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/04 15:52:48 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/18 23:33:51 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ t_data	*init_data(void)
 	if (!data)
 		return (error_handler(strerror(errno)), NULL);
 	data->head = NULL;
+	data->tokens = NULL;
+	data->ast = NULL;
 	return (data);
 }
 
