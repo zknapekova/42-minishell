@@ -1,51 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   validators.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 17:41:41 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/04 15:41:27 by zuknapek         ###   ########.fr       */
+/*   Created: 2025/05/03 18:03:20 by zuknapek          #+#    #+#             */
+/*   Updated: 2025/05/03 18:38:57 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
+#include "../include/env_vars.h"
+#include <stdlib.h>
 
-int	get_first_ind(char *str, char c, int start)
+int	validate_env_var_name(char *key_value, int eq_ind)
 {
-	int	i;
+	int		i;
+	char	*var_name;
 
-	i = start;
-	while (str[i])
+	i = 0;
+	var_name = ft_substr(key_value, 0, eq_ind);
+	if (ft_isdigit(var_name[i]))
+		return (free(var_name), 0);
+	while (var_name[i])
 	{
-		if (str[i] == c)
-			return (i);
+		if (!ft_isalnum(var_name[i]) && var_name[i] != '_' \
+			&& var_name[i] != '$')
+			return (free(var_name), 0);
 		i++;
 	}
-	return (-1);
-}
-
-int	get_first_non_alnum(char *str, int start)
-{
-	int	i;
-
-	i = start;
-	while (str[i])
-	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (i);
-		i++;
-	}
-	return (i);
-}
-
-char	*add_new_line(char *str)
-{
-	char	*res;
-
-	res = NULL;
-	if (str)
-		res = ft_strjoin(str, "\n");
-	return (res);
+	return (free(var_name), 1);
 }

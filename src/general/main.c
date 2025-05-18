@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/15 16:26:27 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/18 23:35:57 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,45 +44,30 @@ static void	loop(t_data *data)
 		free_token_list(&(data->tokens));
 		data->tokens = NULL;
 		free_ast(data->ast);
-		// continue ;
 	}
-	ft_printf("Bye!\n");
+	ft_printf("The end\n");
 }
 
-static t_data	*init_data() //tuto funkciu mozeme pouzit na inicializaciu premennych pre cely minishell
+int	cd(char **input, t_data *data);
+
+int	main(int argc, char **argv, char **env)
 {
 	t_data	*data;
 
-	data = malloc(sizeof(t_data));
-	if (!data)
-		return (error_handler(strerror(errno)), NULL);
-	data->head = NULL;
-	data->tokens = NULL;
-	data->ast = NULL;
-	return (data);
-}
-
-#include <stdio.h>
-int	main(int argc, char **argv, char **env)
-{
-    t_data	*data;
-	// char	str[50] = "USER33=$USERjgrigor";
-	
 	if (argc != 1)
-        return(error_handler("No arguments are accepted"), EXIT_FAILURE);
-    (void)argv;
+		return (error_handler("No arguments are accepted"), EXIT_FAILURE);
+	(void)argv;
 	data = init_data();
 	if (!data)
-		return(EXIT_FAILURE);
-    // if (!init_env(env, data))
-	// {
-    //     return(free_all(data), EXIT_FAILURE);
-	// }
-	
-	// replace_env_value(data, str);
-	(void)env;
-  sig_init();
+		return (EXIT_FAILURE);
+	if (!init_env(env, data))
+		return (free_all(data), EXIT_FAILURE);
+	sig_init();
 	loop(data);
+	char	*test[2];
+	test[0]="~/Documents";
+	test[1]=NULL;
+	printf("status: %d\n", cd(test, data));
 	free_all(data);
 	return (EXIT_SUCCESS);
 }

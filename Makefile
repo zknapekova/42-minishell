@@ -4,26 +4,29 @@ CFLAGS = -Wall -Werror -Wextra -Iinclude -I$(LIBFT_DIR)
 LEXER_DIR = src/lexer/
 LEXER_SRC = lexer.c lexer_utils.c
 
-ENV_DIR = src/env/
-ENV_SRC = env_vars_ops.c ll_ops.c utils.c
-
 PARSER_DIR = src/parser/
 PARSER_SRC = token_utils.c parser.c parser2.c token_check.c token_check2.c parser_utils.c parser_utils2.c \
 	parser_utils3.c parser_arg_utils.c parser_redir_utils.c print_ast.c print_ast_utils.c
+
+ENV_DIR = src/env/
+ENV_SRC = env_vars_ops.c ll_ops.c utils.c env_vars_utils.c validators.c env_vars_handler.c
+
+BUILT_INS_DIR = src/built_ins/
+BUILT_INS_SRC = built_ins.c cd.c echo.c
 
 SIGNAL_DIR = src/signal/
 SIGNAL_SRC = signal.c
 
 GENERAL_DIR = src/general/
-GENERAL_SRC = main.c error_handler.c free_memory.c
+GENERAL_SRC = main.c error_handler.c free_memory.c init.c
 
 SRC = \
 	$(addprefix $(GENERAL_DIR), $(GENERAL_SRC)) \
 	$(addprefix $(SIGNAL_DIR), $(SIGNAL_SRC)) \
 	$(addprefix $(PARSER_DIR), $(PARSER_SRC)) \
 	$(addprefix $(ENV_DIR), $(ENV_SRC)) \
-	$(addprefix $(LEXER_DIR), $(LEXER_SRC))
-
+	$(addprefix $(LEXER_DIR), $(LEXER_SRC)) \
+	$(addprefix $(BUILT_INS_DIR), $(BUILT_INS_SRC))
 OBJS = $(SRC:.c=.o)
 
 NAME = minishell

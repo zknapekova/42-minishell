@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:35:54 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/17 18:53:37 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/18 23:27:45 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "token.h"
 #include "parser_utils.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 static void	free_ll(t_data *data)
 {
@@ -24,6 +25,9 @@ static void	free_ll(t_data *data)
 		while (data->head)
 		{
 			temp = data->head->next;
+			free(data->head->key_value);
+			free(data->head->key);
+			free(data->head->value);
 			free(data->head);
 			data->head = temp;
 		}
@@ -61,7 +65,7 @@ void	free_ast(t_ast *node)
 
 void	free_redir(t_redir *head)
 {
-	t_redir	*next;
+	t_redir			*next;
 	t_redir_target	*next_target;
 
 	while (head)

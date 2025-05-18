@@ -6,14 +6,14 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 19:48:06 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/15 16:26:41 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/18 23:26:17 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void    error_handler(char *str)
+void	error_handler(char *str)
 {
-    ft_putstr_fd(str, 2);
-    ft_putstr_fd("\n", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("\n", 2);
 }
