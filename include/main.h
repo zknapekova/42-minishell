@@ -25,7 +25,6 @@ typedef struct s_env_node
 typedef struct s_data
 {
 	t_env_node	*head;	//pointer to head of LL
-	char		*pwd;
 }	t_data;
 
 void		error_handler(char *str);
