@@ -20,13 +20,17 @@ SIGNAL_SRC = signal.c
 GENERAL_DIR = src/general/
 GENERAL_SRC = main.c error_handler.c free_memory.c init.c
 
+EXEC_DIR = src/exec/
+EXEC_SRC = exec_utils.c
+
 SRC = \
 	$(addprefix $(GENERAL_DIR), $(GENERAL_SRC)) \
 	$(addprefix $(SIGNAL_DIR), $(SIGNAL_SRC)) \
 	$(addprefix $(PARSER_DIR), $(PARSER_SRC)) \
 	$(addprefix $(ENV_DIR), $(ENV_SRC)) \
 	$(addprefix $(LEXER_DIR), $(LEXER_SRC)) \
-	$(addprefix $(BUILT_INS_DIR), $(BUILT_INS_SRC))
+	$(addprefix $(BUILT_INS_DIR), $(BUILT_INS_SRC)) \
+	$(addprefix $(EXEC_DIR), $(EXEC_SRC))
 OBJS = $(SRC:.c=.o)
 
 NAME = minishell

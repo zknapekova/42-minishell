@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:39:33 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/17 18:42:45 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:06:25 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_ast	*parse_cmd(t_token **tokens, t_redir *leading_redir)
 		append_redir(&cmd_node->cmd_data->redirs, collect_redirs(tokens));
 		if (is_token_word(*tokens))
 		{
-			append_arg(&cmd_node->cmd_data->argv, (*tokens)->value, \
+			append_arg(&cmd_node->cmd_data->args, (*tokens)->value, \
 			(*tokens)->quote_type, (*tokens)->word_join);
 			advance_token(tokens);
 		}

@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:35:54 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/18 23:27:45 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:06:25 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	free_cmd(t_cmd_data *cmd)
 {
 	if (!cmd)
 		return ;
-	if (cmd->argv)
-		free_args(cmd->argv);
+	if (cmd->args)
+		free_args(cmd->args);
 	if (cmd->redirs)
 		free_redir(cmd->redirs);
 	free(cmd);

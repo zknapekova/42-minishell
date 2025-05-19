@@ -6,30 +6,31 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:00:55 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/18 21:37:41 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/19 20:29:07 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 #include "libft.h" // for ft_printf
+#include "exec.h" // for get_arg_list
 
 void		print_indent(int depth);
 const char	*node_type_to_str(t_node_type type);
 const char	*redir_type_to_str(t_redir_type type);
 const char	*quote_type_to_str(t_quote_type type);
 
-void	print_argv(t_arg *argv, int depth)
+void	print_argv(t_arg *args, int depth)
 {
-	if (!argv)
+	if (!args)
 		return ;
 	print_indent(depth);
-	ft_printf("**argv: ");
-	while (argv)
+	ft_printf("**args: ");
+	while (args)
 	{
-		if (argv->value)
+		if (args->value)
 			ft_printf("%s, quote %s; ", \
-				argv->value, quote_type_to_str(argv->quote_type));
-		argv = argv->next;
+				args->value, quote_type_to_str(args->quote_type));
+		args = args->next;
 	}
 	ft_printf("\n");
 }
@@ -62,8 +63,11 @@ void	print_cmd_data(t_cmd_data *cmd, int depth)
 {
 	if (!cmd)
 		return ;
-	if (cmd->argv)
-		print_argv(cmd->argv, depth);
+	if (cmd->args)
+	{
+		print_argv(cmd->args, depth);
+		// get_arg_list(cmd->args);
+	}
 	if (cmd->redirs)
 		print_redir(cmd->redirs, depth);
 }

@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:18:00 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/15 16:30:03 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:06:25 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_cmd_data	*init_cmd_data(t_redir *leading_redir)
 	cmd_data = malloc(sizeof(t_cmd_data));
 	if (!cmd_data)
 		return (error_handler("Failed to allocate cmd_data\n"), NULL);
-	cmd_data->argv = NULL;
+	cmd_data->args = NULL;
 	cmd_data->redirs = leading_redir;
 	return (cmd_data);
 }
