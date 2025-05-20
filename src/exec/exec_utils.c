@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 17:29:44 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/19 20:43:28 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:02:10 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	**get_arg_list(t_data *data, t_arg *args)
 	int		i;
 	t_arg	*args_copy;
 	
+	args_copy = args;
 	list_len = get_list_len(args_copy);
 	if (list_len <= 0)
 		return (error_handler("Error: empty command"), NULL);

@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:00:55 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/19 20:29:07 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:00:29 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,7 @@ void	print_cmd_data(t_cmd_data *cmd, int depth)
 	if (!cmd)
 		return ;
 	if (cmd->args)
-	{
 		print_argv(cmd->args, depth);
-		// get_arg_list(cmd->args);
-	}
 	if (cmd->redirs)
 		print_redir(cmd->redirs, depth);
 }

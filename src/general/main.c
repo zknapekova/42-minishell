@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/19 20:22:35 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:03:30 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,15 @@ int	main(int argc, char **argv, char **env)
 	if (!init_env(env, data))
 		return (free_all(data), EXIT_FAILURE);
 	sig_init();
-	char *extend_val;
-
-	extend_val = extend_env_value_nf(data, "asdf$abc");
-	// ft_printf("HOME %s\n", echo_extend_env_value(data, "HOME"));
-	ft_printf("$HOME %s\n", extend_val);
-	free (extend_val);
-	loop(data);
 	
+	// char *extend_val;
 
+	// extend_val = extend_env_value_nf(data, "asdf$abc");
+	// // ft_printf("HOME %s\n", echo_extend_env_value(data, "HOME"));
+	// ft_printf("$HOME %s\n", extend_val);
+	// free (extend_val);
+	
+	loop(data);
 	char	*test[2];
 	test[0]="~/Documents";
 	test[1]=NULL;
