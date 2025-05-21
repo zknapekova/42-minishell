@@ -83,7 +83,7 @@ char	*extend_env_value_nf(t_data *data, char *key_value)
 		get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
 	if (!var_to_extend)
 		return (NULL);
-	new_key_value = echo_get_key_value(var_to_extend, data, key_value);
+	new_key_value = get_key_value_nf(var_to_extend, data, key_value);
 	free (var_to_extend);
 	// free (key_value);
 	if (!new_key_value)
@@ -93,4 +93,22 @@ char	*extend_env_value_nf(t_data *data, char *key_value)
 	if (new_key_value2)
 		return (free (new_key_value), new_key_value2);
 	return (new_key_value);
+}
+
+char	*get_key_value_nf(char *var_to_extend, t_data *data, char *key_value)
+{
+	char	*new_value;
+	int		dollar_ind;
+
+	dollar_ind = get_first_ind(key_value, '$', 0);
+	if (!search_env_list(data, var_to_extend))
+		new_value = ft_substr(key_value, 0, dollar_ind);
+	else
+		new_value = parse_env_value(search_env_list(data, var_to_extend), \
+			key_value, dollar_ind, -1);
+	if (!new_value)
+		return (error_handler(strerror(errno)), NULL);
+	// if (get_first_ind(key_value, '$', 0) == -1)
+	// 	free(key_value);
+	return (new_value);
 }

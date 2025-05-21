@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/20 17:03:30 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:58:16 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "token.h"
 #include "parser_utils.h"
+#include "exec.h" // fot the get_arg_list()
 #include <signal.h> // for the SIG type macro
 #include <stdlib.h>
 #include <errno.h>
@@ -40,7 +41,8 @@ static void	loop(t_data *data)
 		temp_token_list = data->tokens;
 		// print_tokens(data->tokens);
 		data->ast = parser(&temp_token_list);
-		print_ast(data->ast, 0);
+		// print_ast(data->ast, 0);
+		print_ast_argv(data, data->ast, 0);
 		free_token_list(&(data->tokens));
 		data->tokens = NULL;
 		free_ast(data->ast);
