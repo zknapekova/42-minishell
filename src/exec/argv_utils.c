@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:55:18 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/22 17:12:50 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/24 18:36:24 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	print_ast_argv(t_data *data, t_ast *node, int depth)
 	int		i;
 	char	*redir_target;
 	t_redir	*redir;
+	char	*path;
 
 	i = 0;
 	if (!node)
@@ -127,12 +128,15 @@ void	print_ast_argv(t_data *data, t_ast *node, int depth)
 			argv = get_argv(data, node->cmd_data->args);
 			if (!argv)
 				return ;
+			path = get_exec_path(argv[0], data);
 			print_indent(depth + 1);
 			ft_printf("**argv: ");
 			while (argv[i])
 				ft_printf("%s, ", argv[i++]);
+			ft_printf("path: %s", path);
 			ft_printf("\n");
 			free_argv(argv);
+			free (path);
 		}
 		if (node->cmd_data->redirs)
 		{

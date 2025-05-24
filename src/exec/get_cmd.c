@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 20:07:47 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/23 15:13:00 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/24 18:38:43 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #include <unistd.h> //for access
 #include "libft.h"
 #include "main.h"
+#include "exec.h"
 
-// search_env_list
+void	free_array(char **array);
 
-char	*find_path(t_data *data)
+char	*find_paths(t_data *data)
 {
 	char		*path_var;
 	t_env_node	*path_node;
@@ -41,65 +42,46 @@ char	*get_full_path(char **paths, const char *cmd)
 	{
 		full_path1 = ft_strjoin(paths[i++], "/");
 		if (!full_path1)
-			return (NULL);
+			return (error_handler("error joining path"), NULL);
 		full_path2 = ft_strjoin(full_path1, cmd);
 		if (!full_path2)
-		{
-			free (full_path1);
-			return (NULL);
-		}
+			return (free (full_path1), \
+			error_handler("error joining path"), NULL);
 		if (access(full_path2, X_OK) == 0)
-		{
-			free (full_path1);
-			return (full_path2);
-		}
+			return (free (full_path1), full_path2);
 		free (full_path1);
 		free (full_path2);
 	}
 	return (NULL);
 }
 
-char	*find_executable(const char *cmd, t_data *data)
+char	*get_exec_path(const char *cmd, t_data *data)
 {
 	char	*path_var;
 	char	**paths;
 	char	*full_path;
 
-	path_var = find_path(data);
+	path_var = find_paths(data);
 	if (!path_var)
 		return (NULL);
 	paths = ft_split(path_var, ':');
 	if (!paths)
-		return (NULL);
+		return (free (path_var), NULL);
 	full_path = get_full_path(paths, cmd);
 	free_array(paths);
+	free (path_var);
 	return (full_path);
 }
 
-int	get_commands(int argc, char **argv, t_pipex *pipex, char **envp)
+void	free_array(char **array)
 {
-	int		i;
-	int		offset;
-	char	**temp;
+	int	i;
 
-	if (!alloc_cmd_paths(pipex) || !alloc_cmd_args(pipex))
-		return (0);
-	offset = 2 + pipex->here_doc;
-	i = -1;
-	while (++i + offset < argc - 1)
+	i = 0;
+	while (array[i])
 	{
-		temp = ft_split(argv[i + offset], ' ');
-		if (!temp)
-			return (0);
-		pipex->cmd_paths[i] = find_executable(temp[0], envp);
-		if (!pipex->cmd_paths[i] || !get_args(pipex, temp, i))
-		{
-			if (!pipex->cmd_paths[i])
-				ft_printf("%s: %s: command not found\n", argv[0], temp[0]);
-			free_array(temp);
-			return (0);
-		}
-		free_array(temp);
+		free(array[i]);
+		i++;
 	}
-	return (1);
+	free (array);
 }

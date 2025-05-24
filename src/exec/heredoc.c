@@ -4,6 +4,8 @@
 #include "exec.h"
 #include "parser_utils.h" // for print_indent()
 #include <stdlib.h> //for NULL
+#include <stdio.h> // for readline
+#include <readline/readline.h>
 
 void	setup_heredoc(char *target)
 {
@@ -18,7 +20,7 @@ void	setup_heredoc(char *target)
 		line = readline("> ");
 		if (!line)
 			break ;
-		if (ft_strcmp(line, target) == 0)
+		if (ft_strncmp(line, target, ft_strlen(target)) == 0)
 		{
 			free(line);
 			break ;
