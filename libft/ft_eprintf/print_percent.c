@@ -1,38 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   print_percent.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:54:22 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/04 16:58:40 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/18 23:23:43 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "ft_eprintf.h"
 
-// structures
+int	eprint_percent(void)
+{
+	int	ch_printed;
 
-// typedef enum sig_state
-// {
-// 	SIGINT,
-// 	SIGILL,
-// 	SIGABRT,
-// 	SIGFPE,
-// 	SIGSEGV,
-// 	SIGTER,
-// 	SIGHUP,
-// 	SIGQUIT,
-// 	SIGTRAP,
-// 	SIGKILL,
-// 	SIGPIPE,
-// 	SIGALRM
-// }	t_sig;
-
-// function prototypes
-// signal
-void	sig_init(void);
-
-#endif
+	ch_printed = 0;
+	write(2, "%", 1);
+	ch_printed++;
+	return (ch_printed);
+}

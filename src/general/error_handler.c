@@ -1,35 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/22 19:09:28 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/19 00:14:35 by jgrigorj         ###   ########.fr       */
+/*   Created: 2025/04/10 19:48:06 by zuknapek          #+#    #+#             */
+/*   Updated: 2025/05/18 23:26:17 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s)
+void	error_handler(char *str)
 {
-	char	*dup;
-	size_t	len;
-
-	len = ft_strlen(s);
-	dup = (char *)malloc(sizeof(char) * (len + 1));
-	if (!dup)
-		return (NULL);
-	ft_memcpy(dup, s, len);
-	dup[len] = '\0';
-	return (dup);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("\n", 2);
 }
-
-// int	main(void)
-// {
-// 	const char	*s = "abc";
-// 	char	*dup = ft_strdup(s);
-// 	printf("%s/n", dup);
-// 	return (0);
-// }

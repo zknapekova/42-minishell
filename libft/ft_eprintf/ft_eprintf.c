@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_eprintf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 16:03:22 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/17 16:25:25 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:18:59 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_eprintf.h"
 
 static void	get_flags(const char *str, int *i, char *flags)
 {
@@ -38,22 +38,22 @@ static int	print_format(const char *str, va_list args, int *i, char *flags)
 	int	wp[2];
 
 	ch_printed = 0;
-	wp[0] = get_width(str, i);
-	wp[1] = get_precision(str, i);
+	wp[0] = eget_width(str, i);
+	wp[1] = eget_precision(str, i);
 	if (str[*i] == 'c')
-		ch_printed += print_char(va_arg(args, int), wp[0], flags);
+		ch_printed += eprint_char(va_arg(args, int), wp[0], flags);
 	else if (str[*i] == 's')
-		ch_printed += print_str(va_arg(args, char *), wp, flags);
+		ch_printed += eprint_str(va_arg(args, char *), wp, flags);
 	else if (str[*i] == 'p')
-		ch_printed += print_ptr(va_arg(args, unsigned long long), flags, wp[0]);
+		ch_printed += eprint_ptr(va_arg(args, unsigned long long), flags, wp[0]);
 	else if (str[*i] == 'd' || str[*i] == 'i')
-		ch_printed += print_dec(va_arg(args, int), wp, flags);
+		ch_printed += eprint_dec(va_arg(args, int), wp, flags);
 	else if (str[*i] == 'u')
-		ch_printed += print_undec(va_arg(args, unsigned int), wp, flags);
+		ch_printed += eprint_undec(va_arg(args, unsigned int), wp, flags);
 	else if (str[*i] == 'x' || str[*i] == 'X')
-		ch_printed += print_hex(va_arg(args, unsigned int), wp, flags, str[*i]);
+		ch_printed += eprint_hex(va_arg(args, unsigned int), wp, flags, str[*i]);
 	else if (str[*i] == '%')
-		ch_printed += print_percent();
+		ch_printed += eprint_percent();
 	else
 		return (-1);
 	return (ch_printed);
@@ -66,14 +66,14 @@ static int	write_nfchar(const char *str, int *i)
 	ch_printed = 0;
 	while (str[*i] && str[*i] != '%')
 	{
-		write(1, &str[*i], 1);
+		write(2, &str[*i], 1);
 		ch_printed++;
 		(*i)++;
 	}
 	return (ch_printed);
 }
 
-int	ft_printf(const char *str, ...)
+int	ft_eprintf(const char *str, ...)
 {
 	int		ch_printed;
 	va_list	args;

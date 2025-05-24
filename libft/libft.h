@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 16:28:46 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/03/07 23:20:16 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/04/21 00:12:27 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int		ft_isalpha(int c);
 int		ft_isascii(int c);
 int		ft_isdigit(int c);
 int		ft_isprint(int c);
+int		ft_isspace(char c);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	*ft_memmove(void *dest, const void *src, size_t n);
 void	*ft_memset(void *s, int c, size_t n);
@@ -65,6 +66,8 @@ size_t	check_endline(char *buffer);
 
 // ft_printf
 int		ft_printf(const char *str, ...);
+int		ft_eprintf(const char *str, ...);
+
 
 // Define the structure with typedef
 typedef struct s_list

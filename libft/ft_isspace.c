@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handler.c                                    :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/10 19:48:06 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/04 15:54:09 by zuknapek         ###   ########.fr       */
+/*   Created: 2025/04/21 00:06:52 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/04/21 00:12:08 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
-
-void	error_handler(char *str)
+int	ft_isspace(char c)
 {
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd("\n", 2);
+	if (c == 32 || (c >= 9 && c <= 13))
+		return (1);
+	else
+		return (0);
 }
