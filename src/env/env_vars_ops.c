@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars_ops.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 19:47:56 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/18 23:25:15 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/04 17:43:46 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <errno.h>
 #include <string.h>
 
-int	extend_env_value(t_data *data, char *key_value, char *var_name, \
+int	export_extend_env_value(t_data *data, char *key_value, char *var_name, \
 	t_env_node *node_to_update)
 {
 	char	*var_to_extend;
@@ -41,7 +41,7 @@ int	extend_env_value(t_data *data, char *key_value, char *var_name, \
 			return (0);
 	}
 	else
-		extend_env_value(data, new_key_value, var_name, node_to_update);
+		export_extend_env_value(data, new_key_value, var_name, node_to_update);
 	return (1);
 }
 
