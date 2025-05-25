@@ -2,3 +2,4 @@ cat
 dog
 horse
 cow
+search in.txt

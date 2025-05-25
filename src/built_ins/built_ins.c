@@ -1,5 +1,5 @@
-#include "../include/env_vars.h"
-#include "../libft/libft.h"
+#include "env_vars.h"
+#include "libft.h"
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>

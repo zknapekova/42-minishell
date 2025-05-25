@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 21:33:08 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/18 21:33:56 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:43:31 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void			append_redir(t_redir **redir_list, t_redir *new_redir);
 void			free_redir(t_redir *head);
 void			print_ast(t_ast *node, int depth);
 void			print_redir(t_redir *redir, int depth);
+void			print_indent(int depth);
 const char		*node_type_to_str(t_node_type type);
 const char		*redir_type_to_str(t_redir_type type);
 const char		*quote_type_to_str(t_quote_type type);
