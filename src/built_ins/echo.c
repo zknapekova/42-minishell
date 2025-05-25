@@ -68,3 +68,29 @@ int	echo(char *input, t_data *data, int n_param)
 	}
 	return (free(result), 1);
 }
+
+// this function does not free the key_value
+char	*extend_env_value_nf(t_data *data, char *key_value)
+{
+	char	*var_to_extend;
+	char	*new_key_value;
+	char	*new_key_value2;
+	int 	dollar_ind;
+
+	new_key_value2 = NULL;
+	dollar_ind = get_first_ind(key_value, '$', 0);
+	var_to_extend = ft_substr(key_value, dollar_ind + 1, \
+		get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
+	if (!var_to_extend)
+		return (NULL);
+	new_key_value = echo_get_key_value(var_to_extend, data, key_value);
+	free (var_to_extend);
+	// free (key_value);
+	if (!new_key_value)
+		return (NULL);
+	if (get_first_ind(new_key_value, '$', 0) != -1)
+		new_key_value2 = extend_env_value_nf(data, new_key_value);
+	if (new_key_value2)
+		return (free (new_key_value), new_key_value2);
+	return (new_key_value);
+}

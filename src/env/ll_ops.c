@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ll_ops.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 17:23:43 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/04 15:49:03 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/18 23:26:04 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/env_vars.h"
-#include "../libft/libft.h"
+#include "env_vars.h"
+#include "libft.h"
 #include "stdlib.h"
 #include <stdio.h>
 #include <errno.h>

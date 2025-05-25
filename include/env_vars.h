@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 17:00:09 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/11 19:43:23 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:41:38 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENV_VARS_H
 # define ENV_VARS_H
+#include "main.h"
+// typedef struct s_env_node
+// {
+// 	char				*key_value;
+// 	char				*key;
+// 	char				*value;
+// 	struct s_env_node	*next;
+// }	t_env_node;
 
-typedef struct s_env_node
-{
-	char				*key_value;
-	char				*key;
-	char				*value;
-	struct s_env_node	*next;
-}	t_env_node;
-
-typedef struct s_data
-{
-	t_env_node	*head;
-	char		*pwd;
-}	t_data;
+// typedef struct s_data
+// {
+// 	t_env_node	*head;
+// 	char		*pwd;
+// }	t_data;
 
 t_env_node	*new_node(t_data *data, char *key_value);
 t_env_node	*last_node(t_data *data);
@@ -54,5 +54,7 @@ void		error_handler(char *str);
 char		*add_new_line(char *str);
 char		*echo_extend_env_value(t_data *data, char *key_value);
 char		*echo_get_key_value(char *var_to_extend, t_data *data, char *key_value);
+// no freeing the key_value
+char		*extend_env_value_nf(t_data *data, char *key_value);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/17 15:05:03 by jgrigorj          #+#    #+#              #
-#    Updated: 2025/03/07 23:25:05 by jgrigorj         ###   ########.fr        #
+#    Updated: 2025/04/21 00:12:41 by jgrigorj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC = ft_bzero.c ft_isascii.c ft_memcpy.c ft_strchr.c ft_strlen.c \
 		ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
 		ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c \
 		ft_lstmap.c	get_next_line.c get_next_line_utils.c ft_atof.c \
-		ft_ftoa.c
+		ft_ftoa.c ft_isspace.c
 
 
 PRINTF_DIR = ft_printf
@@ -34,9 +34,16 @@ PRINTF_SRC = ft_printf.c print_dec.c print_ptr.c print_undec.c utils.c \
 		utils2.c
 PRINTF_SRC := $(addprefix $(PRINTF_DIR)/, $(PRINTF_SRC))
 
+EPRINTF_DIR = ft_eprintf
+EPRINTF_SRC = ft_eprintf.c print_dec.c print_ptr.c print_undec.c utils.c \
+		print_hex.c print_percent.c print_str.c get_width_precision.c \
+		utils2.c
+EPRINTF_SRC := $(addprefix $(EPRINTF_DIR)/, $(EPRINTF_SRC))
+
 OBJ = $(SRC:.c=.o)
 
 PRINTF_OBJ = $(PRINTF_SRC:.c=.o)
+EPRINTF_OBJ = $(EPRINTF_SRC:.c=.o)
 
 
 # Target library
@@ -46,9 +53,9 @@ NAME = libft.a
 all: $(NAME)
 
 # Rule to create the library using the ar command
-$(NAME): $(OBJ) $(PRINTF_OBJ)
+$(NAME): $(OBJ) $(PRINTF_OBJ) $(EPRINTF_OBJ)
 	@echo "Creating static library in root: $(NAME)"
-	ar rcs $(NAME) $(OBJ) $(PRINTF_OBJ)
+	ar rcs $(NAME) $(OBJ) $(PRINTF_OBJ) $(EPRINTF_OBJ)
 
 # Rule to compile source files into object files
 %.o: %.c
@@ -56,7 +63,7 @@ $(NAME): $(OBJ) $(PRINTF_OBJ)
 
 # Clean up object files
 clean:
-	rm -f $(OBJ) $(PRINTF_OBJ)
+	rm -f $(OBJ) $(PRINTF_OBJ) $(EPRINTF_OBJ)
 
 # Clean up both object files and the library
 fclean: clean
