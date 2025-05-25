@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 17:00:09 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/19 17:41:38 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:48:25 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,6 @@ char		*echo_extend_env_value(t_data *data, char *key_value);
 char		*echo_get_key_value(char *var_to_extend, t_data *data, char *key_value);
 // no freeing the key_value
 char		*extend_env_value_nf(t_data *data, char *key_value);
+char		*get_key_value_nf(char *var_to_extend, t_data *data, char *key_value);
 
 #endif
