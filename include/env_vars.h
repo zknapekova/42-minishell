@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 17:00:09 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/21 17:48:25 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/25 16:36:21 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,6 @@
 // 	t_env_node	*head;
 // 	char		*pwd;
 // }	t_data;
-typedef struct s_env_node
-{
-	char				*key_value;
-	char				*key;
-	char				*value;
-	struct s_env_node	*next;
-}	t_env_node;
-
-typedef struct s_data
-{
-	t_env_node	*head;
-	char		*pwd;
-}	t_data;
 
 t_env_node	*new_node(t_data *data, char *key_value);
 t_env_node	*last_node(t_data *data);

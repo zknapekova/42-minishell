@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/22 17:52:44 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/05/25 17:22:27 by zuknapek         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,6 @@ int	main(int argc, char **argv, char **env)
 	// free (extend_val);
 	
 	loop(data);
-	char	*test[2];
-	test[0]="~/Documents";
-	test[1]=NULL;
-	printf("status: %d\n", cd(test, data));
 	free_all(data);
 	return (EXIT_SUCCESS);
 }
