@@ -21,7 +21,7 @@ GENERAL_DIR = src/general/
 GENERAL_SRC = main.c error_handler.c free_memory.c init.c
 
 EXEC_DIR = src/exec/
-EXEC_SRC = argv_utils.c redir_utils.c heredoc.c get_cmd.c
+EXEC_SRC = argv_utils.c redir_utils.c heredoc.c get_cmd.c globbing.c
 
 SRC = \
 	$(addprefix $(GENERAL_DIR), $(GENERAL_SRC)) \
