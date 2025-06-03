@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:55:18 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/24 20:31:31 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:02:17 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	**get_argv(t_data *data, t_arg *args)
 		i++;
 	}
 	argv[i] = NULL;
+	argv = globe_argv(argv);
 	return (argv);
 }
 
@@ -56,6 +57,8 @@ char	*get_arg_str(t_data *data, t_arg **args)
 		if (get_first_ind((*args)->value, '$', 0) != -1 \
 		&& (*args)->quote_type != QUOTE_SINGLE)
 			tmp_str = extend_env_value_nf(data, (*args)->value);
+		else if ((*args)->quote_type != QUOTE_NONE)
+			tmp_str = escape_wildcard((*args)->value);
 		else
 			tmp_str = ft_strdup((*args)->value);
 		if (!tmp_str)
@@ -158,4 +161,29 @@ void	print_ast_argv(t_data *data, t_ast *node, int depth)
 	}
 	print_ast_argv(data, node->left, depth + 1);
 	print_ast_argv(data, node->right, depth + 1);
+}
+
+// adds \ before *
+char	*escape_wildcard(char *str)
+{
+	char	*result;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (!str)
+		return (NULL);
+	result = malloc(sizeof(char) * 2 * (ft_strlen(str) + 1));
+	if (!str)
+		return (error_handler("Error in escape_wildcard()"), NULL);
+	while (str[i])
+	{
+		if (str[i] == '*')
+			result[j++] = '\\';
+		result[j++] = str[i];
+		i++;
+	}
+	result[j] = '\0';
+	return (result);
 }

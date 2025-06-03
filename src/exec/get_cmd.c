@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 20:07:47 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/02 17:17:18 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:31:49 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ char	*get_path_from_path(const char *path, t_data *data)
 	// if (path[0] == '.')
 	// 	abs_path = get_normalized_path(path);
 	(void)data;
-	return (NULL);
+	return (abs_path);
 }
 
 // char	*get_normalized_path(const char *path)

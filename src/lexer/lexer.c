@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/15 16:28:49 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:01:53 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static t_word_join	word_join_or_split(char next_char)
 	t_word_join	word_join;
 
 	if (next_char == '\'' || next_char == '"' \
-		|| ft_isalnum(next_char) || next_char == '$')
+		|| ft_isalnum(next_char) || next_char == '$' || next_char == '*')
 		word_join = W_JOIN;
 	else
 		word_join = W_SPLIT;

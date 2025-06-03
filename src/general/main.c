@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/02 17:19:47 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:08:07 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,15 @@ static void	loop(t_data *data)
 			data->tokens = NULL;
 			free_ast(data->ast);
 			
-			t_file *list = get_cwd_file_list();
-			t_file *cur = list;
+			// t_file *list = get_cwd_file_list();
+			// t_file *cur = list;
 
-			while (cur)
-			{
-				printf("Found file: %s\n", cur->name);
-				cur = cur->next;
-			}
-			free_file_list(list);
+			// while (cur)
+			// {
+			// 	printf("Found file: %s\n", cur->name);
+			// 	cur = cur->next;
+			// }
+			// free_file_list(list);
 		}
 		free(line);
 	}
