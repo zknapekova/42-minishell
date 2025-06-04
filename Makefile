@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -Iinclude -I$(LIBFT_DIR)
+CFLAGS = -Wall -Werror -Wextra -D_DEFAULT_SOURCE -Iinclude -I$(LIBFT_DIR)
 
 LEXER_DIR = src/lexer/
 LEXER_SRC = lexer.c lexer_utils.c

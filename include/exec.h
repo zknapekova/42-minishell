@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:15:04 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/03 23:21:11 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/04 19:42:51 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 typedef struct s_file
 {
 	char			*name;
+	unsigned char	d_type;
 	struct s_file	*next;
 }	t_file;
 
@@ -36,7 +37,8 @@ void	free_array(char **array);
 
 // globbing
 char	**globe_argv(char **argv);
-t_file	*append_file(t_file *head, const char *name);
+char	*globe_redir_target(char *target);
+t_file	*append_file(t_file *head, const char *name, unsigned char	d_type);
 void	free_file_list(t_file *head);
 t_file	*get_cwd_file_list(void);
 int 	match_star_pattern(char *pattern, char *str);
@@ -44,6 +46,10 @@ int		is_in_cwd(char *str);
 char	**append_str_to_array(char **arr, char *str);
 char	*rm_escape_char(char *str);
 int		is_hidden_file(char *str);
+int		longer_strlen(char *str1, char *str2);
+t_file	*sorted_insert(t_file *head, t_file *new_node);
+t_file	*sort_file_list(t_file *head);
+
 
 
 #endif
