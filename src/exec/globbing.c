@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:50 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/04 20:00:23 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:37:49 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ char	**globe_argv(char **argv)
 		return (free_argv(argv), error_handler("Error in globe_argv"), NULL);
 	while (argv[i])
 	{
-		// ft_printf("argv[i]: %s\n", argv[i]);
-		if (ft_strchr(argv[i], '*') && is_in_cwd(argv[i]))
+		match_found = false;
+		if (ft_strchr(argv[i], '*') && is_in_cwd(argv[i]) && !ft_strchr(argv[i], '='))
 		{
-			match_found = false;
+			
 			file_list = get_cwd_file_list();
 			if (!file_list)
 				break ;
@@ -61,26 +61,13 @@ char	**globe_argv(char **argv)
 				file_list = file_list->next;
 			}
 			free_file_list(head_file_list);
-			// if (match_found == false)
-			// {
-			// 	new_arg = rm_escape_char(argv[i]);
-			// 	if (!new_arg)
-			// 		return (free_argv(argv), NULL);
-			// 	new_argv = append_str_to_array(new_argv, new_arg);
-			// 	free(new_arg);
-			// 	if (!new_argv)
-			// 		return (free_argv(argv), NULL);
-			// }
 		}
-		// else
-		// {
-		// 	new_argv = append_str_to_array(new_argv, argv[i]);
-		// 	if (!new_argv)
-		// 		return (free_argv(argv), NULL);
-		// }
 		if (match_found == false)
 		{
-			new_arg = rm_escape_char(argv[i]);
+			if (!ft_strchr(argv[i], '='))
+				new_arg = rm_escape_char(argv[i]);
+			else
+				new_arg = ft_strdup(argv[i]);
 			if (!new_arg)
 				return (free_argv(argv), NULL);
 			new_argv = append_str_to_array(new_argv, new_arg);
@@ -99,10 +86,12 @@ char	*globe_redir_target(char *target)
 	t_file	*head_file_list;
 	char	*new_target;
 	int		match_count;
+	char	*temp_target;
 	
 	if (!target)
 		return (NULL);
 	new_target = NULL;
+	temp_target = NULL;
 	ft_printf("GLobe target called\n");
 	match_count = 0;
 	if (ft_strchr(target, '*') && is_in_cwd(target))
@@ -115,24 +104,26 @@ char	*globe_redir_target(char *target)
 		
 		while (file_list)
 		{
-			// if (match_star_pattern(target, file_list->name) && (is_hidden_file(target) || (!is_hidden_file(target) && file_list->name[0] != '.')))
-			if (file_list->d_type != DT_DIR && match_star_pattern(target, file_list->name) && (is_hidden_file(target) || (!is_hidden_file(target) && file_list->name[0] != '.')))
+			if (match_star_pattern(target, file_list->name) && (is_hidden_file(target) || (!is_hidden_file(target) && file_list->name[0] != '.')))
+			// if (file_list->d_type != DT_DIR && match_star_pattern(target, file_list->name) && (is_hidden_file(target) || (!is_hidden_file(target) && file_list->name[0] != '.')))
 			{
+				free (new_target);
 				if (match_count >= 1)
 				{
-					ft_eprintf("minishell: %s: ambiguous redirect\n", rm_escape_char(target));
-					return (free (target), NULL);
+					temp_target = rm_escape_char(target);
+					ft_eprintf("minishell: %s: ambiguous redirect\n", temp_target);
+					return (free (target), free (temp_target), free_file_list(head_file_list), NULL);
 				}
 				match_count++;
 				new_target = ft_strdup(file_list->name);
 			}
 			file_list = file_list->next;
 		}
-		
+		free_file_list(head_file_list);
 	}
 	if (match_count == 0)
 	{
-		new_target = ft_strdup(rm_escape_char(target));
+		new_target = rm_escape_char(target);
 		if (!new_target)
 			return (error_handler("Error allocating new_target"), free(target), NULL);
 	}
@@ -155,14 +146,14 @@ t_file	*get_cwd_file_list(void)
 	file_list = NULL;
 	while (sdirent)
 	{
-		file_list = append_file(file_list, sdirent->d_name, sdirent->d_type);
+		file_list = append_file(file_list, sdirent->d_name);
 		sdirent = readdir(dir);
 	}
 	file_list = sort_file_list(file_list);
 	return (closedir(dir), file_list);
 }
 
-t_file	*append_file(t_file *head, const char *name, unsigned char	d_type)
+t_file	*append_file(t_file *head, const char *name)
 {
 	t_file	*new;
 	t_file	*cur;
@@ -171,7 +162,7 @@ t_file	*append_file(t_file *head, const char *name, unsigned char	d_type)
 	if (!new)
 		return (error_handler("malloc failed in append_file"), NULL);
 	new->name = ft_strdup(name);
-	new->d_type = d_type;
+	// new->d_type = d_type;
 	if (!new->name)
 		return (free(new), \
 		error_handler("ft_strdup failed in append_file"), NULL);
@@ -184,6 +175,30 @@ t_file	*append_file(t_file *head, const char *name, unsigned char	d_type)
 	cur->next = new;
 	return (head);
 }
+
+
+// t_file	*append_file(t_file *head, const char *name, unsigned char	d_type)
+// {
+// 	t_file	*new;
+// 	t_file	*cur;
+
+// 	new = malloc(sizeof(t_file));
+// 	if (!new)
+// 		return (error_handler("malloc failed in append_file"), NULL);
+// 	new->name = ft_strdup(name);
+// 	if (!new->name)
+// 		return (free(new), \
+// 		error_handler("ft_strdup failed in append_file"), NULL);
+// 	new->d_type = d_type;
+// 	new->next = NULL;
+// 	if (!head)
+// 		return (new);
+// 	cur = head;
+// 	while (cur->next)
+// 		cur = cur->next;
+// 	cur->next = new;
+// 	return (head);
+// }
 
 void	free_file_list(t_file *head)
 {

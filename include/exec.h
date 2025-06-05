@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:15:04 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/04 19:42:51 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:06:33 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 typedef struct s_file
 {
 	char			*name;
-	unsigned char	d_type;
+	// unsigned char	d_type;
 	struct s_file	*next;
 }	t_file;
 
@@ -38,7 +38,7 @@ void	free_array(char **array);
 // globbing
 char	**globe_argv(char **argv);
 char	*globe_redir_target(char *target);
-t_file	*append_file(t_file *head, const char *name, unsigned char	d_type);
+t_file	*append_file(t_file *head, const char *name);
 void	free_file_list(t_file *head);
 t_file	*get_cwd_file_list(void);
 int 	match_star_pattern(char *pattern, char *str);
