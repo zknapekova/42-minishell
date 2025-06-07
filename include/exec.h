@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:15:04 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/05 15:06:33 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/07 20:00:52 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,12 @@ void	free_array(char **array);
 
 // globbing
 char	**globe_argv(char **argv);
+char	**get_globbed_argv(char **new_argv, char *argv, t_bool *match_found);
+char	**get_unglobbed_argv(char **new_argv, char *argv, t_bool match_found);
 char	*globe_redir_target(char *target);
+char	*get_globbed_target(char *target, int *match_count);
+int		is_match(char *str, t_file *file_list);
+char	*handle_ambiguous_error(char *target, t_file *head);
 t_file	*append_file(t_file *head, const char *name);
 void	free_file_list(t_file *head);
 t_file	*get_cwd_file_list(void);

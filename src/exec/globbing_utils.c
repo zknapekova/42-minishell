@@ -1,29 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   globbing_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/07 20:04:12 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/06/07 20:06:48 by jgrigorj         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "main.h"
 #include "exec.h"
 
-char	*rm_escape_char(char *str)
+int	is_in_cwd(char *str)
 {
-	int		i;
-	int		j;
-	char	*new_str;
-
-	i = 0;
-	j = 0;
-	if (!str || !str[0])
-		return (NULL);
-	new_str = malloc(sizeof(char) * (ft_strlen(str) + 1));
-	if (!new_str)
-		return (error_handler("Error allocating new str in rm_escape_char"), NULL);
-	while (str[i])
+	if (!ft_strchr(str, '/'))
+		return (1);
+	if (str[0] == '.' && str[1] == '/')
 	{
-		if (str[i] == '\\')
-			i++;
+		if (!ft_strchr(str + 2, '/'))
+			return (1);
 		else
-			new_str[j++] = str[i++];
+			return (0);
 	}
-	new_str[j] = '\0';
-	return (new_str);
+	return (0);
 }
 
 int	is_hidden_file(char *str)
@@ -47,17 +49,20 @@ t_file	*sort_file_list(t_file *head)
 	return (sorted);
 }
 
+// insert sort
 t_file	*sorted_insert(t_file *head, t_file *new_node)
 {
 	t_file	*current;
 
-	if (!head || ft_strncmp(new_node->name, head->name, longer_strlen(new_node->name, head->name)) < 0)
+	if (!head || ft_strncmp(new_node->name, head->name, \
+		longer_strlen(new_node->name, head->name)) < 0)
 	{
 		new_node->next = head;
 		return (new_node);
 	}
 	current = head;
-	while (current->next && ft_strncmp(new_node->name, current->next->name, longer_strlen(new_node->name, current->next->name)) > 0)
+	while (current->next && ft_strncmp(new_node->name, current->next->name, \
+		longer_strlen(new_node->name, current->next->name)) > 0)
 		current = current->next;
 	new_node->next = current->next;
 	current->next = new_node;
