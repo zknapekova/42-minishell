@@ -6,11 +6,12 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 21:53:09 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/07 21:53:17 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/07 22:49:13 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h> //for NULL
+#include "libft.h"
 
 static void	advance(char **pattern, char **str);
 static void	fallback(char **pattern, char **str, char **backup, char *star);
@@ -25,6 +26,8 @@ int	match_star_pattern(char *pattern, char *str)
 
 	star = NULL;
 	backup = NULL;
+	if (ft_strncmp(pattern, "./", 2) == 0)
+		pattern += 2;
 	while (*str)
 	{
 		if (!handle_escape(&pattern, &str))

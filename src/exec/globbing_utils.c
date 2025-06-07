@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 20:04:12 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/07 20:06:48 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/07 22:55:20 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	is_in_cwd(char *str)
 
 int	is_hidden_file(char *str)
 {
-	return (str[0] == '.');
+	return ((str[0] == '.' && str[1] != '/') \
+	|| (str[0] == '.' && str[1] == '/' && str[2] == '.'));
 }
 
 t_file	*sort_file_list(t_file *head)
