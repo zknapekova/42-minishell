@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 19:47:56 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/08 16:17:42 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/08 16:24:27 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <errno.h>
 #include <string.h>
 
-int	extend_env_value(t_data *data, char *key_value, char *var_name, \
+int	export_extend_env_value(t_data *data, char *key_value, char *var_name, \
 	t_env_node *node_to_update)
 {
 	char	*var_to_extend;
@@ -41,7 +41,7 @@ int	extend_env_value(t_data *data, char *key_value, char *var_name, \
 			return (0);
 	}
 	else
-		extend_env_value(data, new_key_value, var_name, node_to_update);
+		export_extend_env_value(data, new_key_value, var_name, node_to_update);
 	return (1);
 }
 

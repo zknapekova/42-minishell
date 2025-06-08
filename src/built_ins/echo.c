@@ -73,7 +73,6 @@ int	echo(char *input, t_data *data, int n_param)
 	return (free(result), 1);
 }
 
-// this function does not free the key_value
 char	*extend_env_value_nf(t_data *data, char *key_value)
 {
 	char	*var_to_extend;

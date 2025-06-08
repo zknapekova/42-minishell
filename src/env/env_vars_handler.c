@@ -61,7 +61,7 @@ int	update_env_list(char *key_value, int eq_ind, t_data *data, int dollar_ind)
 	}
 	else
 	{
-		if (!extend_env_value(data, key_value, var_name, node_to_update))
+		if (!export_extend_env_value(data, key_value, var_name, node_to_update))
 			return (free(var_name), 0);
 	}
 	return (free(var_name), 1);

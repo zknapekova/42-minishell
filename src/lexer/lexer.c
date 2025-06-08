@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/08 15:37:07 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/08 16:26:52 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 
 // the lexer separates the command line into individual tokens
 // returns a linked list of tokens (*tokens) with elements of the t_token type
-// !!! handle the ";" as the end of a command
 extern sig_atomic_t	g_sigstate;
 static int			handle_word(const char *input, \
 	size_t *pos, t_token **tokens);
