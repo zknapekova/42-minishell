@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/05 15:23:07 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/08 15:36:03 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,6 @@ int	main(int argc, char **argv, char **env)
 	// free (extend_val);
 	
 	loop(data);
-	char	*test[2];
-	test[0]="~/Documents";
-	test[1]=NULL;
-	printf("status: %d\n", cd(test, data));
 	free_all(data);
 	return (EXIT_SUCCESS);
 }

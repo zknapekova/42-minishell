@@ -159,6 +159,12 @@ int			pwd(void);
 int			env_cmd(t_data *data);
 int			unset(t_data *data, char **args);
 int			echo(char *input, t_data *data, int n_param);
+int			handle_new_env_value(t_data *data, char *key_value);
+int			export(t_data *data, char *input);
+int			pwd(void);
+int			env_cmd(t_data *data);
+int			unset(t_data *data, char **args);
+int			echo(char *input, t_data *data, int n_param);
 
 // *** signal ***
 void		sig_init(void);
