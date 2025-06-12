@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:00:36 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/22 17:14:40 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/04 19:07:21 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ char	*get_redir_target_str(t_data *data, t_redir_target *target)
 			return (error_handler("Error getting target_str"), NULL);
 		target = target->next;
 	}
+	target_str = globe_redir_target(target_str);
 	return (target_str);
 }

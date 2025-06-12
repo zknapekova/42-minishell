@@ -1,4 +1,16 @@
-redirection located anywhere in the command (same result in these three cases)
-echo hello > out.txt
-> out.txt echo hello
-echo > out.txt hello
+a.out
+asdf
+a.txt
+b.txt
+checker.py
+c.txt
+err.txt
+include
+libft
+Makefile
+minishell
+out.txt
+redir1
+src
+temp
+test_commands.txt
