@@ -13,10 +13,7 @@ int	execute_built_cmds(char **argv, t_data *data)
 	if (!ft_strcmp(argv[0], "echo"))
 		status = echo_cmd(argv, data);
 	else if (!ft_strcmp(argv[0], "env"))
-	{
 		status = env_cmd(data, argv);
-		ft_printf("status is %d", status);
-	}
 	else if (!ft_strcmp(argv[0], "unset"))
 		status = unset(data, argv);
 	else if (!ft_strcmp(argv[0], "cd"))
