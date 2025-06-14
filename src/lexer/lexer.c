@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/25 16:52:52 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/06/08 16:26:52 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 
 // the lexer separates the command line into individual tokens
 // returns a linked list of tokens (*tokens) with elements of the t_token type
-// !!! handle the ";" as the end of a command
 extern sig_atomic_t	g_sigstate;
 static int			handle_word(const char *input, \
 	size_t *pos, t_token **tokens);
@@ -107,7 +106,7 @@ static t_word_join	word_join_or_split(char next_char)
 	t_word_join	word_join;
 
 	if (next_char == '\'' || next_char == '"' \
-		|| ft_isalnum(next_char) || next_char == '$')
+		|| ft_isalnum(next_char) || next_char == '$' || next_char == '*')
 		word_join = W_JOIN;
 	else
 		word_join = W_SPLIT;

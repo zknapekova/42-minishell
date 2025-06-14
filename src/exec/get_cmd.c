@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 20:07:47 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/24 20:49:28 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:31:49 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "exec.h"
 
 void	free_array(char **array);
+char	*get_path_from_path(const char *path, t_data *data);
 
 char	*find_paths(t_data *data)
 {
@@ -110,22 +111,3 @@ char	*get_exec_path(const char *cmd, t_data *data)
 	}
 	return (path);
 }
-
-/*char	*get_path_from_path(const char *path, t_data *data)
-{
-	char	*abs_path;
-	char	cwd[PATH_MAX];
-	
-	abs_path = NULL;
-	if (path[0] == '/')
-		return (ft_strdup(path));
-	if (path[0] == '.')
-		abs_path = get_normalized_path(path);
-	(void)data;
-	return (abs_path); //docasne, kvoli compileru
-}*/
-
-/*char	*get_normalized_path(const char *path)
-{
-	
-}*/
