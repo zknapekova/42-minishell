@@ -16,6 +16,8 @@
 #include "exec.h"
 #include "parser_utils.h" // for print_indent()
 #include <stdlib.h> //for NULL
+#include <errno.h>
+#include <string.h>
 
 char	*get_redir_target_str(t_data *data, t_redir_target *target)
 {
@@ -43,3 +45,53 @@ char	*get_redir_target_str(t_data *data, t_redir_target *target)
 	}
 	return (target_str);
 }
+
+int	ft_redirect(int input_fd, int output_fd)
+{
+	if (input_fd > 1)
+	{
+		if (dup2(input_fd, STDIN_FILENO) < 0)
+			return (error_handler(strerror(errno)), 0);
+		close(input_fd);
+	}
+	if (output_fd > 1)
+	{
+		if (dup2(output_fd, STDOUT_FILENO) < 0)
+			return (error_handler(strerror(errno)), 0);
+		close(output_fd);
+	}
+	return (1);
+}
+
+// This function fills fd_file for each redirection, except for REDIR_HEREDOC and REDIR_INVALID
+int	handle_redir_files(t_redir *redir, t_data *data)
+{
+	char	*redir_file_path;
+	char	*updated_path;
+
+	while (redir && redir->target)
+	{
+		if (redir->type != REDIR_HEREDOC && redir->type != REDIR_INVALID)
+		{
+			redir_file_path = get_redir_target_str(data, redir->target);
+			if (!redir_file_path)
+				return (0);
+			updated_path = handle_path(redir_file_path, 1, 0, 0);
+			if (!updated_path)
+				return (0);
+			redir->target->fd_file = get_fd_file(updated_path, redir->type);
+			if (redir->target->fd_file == -1)
+				return (free (updated_path), 0);
+			free (updated_path);
+			if (redir->type == REDIR_INPUT)
+				ft_redirect(redir->target->fd_file, -1);
+			if (redir->type == REDIR_OUTPUT || redir->type == REDIR_APPEND)
+				ft_redirect(-1, redir->target->fd_file);
+		}
+		redir = redir->next;
+	}
+	return (1);
+}
+
+
+

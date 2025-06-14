@@ -37,21 +37,25 @@ int	export(t_data *data, char *input)
 	return (1);
 }
 
-int	env_cmd(t_data *data)
+int	env_cmd(t_data *data, char **argv)
 {
+	if (arr_size(argv) > 1)
+		return (error_handler("No options or arguments allowed in env command."), 0);
 	if (!print_env_list(data))
 		return (0);
 	return (1);
 }
 
-int	pwd(void)
+int	pwd(char **argv)
 {
 	char	*cwd;
 	char	*cwd_print;
 
+	if (arr_size(argv) > 1)
+		return (error_handler("No options or arguments allowed in pwd command."), 0);
 	cwd = malloc(1024 * sizeof(char));
 	if (!cwd)
-		return (error_handler(strerror(errno)), 0);
+		return (error_handler("malloc error"), 0);
 	if (getcwd(cwd, 1024) == NULL)
 		return (error_handler("getcwd failed"), free (cwd), 0);
 	cwd_print = add_new_line(cwd);

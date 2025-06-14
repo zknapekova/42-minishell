@@ -49,6 +49,8 @@ void	free_cmd(t_cmd_data *cmd)
 		free_args(cmd->args);
 	if (cmd->redirs)
 		free_redir(cmd->redirs);
+	if (cmd->cmd_path)
+		free(cmd->cmd_path);
 	free(cmd);
 }
 

@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "token.h"
 #include "parser_utils.h"
+#include "env_vars.h"
 #include "exec.h" // fot the get_arg_list()
 #include <signal.h> // for the SIG type macro
 #include <stdlib.h>
@@ -23,9 +24,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+
 volatile sig_atomic_t	g_sigstate;
 
-static void	loop(t_data *data)
+static int	loop(t_data *data)
 {
 	char	*line;
 	t_token	*temp_token_list;
@@ -40,11 +42,13 @@ static void	loop(t_data *data)
 		{
 			add_history(line);
 			data->tokens = lexer(line);
+			if (!data->tokens)
+				return (free(line), 0);
 			temp_token_list = data->tokens;
-			// print_tokens(data->tokens);
 			data->ast = parser(&temp_token_list);
-			// print_ast(data->ast, 0);
-			print_ast_argv(data, data->ast, 0);
+			if (!data->ast)
+				return (free_token_list(&(data->tokens)), free(line), 0);
+			handle_cmds(data, data->ast);
 			free_token_list(&(data->tokens));
 			data->tokens = NULL;
 			free_ast(data->ast);
@@ -52,11 +56,8 @@ static void	loop(t_data *data)
 		free(line);
 	}
 	ft_printf("The end\n");
+	return (1);
 }
-
-int	cd(char **input, t_data *data);
-
-#include "env_vars.h"
 
 int	main(int argc, char **argv, char **env)
 {
@@ -71,15 +72,9 @@ int	main(int argc, char **argv, char **env)
 	if (!init_env(env, data))
 		return (free_all(data), EXIT_FAILURE);
 	sig_init();
-	
-	// char *extend_val;
 
-	// extend_val = extend_env_value_nf(data, "asdf$abc");
-	// // ft_printf("HOME %s\n", echo_extend_env_value(data, "HOME"));
-	// ft_printf("$HOME %s\n", extend_val);
-	// free (extend_val);
-	
-	loop(data);
+	if (!loop(data))
+		return (free_all(data), EXIT_FAILURE);
 	free_all(data);
 	return (EXIT_SUCCESS);
 }

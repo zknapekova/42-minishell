@@ -63,5 +63,8 @@ t_cmd_data	*init_cmd_data(t_redir *leading_redir)
 		return (error_handler("Failed to allocate cmd_data\n"), NULL);
 	cmd_data->args = NULL;
 	cmd_data->redirs = leading_redir;
+	cmd_data->fd_pipe_in = 0;
+	cmd_data->fd_pipe_out = 1;
+	cmd_data->cmd_path = NULL;
 	return (cmd_data);
 }

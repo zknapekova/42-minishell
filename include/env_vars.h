@@ -13,19 +13,6 @@
 #ifndef ENV_VARS_H
 # define ENV_VARS_H
 #include "main.h"
-// typedef struct s_env_node
-// {
-// 	char				*key_value;
-// 	char				*key;
-// 	char				*value;
-// 	struct s_env_node	*next;
-// }	t_env_node;
-
-// typedef struct s_data
-// {
-// 	t_env_node	*head;
-// 	char		*pwd;
-// }	t_data;
 
 t_env_node	*new_node(t_data *data, char *key_value);
 t_env_node	*last_node(t_data *data);
@@ -33,6 +20,7 @@ t_env_node	*search_env_list(t_data *data, char *var_name);
 void		update_node(t_env_node *node, char *key_value, int eq_ind);
 int			add_env(t_data *data, char *key_value);
 int			delete_node(t_data *data, char *key);
+int			lst_size(t_data *data);
 char		*extend_var_name(int dollar_ind, int eq_ind, t_data *data, \
 			char *key_value);
 int			export_extend_env_value(t_data *data, char *key_value, \
@@ -55,8 +43,12 @@ char		*add_new_line(char *str);
 char		*echo_extend_env_value(t_data *data, char *key_value);
 char		*extend_env_value(t_data *data, char *key_value);
 char		*echo_get_key_value(char *var_to_extend, t_data *data, char *key_value);
+char		*replace_tilde(char *input, int ind);
+int			dir_check(char *path, char *cmd);
 // no freeing the key_value
 char		*extend_env_value_nf(t_data *data, char *key_value);
 char		*get_key_value_nf(char *var_to_extend, t_data *data, char *key_value);
+int			ft_strcmp(const char *s1, const char *s2);
+int			arr_size(char **arr);
 
 #endif

@@ -19,7 +19,7 @@
 #include <dirent.h>
 
 
-int	dir_check(char *path)
+int	dir_check(char *path, char *cmd)
 {
 	DIR	*dir;
 
@@ -29,29 +29,30 @@ int	dir_check(char *path)
 		if (!access(path, F_OK))
 		{
 			if (access(path, R_OK) == 0)
-				return (error_handler("bash: cd: {path}: Not a directory"), 0);
-			else if (!access(path, R_OK) && chdir (path) == -1)
+				return (ft_eprintf("minishell:%s %s: Not a directory\n", cmd, path), 0);
+			else if (!access(path, R_OK) && chdir(path) == -1)
 				return (error_handler(strerror(errno)), 0);
 		}
 		else
-			return (error_handler("bash: cd: {path}: No such file or directory"), 0);
+			return (ft_eprintf("minishell:%s %s: No such file or directory\n", cmd, path), 0);
 	}
 	else
 	{
 		if (access(path, X_OK) == -1)
-			return (error_handler("bash: cd: {path}: Permission denied"), closedir (dir), 0);
-		else if (!access(path, X_OK) && chdir (path) == -1)
+			return (ft_eprintf("minishell:%s %s: Permission denied\n", cmd, path), closedir (dir), 0);
+		else if (!access(path, X_OK) && chdir(path) == -1)
 			return (error_handler(strerror(errno)), closedir (dir), 0);
 	}
 	return (closedir (dir), 1);
 }
 
-int	update_pwds(char *path, t_data *data)
+int	update_pwds(t_data *data)
 {
 	t_env_node	*old_pwd;
 	t_env_node	*pwd;
 	char		*key_value;
 	char		*old_pwd_key_value;
+	char		*cwd;
 
 	old_pwd = search_env_list(data, "OLDPWD");
 	pwd = search_env_list(data, "PWD");
@@ -61,8 +62,12 @@ int	update_pwds(char *path, t_data *data)
 	if (!handle_new_node(old_pwd, data, old_pwd_key_value))
 		return (0);
 	old_pwd = search_env_list(data, "OLDPWD");
-	key_value = ft_strjoin("PWD=", path);
-	if (!key_value)
+	cwd = malloc(1024 * sizeof(char));
+	if (!cwd)
+		return (error_handler("malloc error"), 0);
+	getcwd(cwd, 1024);
+	key_value = ft_strjoin("PWD=", cwd);
+	if (!key_value || !cwd)
 		return (0);
 	if (!handle_new_node(pwd, data, key_value))
 		return (0);
@@ -117,23 +122,23 @@ int	cd(char **input, t_data *data)
 	int			status;
 
 	path = NULL;
-	if (input[1])
-		return (error_handler("bash: cd: too many arguments"), 0);
-	if (!input[0] || ((input[0][0] == '~') && ft_strlen(input[0]) == 1))
-		path = handle_node(data, "HOME", "bash: cd: HOME not set");
-	else if (input[0][0] == '~' && ft_strlen(input[0]) > 1)
-		path = extend_env_value(data, replace_tilde(input[0], get_first_ind(input[0], '~', 0)));
-	else if (input[0][0] == '-' && ft_strlen(input[0]) == 1)
-		path = handle_node(data, "OLDPWD", "bash: cd: OLDPWD not set");
+	if (input[2])
+		return (error_handler("minishell: cd: too many arguments"), 0);
+	if (!input[1] || ((input[1][0] == '~') && ft_strlen(input[1]) == 1))
+		path = handle_node(data, "HOME", "minishell: cd: HOME not set");
+	else if ((input[1][0] == '~' && ft_strlen(input[1]) > 1) || get_first_ind(input[1], '~', 0) != -1)
+		path = extend_env_value(data, replace_tilde(input[1], get_first_ind(input[1], '~', 0)));
+	else if (input[1][0] == '-' && ft_strlen(input[1]) == 1)
+		path = handle_node(data, "OLDPWD", "minishell: cd: OLDPWD not set");
 	else
-		path = ft_strdup(input[0]);
-	if (get_first_ind(input[0], '$', 0) != -1)
-		path = extend_env_value(data, ft_strdup(input[0]));
+		path = ft_strdup(input[1]);
+	if (get_first_ind(input[1], '$', 0) != -1)
+		path = extend_env_value(data, ft_strdup(input[1]));
 	if (path)
 	{
-		status = dir_check(path);
+		status = dir_check(path, " cd:");
 		if (status == 1)
-			update_pwds(path, data);
+			update_pwds(data);
 		return (free(path), status);
 	}
 	return (free(path), 0);

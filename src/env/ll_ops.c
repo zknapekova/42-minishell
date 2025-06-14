@@ -17,7 +17,7 @@
 #include <errno.h>
 #include <string.h>
 
-static int	lst_size(t_data *data)
+int	lst_size(t_data *data)
 {
 	t_env_node	*temp;
 	int			len;
@@ -42,17 +42,17 @@ t_env_node	*new_node(t_data *data, char *key_value)
 
 	new_node = malloc(sizeof(t_env_node));
 	if (!new_node)
-		return (error_handler(strerror(errno)), NULL);
+		return (error_handler("malloc error"), NULL);
 	new_node->key_value = key_value;
 	new_node->next = NULL;
 	eq_ind = get_first_ind(key_value, '=', 0);
 	new_node->key = ft_substr(key_value, 0, eq_ind);
 	if (!new_node->key)
-		return (error_handler(strerror(errno)), NULL);
+		return (error_handler("malloc error"), NULL);
 	new_node->value = ft_substr(key_value, eq_ind + 1, \
 			ft_strlen(key_value) - eq_ind);
 	if (!new_node->value)
-		return (error_handler(strerror(errno)), NULL);
+		return (error_handler("malloc error"), NULL);
 	if (lst_size(data) == 0)
 		data->head = new_node;
 	return (new_node);

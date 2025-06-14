@@ -113,7 +113,7 @@ void	print_ast_argv(t_data *data, t_ast *node, int depth)
 	int		i;
 	char	*redir_target;
 	t_redir	*redir;
-	char	*path;
+	//char	*path;
 
 	i = 0;
 	if (!node)
@@ -128,15 +128,15 @@ void	print_ast_argv(t_data *data, t_ast *node, int depth)
 			argv = get_argv(data, node->cmd_data->args);
 			if (!argv)
 				return ;
-			path = get_exec_path(argv[0], data);
+			//path = get_exec_path(argv[0], data);
 			print_indent(depth + 1);
 			ft_printf("**argv: ");
 			while (argv[i])
 				ft_printf("%s, ", argv[i++]);
-			ft_printf("path: %s", path);
+			//ft_printf("path: %s", path);
 			ft_printf("\n");
 			free_argv(argv);
-			free (path);
+			//free (path);
 		}
 		if (node->cmd_data->redirs)
 		{

@@ -92,23 +92,26 @@ char	*get_exec_path(const char *cmd, t_data *data)
 	char	*path;
 	
 	path = NULL;
+	(void)data;
 	if  (ft_strchr(cmd, '/'))
 	{
-		path = get_path_from_path(cmd, data);
+		//path = get_path_from_env(cmd, data); //docasne, TODO: upravit
+		path = ft_strdup(path);
 		if (!path)
 			return (error_handler("Error getting cmd path"), NULL);
 		// ft_printf("Relative or absolute path found");
 	}
 	else
 	{
-		path = get_path_from_env(cmd, data);
+		//path = get_path_from_env(cmd, data); //docasne, TODO: upravit
+		path = ft_strdup(path);
 		if (!path)
 			return (error_handler("Error getting cmd path"), NULL);
 	}
 	return (path);
 }
 
-char	*get_path_from_path(const char *path, t_data *data)
+/*char	*get_path_from_path(const char *path, t_data *data)
 {
 	char	*abs_path;
 	char	cwd[PATH_MAX];
@@ -118,9 +121,11 @@ char	*get_path_from_path(const char *path, t_data *data)
 		return (ft_strdup(path));
 	if (path[0] == '.')
 		abs_path = get_normalized_path(path);
-}
+	(void)data;
+	return (abs_path); //docasne, kvoli compileru
+}*/
 
-char	*get_normalized_path(const char *path)
+/*char	*get_normalized_path(const char *path)
 {
 	
-}
+}*/

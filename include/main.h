@@ -94,6 +94,7 @@ typedef enum e_redir_type
 typedef struct s_redir_target
 {
 	char					*value;
+	int						fd_file;
 	t_quote_type			quote_type;
 	struct s_redir_target	*next;
 }	t_redir_target;
@@ -103,6 +104,7 @@ typedef struct s_redir_target
 typedef struct s_redir
 {
 	t_redir_type	type;
+	char			*delim;
 	int				fd;
 	t_redir_target	*target;
 	t_bool			is_fd_target;
@@ -123,8 +125,12 @@ typedef struct s_arg
 // Example: ["ls", "-la", "/home", NULL]
 typedef struct s_cmd_data
 {
+	char	*cmd_path;
 	t_arg	*args;
 	t_redir	*redirs;
+	int		fd_pipe_in;
+	int		fd_pipe_out;
+	int		exit_status;
 }	t_cmd_data;
 
 // t_cmd_data cmd is used only if type is NODE_COMMAND or NODE_SUBSHELL
@@ -155,16 +161,11 @@ t_env_node	*search_env_list(t_data *data, char *var_name);
 void		free_all(t_data *data);
 int			handle_new_env_value(t_data *data, char *key_value);
 int			export(t_data *data, char *input);
-int			pwd(void);
-int			env_cmd(t_data *data);
+int			pwd(char **argv);
+int			env_cmd(t_data *data, char **args);
 int			unset(t_data *data, char **args);
-int			echo(char *input, t_data *data, int n_param);
 int			handle_new_env_value(t_data *data, char *key_value);
-int			export(t_data *data, char *input);
-int			pwd(void);
-int			env_cmd(t_data *data);
-int			unset(t_data *data, char **args);
-int			echo(char *input, t_data *data, int n_param);
+int			echo_cmd(char **input, t_data *data);
 
 // *** signal ***
 void		sig_init(void);
