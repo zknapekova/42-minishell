@@ -8,13 +8,38 @@
 #include <errno.h>
 #include <string.h>
 
-int	process_cmds_redirs(t_data *data, t_ast *node, int pid)
+int	execute(t_data *data, t_ast *node, char **argv)
+{
+	char	**env;
+
+	if (!ft_redirect(node->cmd_data->fd_pipe_out, node->cmd_data->fd_pipe_in))
+		return (0);
+	close_pipes(data, data->ast);
+	if (check_built_ins(argv[0]))
+	{
+		if (!execute_built_cmds(argv, data))
+			return (0);
+		return (1);
+	}
+	else
+	{
+		node->cmd_data->cmd_path = get_cmd_path(argv[0], data);
+		if (!node->cmd_data->cmd_path)
+			return (0);
+		env = create_env_arr(data);
+		if (execve(node->cmd_data->cmd_path, argv, env) == -1)
+			return (strerror(errno), free_argv(argv), 0);
+	}
+	return (1);
+}
+
+
+int	process_cmds_redirs(t_data *data, t_ast *node)
 {
 	char	**argv;
 	t_redir	*redir;
-	char	**env;
+	int		pid;
 
-	(void)pid;
 	if (node->cmd_data->redirs)
 	{
 		redir = node->cmd_data->redirs;
@@ -25,32 +50,32 @@ int	process_cmds_redirs(t_data *data, t_ast *node, int pid)
 		argv = get_argv(data, node->cmd_data->args);
 		if (!argv)
 			return (0);
-		if (!ft_redirect(node->cmd_data->fd_pipe_out, node->cmd_data->fd_pipe_in))
-			return (0);
-		close_pipes(data, data->ast);
-		if (check_built_ins(argv[0]))
+		if (check_built_ins(argv[0]) && node->cmd_data->fd_pipe_in == 0 && node->cmd_data->fd_pipe_out == 1)
 		{
 			if (!execute_built_cmds(argv, data))
 				return (0);
+			return (1);
 		}
-		else
+		pid = fork();
+		if (pid < 0)
 		{
-			node->cmd_data->cmd_path = get_cmd_path(argv[0], data);
-			if (!node->cmd_data->cmd_path)
-				return (0);
-			env = create_env_arr(data);
-			if (execve(node->cmd_data->cmd_path, argv, env) == -1)
-				return (strerror(errno), free_argv(argv), 0);
+			error_handler(strerror(errno));
+			return (0);
 		}
+		if (pid == 0)
+		{
+			if (!execute(data, node, argv))
+				exit(EXIT_FAILURE);
+			exit(EXIT_SUCCESS);
+		}
+		waitpid(pid, NULL, 0);
+		free_argv(argv);
 	}
-	free_argv(argv);
 	return (1);
 }
 
 void	find_cmds(t_data *data, t_ast *node)
 {
-	int	pid;
-
 	if (!node)
 		return ;
 	if (node->type == NODE_PIPE)
@@ -60,19 +85,8 @@ void	find_cmds(t_data *data, t_ast *node)
 	}
 	if (node->type == NODE_COMMAND && node->cmd_data)
 	{
-		pid = fork();
-		if (pid < 0)
-		{
-			error_handler(strerror(errno));
+		if (!process_cmds_redirs(data, node))
 			return ;
-		}
-		if (pid == 0)
-		{
-			if (!process_cmds_redirs(data, node, pid))
-				exit(EXIT_FAILURE);
-			exit(EXIT_SUCCESS);
-		}
-		waitpid(pid, NULL, 0);
 		if (node->cmd_data->fd_pipe_in > 1)
 			close(node->cmd_data->fd_pipe_in);
 	}

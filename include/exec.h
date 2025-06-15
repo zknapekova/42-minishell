@@ -38,7 +38,7 @@ char	*get_cmd_path(char *cmd, t_data *data);
 int		arr_size(char **arr);
 void	free_array(char **array);
 int		open_pipe(t_ast *node);
-int		process_cmds_redirs(t_data *data, t_ast *node, int pid);
+int		process_cmds_redirs(t_data *data, t_ast *node);
 void	find_cmds(t_data *data, t_ast *node);
 void	handle_cmds(t_data *data, t_ast *node);
 void	close_pipes(t_data *data, t_ast *node);
