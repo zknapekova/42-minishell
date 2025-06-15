@@ -28,7 +28,7 @@ t_file	*get_cwd_file_list(void)
 
 	if (getcwd(cwd, 1024) == NULL)
 		return (error_handler("getcwd failed"), NULL);
-	if (!dir_check(cwd))
+	if (!dir_check(cwd, ""))
 		return (NULL);
 	dir = opendir(cwd);
 	sdirent = readdir(dir);

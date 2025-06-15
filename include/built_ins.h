@@ -13,6 +13,6 @@
 #ifndef BUILT_INS_H
 # define BUILT_INS_H
 
-int	dir_check(char *path);
+int	dir_check(char *path, char *cmd);
 
 #endif
