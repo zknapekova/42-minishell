@@ -36,7 +36,7 @@ char	*ft_strjoin_gnl(char const *s1, char const *s2)
 	return (free((void *)s1), res);
 }
 
-char	*ft_get_file_cont(int fd, char *limit)
+char	*ft_get_file_cont(char *lim)
 {
 	char	*line;
 	char	*file_cont;
@@ -44,12 +44,13 @@ char	*ft_get_file_cont(int fd, char *limit)
 
 	line = NULL;
 	file_cont = NULL;
-	limiter = ft_strjoin(limit, "\n");
+	limiter = ft_strjoin(lim, "\n");
 	if (!limiter)
 		return (NULL);
+//	ft_printf("limiter is %s", limiter);
 	while (1)
 	{
-		line = get_next_line(fd);
+		line = get_next_line(0);
 		if (!line)
 			break ;
 		if (!ft_strcmp(limiter, line))
@@ -58,6 +59,7 @@ char	*ft_get_file_cont(int fd, char *limit)
 		if (!file_cont)
 			return (free(line), NULL);
 		free(line);
+//		ft_printf("loop line\n");
 	}
 	free(line);
 	free(limiter);

@@ -124,16 +124,21 @@ int	cd(char **input, t_data *data)
 	path = NULL;
 	if (input[2])
 		return (error_handler("minishell: cd: too many arguments"), 0);
-	if (!input[1] || ((input[1][0] == '~') && ft_strlen(input[1]) == 1))
+	if (!input[1])
 		path = handle_node(data, "HOME", "minishell: cd: HOME not set");
-	else if ((input[1][0] == '~' && ft_strlen(input[1]) > 1) || get_first_ind(input[1], '~', 0) != -1)
-		path = extend_env_value(data, replace_tilde(input[1], get_first_ind(input[1], '~', 0)));
-	else if (input[1][0] == '-' && ft_strlen(input[1]) == 1)
-		path = handle_node(data, "OLDPWD", "minishell: cd: OLDPWD not set");
 	else
-		path = ft_strdup(input[1]);
-	if (get_first_ind(input[1], '$', 0) != -1)
-		path = extend_env_value(data, ft_strdup(input[1]));
+	{
+		if (input[1][0] == '~' && ft_strlen(input[1]) == 1)
+			path = handle_node(data, "HOME", "minishell: cd: HOME not set");
+		else if ((input[1][0] == '~' && ft_strlen(input[1]) > 1) || get_first_ind(input[1], '~', 0) != -1)
+			path = extend_env_value(data, replace_tilde(input[1], get_first_ind(input[1], '~', 0)));
+		else if (input[1][0] == '-' && ft_strlen(input[1]) == 1)
+			path = handle_node(data, "OLDPWD", "minishell: cd: OLDPWD not set");
+		else
+			path = ft_strdup(input[1]);
+		if (get_first_ind(input[1], '$', 0) != -1)
+			path = extend_env_value(data, ft_strdup(input[1]));
+	}
 	if (path)
 	{
 		status = dir_check(path, " cd:");

@@ -94,7 +94,6 @@ typedef enum e_redir_type
 typedef struct s_redir_target
 {
 	char					*value;
-	int						fd_file;
 	t_quote_type			quote_type;
 	struct s_redir_target	*next;
 }	t_redir_target;
@@ -130,6 +129,8 @@ typedef struct s_cmd_data
 	t_redir	*redirs;
 	int		fd_pipe_in;
 	int		fd_pipe_out;
+	int		fd_file_in;
+	int		fd_file_out;
 	int		exit_status;
 }	t_cmd_data;
 

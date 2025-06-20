@@ -12,7 +12,8 @@ int	execute(t_data *data, t_ast *node, char **argv)
 {
 	char	**env;
 
-	if (!ft_redirect(node->cmd_data->fd_pipe_out, node->cmd_data->fd_pipe_in))
+	//ft_printf("%s pipe input: %d pipe output: %d\n", argv[0], node->cmd_data->fd_pipe_out, node->cmd_data->fd_pipe_in);
+	if (!ft_redirect(node))
 		return (0);
 	close_pipes(data, data->ast);
 	if (check_built_ins(argv[0]))
@@ -43,14 +44,14 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 	if (node->cmd_data->redirs)
 	{
 		redir = node->cmd_data->redirs;
-		handle_redir_files(redir, data);
+		handle_redir_files(redir, data, node);
 	}
 	if (node->cmd_data->args)
 	{
 		argv = get_argv(data, node->cmd_data->args);
 		if (!argv)
 			return (0);
-		if (check_built_ins(argv[0]) && node->cmd_data->fd_pipe_in == 0 && node->cmd_data->fd_pipe_out == 1)
+		if (check_built_ins(argv[0]) && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_pipe_out == -1)
 		{
 			if (!execute_built_cmds(argv, data))
 				return (0);
@@ -87,8 +88,15 @@ void	find_cmds(t_data *data, t_ast *node)
 	{
 		if (!process_cmds_redirs(data, node))
 			return ;
+		//ft_printf("fd_pipe_in: %d fd_pipe_out: %d\n", node->cmd_data->fd_pipe_in, node->cmd_data->fd_pipe_out);
 		if (node->cmd_data->fd_pipe_in > 1)
 			close(node->cmd_data->fd_pipe_in);
+		if (node->cmd_data->fd_pipe_out > 1)
+			close(node->cmd_data->fd_pipe_out);
+		if (node->cmd_data->fd_file_in > 1)
+			close(node->cmd_data->fd_file_in);
+		if (node->cmd_data->fd_file_out > 1)
+			close(node->cmd_data->fd_file_out);
 	}
 	find_cmds(data, node->left);
 	find_cmds(data, node->right);

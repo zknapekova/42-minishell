@@ -26,18 +26,18 @@ char	**create_env_arr(t_data *data)
 	return result;
 }
 
-static void	find_closest_in_cmd(t_ast *node, int fd)
+static void	find_closest_in_cmd(t_ast *node, int fd, int sub)
 {
 	if (node->type == NODE_COMMAND)
 		node->cmd_data->fd_pipe_in = fd;
 	else if (node->type == NODE_PIPE)
-		find_closest_in_cmd(node->right, fd);
+		find_closest_in_cmd(node->right, fd, sub);
 	else if (node->type == NODE_AND)
-		find_closest_in_cmd(node->right, fd);
+		find_closest_in_cmd(node->right, fd, sub);
 	else if (node->type == NODE_OR)
-		find_closest_in_cmd(node->left, fd);
+		find_closest_in_cmd(node->left, fd, sub);
 	else if (node->type == NODE_SUBSHELL)
-		find_closest_in_cmd(node->left, fd);
+		find_closest_in_cmd(node->left, fd, 1);
 }
 
 static void	find_closest_out_cmd(t_ast *node, int fd)
@@ -45,13 +45,13 @@ static void	find_closest_out_cmd(t_ast *node, int fd)
 	if (node->type == NODE_COMMAND)
 		node->cmd_data->fd_pipe_out = fd;
 	else if (node->type == NODE_AND)
-		find_closest_in_cmd(node->right, fd);
+		find_closest_out_cmd(node->right, fd);
 	else if (node->type == NODE_OR)
-		find_closest_in_cmd(node->left, fd);
+		find_closest_out_cmd(node->left, fd);
 	else if (node->type == NODE_SUBSHELL)
-		find_closest_in_cmd(node->left, fd);
+		find_closest_out_cmd(node->left, fd);
 	/*else if (node->type == NODE_PIPE)
-		find_closest_in_cmd(node->right);*/
+		find_closest_out_cmd(node->right);*/
 }
 
 int	open_pipe(t_ast *node)
@@ -60,7 +60,8 @@ int	open_pipe(t_ast *node)
 
 	if (pipe(fd) == -1)
 		return (0);
-	find_closest_in_cmd(node->left, fd[1]);
+//	ft_printf("pipe with fd[0]: %d fd[1]: %d\n", fd[0], fd[1]);
+	find_closest_in_cmd(node->left, fd[1], 0);
 	find_closest_out_cmd(node->right,  fd[0]);
 	return (1);
 }
@@ -72,9 +73,15 @@ void	close_pipes(t_data *data, t_ast *node)
 	if (node->type == NODE_COMMAND && node->cmd_data)
 	{
 		if (node->cmd_data->fd_pipe_in > 1)
+		{
+//			ft_printf("2.fd %d closed\n", node->cmd_data->fd_pipe_in);
 			close(node->cmd_data->fd_pipe_in);
+		}
 		if (node->cmd_data->fd_pipe_out > 1)
+		{
+//			ft_printf("2.fd %d closed\n", node->cmd_data->fd_pipe_out);
 			close(node->cmd_data->fd_pipe_out);
+		}
 	}
 	close_pipes(data, node->left);
 	close_pipes(data, node->right);

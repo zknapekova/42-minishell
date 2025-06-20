@@ -47,16 +47,31 @@ char	*get_redir_target_str(t_data *data, t_redir_target *target)
 	return (target_str);
 }
 
-int	ft_redirect(int input_fd, int output_fd)
+int	ft_redirect(t_ast *node)
 {
+	int	input_fd;
+	int	output_fd;
+
+	input_fd = -1;
+	output_fd = -1;
+	if (node->cmd_data->fd_file_in != -1)
+		input_fd = node->cmd_data->fd_file_in;
+	else if (node->cmd_data->fd_pipe_out != -1)
+		input_fd = node->cmd_data->fd_pipe_out;
+	if (node->cmd_data->fd_file_out != -1)
+		output_fd = node->cmd_data->fd_file_out;
+	else if (node->cmd_data->fd_pipe_in != -1)
+		output_fd = node->cmd_data->fd_pipe_in;
 	if (input_fd > 1)
 	{
+//		ft_printf("fd %d redirected to stdin\n", input_fd);
 		if (dup2(input_fd, STDIN_FILENO) < 0)
 			return (error_handler(strerror(errno)), 0);
 		close(input_fd);
 	}
 	if (output_fd > 1)
 	{
+//		ft_printf("fd %d redirected to stdout\n", output_fd);
 		if (dup2(output_fd, STDOUT_FILENO) < 0)
 			return (error_handler(strerror(errno)), 0);
 		close(output_fd);
@@ -65,10 +80,12 @@ int	ft_redirect(int input_fd, int output_fd)
 }
 
 // This function fills fd_file for each redirection, except for REDIR_HEREDOC and REDIR_INVALID
-int	handle_redir_files(t_redir *redir, t_data *data)
+int	handle_redir_files(t_redir *redir, t_data *data, t_ast *node)
 {
 	char	*redir_file_path;
 	char	*updated_path;
+	char	*limiter;
+	char	*heredoc_input;
 
 	while (redir && redir->target)
 	{
@@ -80,14 +97,30 @@ int	handle_redir_files(t_redir *redir, t_data *data)
 			updated_path = handle_path(redir_file_path, 1, 0, 0);
 			if (!updated_path)
 				return (0);
-			redir->target->fd_file = get_fd_file(updated_path, redir->type);
-			if (redir->target->fd_file == -1)
-				return (free (updated_path), 0);
-			free (updated_path);
 			if (redir->type == REDIR_INPUT)
-				ft_redirect(redir->target->fd_file, -1);
+			{
+				node->cmd_data->fd_file_in = get_fd_file(updated_path, redir->type);
+				if (node->cmd_data->fd_file_in == -1)
+					return (free (updated_path), 0);
+//				ft_printf("file was opened with fd %d\n", node->cmd_data->fd_file_in);
+				//ft_redirect(node);
+			}
 			if (redir->type == REDIR_OUTPUT || redir->type == REDIR_APPEND)
-				ft_redirect(-1, redir->target->fd_file);
+			{
+				node->cmd_data->fd_file_out = get_fd_file(updated_path, redir->type);
+				if (node->cmd_data->fd_file_out == -1)
+					return (free (updated_path), 0);
+				//ft_redirect(node);
+			}
+			free (updated_path);
+		}
+		else if (redir->type == REDIR_HEREDOC)
+		{
+			limiter = get_redir_target_str(data, redir->target);
+			if (!limiter)
+				return (0);
+			heredoc_input = ft_get_file_cont(limiter);
+			write(node->cmd_data->fd_pipe_out, heredoc_input, ft_strlen(heredoc_input));
 		}
 		redir = redir->next;
 	}
