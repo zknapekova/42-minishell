@@ -26,18 +26,18 @@ char	**create_env_arr(t_data *data)
 	return result;
 }
 
-static void	find_closest_in_cmd(t_ast *node, int fd, int sub)
+static void	find_closest_in_cmd(t_ast *node, int fd)
 {
 	if (node->type == NODE_COMMAND)
 		node->cmd_data->fd_pipe_in = fd;
 	else if (node->type == NODE_PIPE)
-		find_closest_in_cmd(node->right, fd, sub);
+		find_closest_in_cmd(node->right, fd);
 	else if (node->type == NODE_AND)
-		find_closest_in_cmd(node->right, fd, sub);
+		find_closest_in_cmd(node->right, fd);
 	else if (node->type == NODE_OR)
-		find_closest_in_cmd(node->left, fd, sub);
+		find_closest_in_cmd(node->left, fd);
 	else if (node->type == NODE_SUBSHELL)
-		find_closest_in_cmd(node->left, fd, 1);
+		find_closest_in_cmd(node->left, fd);
 }
 
 static void	find_closest_out_cmd(t_ast *node, int fd)
@@ -61,7 +61,7 @@ int	open_pipe(t_ast *node)
 	if (pipe(fd) == -1)
 		return (0);
 //	ft_printf("pipe with fd[0]: %d fd[1]: %d\n", fd[0], fd[1]);
-	find_closest_in_cmd(node->left, fd[1], 0);
+	find_closest_in_cmd(node->left, fd[1]);
 	find_closest_out_cmd(node->right,  fd[0]);
 	return (1);
 }

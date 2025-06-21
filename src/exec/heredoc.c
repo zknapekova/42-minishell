@@ -36,17 +36,17 @@ char	*ft_strjoin_gnl(char const *s1, char const *s2)
 	return (free((void *)s1), res);
 }
 
-char	*ft_get_file_cont(char *lim)
+int	ft_get_file_cont(char *lim, int fd)
 {
 	char	*line;
-	char	*file_cont;
+	//char	*file_cont;
 	char	*limiter;
 
 	line = NULL;
-	file_cont = NULL;
+	//file_cont = NULL;
 	limiter = ft_strjoin(lim, "\n");
 	if (!limiter)
-		return (NULL);
+		return (error_handler("malloc failed"), 0);
 	free(lim);
 	while (1)
 	{
@@ -55,12 +55,14 @@ char	*ft_get_file_cont(char *lim)
 			break ;
 		if (!ft_strcmp(limiter, line))
 			break ;
-		file_cont = ft_strjoin_gnl(file_cont, line);
-		if (!file_cont)
-			return (free(line), NULL);
+		if (write(fd, line, ft_strlen(line)) == -1)
+			return (free(line), free(limiter), 0);;
+		//file_cont = ft_strjoin_gnl(file_cont, line);
+		/*if (!file_cont)
+			return (free(line), free(limiter), 0);*/
 		free(line);
 	}
 	free(line);
 	free(limiter);
-	return (file_cont);
+	return (1);
 }

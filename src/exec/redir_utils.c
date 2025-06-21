@@ -86,7 +86,6 @@ int	handle_redir_files(t_redir *redir, t_data *data, t_ast *node)
 	char	*redir_file_path;
 	char	*updated_path;
 	char	*limiter;
-	char	*heredoc_input;
 	int		pid;
 	int		pipe_fd[2];
 
@@ -133,12 +132,10 @@ int	handle_redir_files(t_redir *redir, t_data *data, t_ast *node)
 			}
 			else if (pid == 0)
 			{
-				heredoc_input = ft_get_file_cont(limiter);
-				if (!heredoc_input)
+				//write(pipe_fd[1], heredoc_input, ft_strlen(heredoc_input));
+				if (!ft_get_file_cont(limiter, pipe_fd[1]))
 					exit(EXIT_FAILURE);
-				write(pipe_fd[1], heredoc_input, ft_strlen(heredoc_input));
 				close(pipe_fd[1]);
-				free(heredoc_input);
 				exit(EXIT_SUCCESS);
 			}
 			close(pipe_fd[1]);

@@ -27,14 +27,13 @@
 
 volatile sig_atomic_t	g_sigstate;
 
-static int	loop(t_data *data)
+static void	loop(t_data *data)
 {
 	char	*line;
 	t_token	*temp_token_list;
 
 	while (g_sigstate != SIGQUIT && g_sigstate != SIGINT)
 	{
-		// ***read input
 		line = readline("minishell> ");
 		if (!line)
 			break ;
@@ -43,11 +42,18 @@ static int	loop(t_data *data)
 			add_history(line);
 			data->tokens = lexer(line);
 			if (!data->tokens)
-				return (free(line), 0);
+			{
+				free(line);
+				continue;
+			}
 			temp_token_list = data->tokens;
 			data->ast = parser(&temp_token_list);
 			if (!data->ast)
-				return (free_token_list(&(data->tokens)), free(line), 0);
+			{
+				free_token_list(&(data->tokens));
+				free(line);
+				continue;
+			}
 			handle_cmds(data, data->ast);
 			free_token_list(&(data->tokens));
 			data->tokens = NULL;
@@ -56,7 +62,6 @@ static int	loop(t_data *data)
 		free(line);
 	}
 	ft_printf("The end\n");
-	return (1);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -72,9 +77,7 @@ int	main(int argc, char **argv, char **env)
 	if (!init_env(env, data))
 		return (free_all(data), EXIT_FAILURE);
 	sig_init();
-
-	if (!loop(data))
-		return (free_all(data), EXIT_FAILURE);
+	loop(data);
 	free_all(data);
 	return (EXIT_SUCCESS);
 }

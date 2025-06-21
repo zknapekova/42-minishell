@@ -37,7 +37,7 @@ int		execute_built_cmds(char **argv, t_data *data);
 int		check_built_ins(char *cmd);
 int		ft_redirect(t_ast *node);
 int		handle_redir_files(t_redir *redir, t_data *data, t_ast *node);
-char	*ft_get_file_cont(char *lim);
+int		ft_get_file_cont(char *lim, int fd);
 char	**create_env_arr(t_data *data);
 char	*escape_wildcard(char *str);
 
