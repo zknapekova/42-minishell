@@ -12,7 +12,7 @@ int	execute(t_data *data, t_ast *node, char **argv)
 {
 	char	**env;
 
-	//ft_printf("%s pipe input: %d pipe output: %d\n", argv[0], node->cmd_data->fd_pipe_out, node->cmd_data->fd_pipe_in);
+//	ft_printf("%s pipe input: %d pipe output: %d\n", argv[0], node->cmd_data->fd_pipe_out, node->cmd_data->fd_pipe_in);
 	if (!ft_redirect(node))
 		return (0);
 	close_pipes(data, data->ast);
@@ -88,7 +88,7 @@ void	find_cmds(t_data *data, t_ast *node)
 	{
 		if (!process_cmds_redirs(data, node))
 			return ;
-		//ft_printf("fd_pipe_in: %d fd_pipe_out: %d\n", node->cmd_data->fd_pipe_in, node->cmd_data->fd_pipe_out);
+//		ft_printf("fd_pipe_in: %d fd_pipe_out: %d\n", node->cmd_data->fd_pipe_in, node->cmd_data->fd_pipe_out);
 		if (node->cmd_data->fd_pipe_in > 1)
 			close(node->cmd_data->fd_pipe_in);
 		if (node->cmd_data->fd_pipe_out > 1)

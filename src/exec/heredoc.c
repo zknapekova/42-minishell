@@ -47,7 +47,7 @@ char	*ft_get_file_cont(char *lim)
 	limiter = ft_strjoin(lim, "\n");
 	if (!limiter)
 		return (NULL);
-//	ft_printf("limiter is %s", limiter);
+	free(lim);
 	while (1)
 	{
 		line = get_next_line(0);
@@ -59,39 +59,8 @@ char	*ft_get_file_cont(char *lim)
 		if (!file_cont)
 			return (free(line), NULL);
 		free(line);
-//		ft_printf("loop line\n");
 	}
 	free(line);
 	free(limiter);
 	return (file_cont);
 }
-
-
-
-
-/*void	setup_heredoc(char *target)
-{
-	int		pipefd[2];
-	char	*line;
-
-	line = NULL;
-	if (pipe(pipefd) == -1)
-		error_handler("pipe");
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-			break ;
-		if (ft_strncmp(line, target, ft_strlen(target)) == 0)
-		{
-			free(line);
-			break ;
-		}
-		write(pipefd[1], line, ft_strlen(line));
-		write(pipefd[1], "\n", 1);
-		free(line);
-	}
-	close(pipefd[1]); // Finished writing
-	dup2(pipefd[0], 0); // Redirect stdin to read from pipe
-	close(pipefd[0]);
-}*/

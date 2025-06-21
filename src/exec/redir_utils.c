@@ -18,6 +18,7 @@
 #include <stdlib.h> //for NULL
 #include <errno.h>
 #include <string.h>
+#include <sys/wait.h>
 
 char	*get_redir_target_str(t_data *data, t_redir_target *target)
 {
@@ -86,6 +87,8 @@ int	handle_redir_files(t_redir *redir, t_data *data, t_ast *node)
 	char	*updated_path;
 	char	*limiter;
 	char	*heredoc_input;
+	int		pid;
+	int		pipe_fd[2];
 
 	while (redir && redir->target)
 	{
@@ -118,9 +121,30 @@ int	handle_redir_files(t_redir *redir, t_data *data, t_ast *node)
 		{
 			limiter = get_redir_target_str(data, redir->target);
 			if (!limiter)
+				return (error_handler("No limit word"), 0);
+			if (pipe(pipe_fd) == -1)
 				return (0);
-			heredoc_input = ft_get_file_cont(limiter);
-			write(node->cmd_data->fd_pipe_out, heredoc_input, ft_strlen(heredoc_input));
+			pid = fork();
+			if (pid < 0)
+			{
+				close(pipe_fd[1]);
+				close(pipe_fd[0]);
+				return (free(limiter), 0);
+			}
+			else if (pid == 0)
+			{
+				heredoc_input = ft_get_file_cont(limiter);
+				if (!heredoc_input)
+					exit(EXIT_FAILURE);
+				write(pipe_fd[1], heredoc_input, ft_strlen(heredoc_input));
+				close(pipe_fd[1]);
+				free(heredoc_input);
+				exit(EXIT_SUCCESS);
+			}
+			close(pipe_fd[1]);
+			node->cmd_data->fd_pipe_out = pipe_fd[0];
+			waitpid(pid, NULL, 0);
+			free(limiter);
 		}
 		redir = redir->next;
 	}
