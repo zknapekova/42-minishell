@@ -85,9 +85,7 @@ int	handle_redir_files(t_redir *redir, t_data *data, t_ast *node)
 {
 	char	*redir_file_path;
 	char	*updated_path;
-	char	*limiter;
-	int		pid;
-	int		pipe_fd[2];
+	int		status;
 
 	while (redir && redir->target)
 	{
@@ -95,57 +93,34 @@ int	handle_redir_files(t_redir *redir, t_data *data, t_ast *node)
 		{
 			redir_file_path = get_redir_target_str(data, redir->target);
 			if (!redir_file_path)
-				return (0);
+				return (EXIT_FAILURE);
 			updated_path = handle_path(redir_file_path, 1, 0, 0);
 			if (!updated_path)
-				return (0);
+				return (EXIT_FAILURE);
 			if (redir->type == REDIR_INPUT)
 			{
 				node->cmd_data->fd_file_in = get_fd_file(updated_path, redir->type);
 				if (node->cmd_data->fd_file_in == -1)
-					return (free (updated_path), 0);
+					return (free (updated_path), EXIT_FAILURE);
 //				ft_printf("file was opened with fd %d\n", node->cmd_data->fd_file_in);
-				//ft_redirect(node);
 			}
 			if (redir->type == REDIR_OUTPUT || redir->type == REDIR_APPEND)
 			{
 				node->cmd_data->fd_file_out = get_fd_file(updated_path, redir->type);
 				if (node->cmd_data->fd_file_out == -1)
-					return (free (updated_path), 0);
-				//ft_redirect(node);
+					return (free (updated_path), EXIT_FAILURE);
 			}
 			free (updated_path);
 		}
 		else if (redir->type == REDIR_HEREDOC)
 		{
-			limiter = get_redir_target_str(data, redir->target);
-			if (!limiter)
-				return (error_handler("No limit word"), 0);
-			if (pipe(pipe_fd) == -1)
-				return (0);
-			pid = fork();
-			if (pid < 0)
-			{
-				close(pipe_fd[1]);
-				close(pipe_fd[0]);
-				return (free(limiter), 0);
-			}
-			else if (pid == 0)
-			{
-				//write(pipe_fd[1], heredoc_input, ft_strlen(heredoc_input));
-				if (!ft_get_file_cont(limiter, pipe_fd[1]))
-					exit(EXIT_FAILURE);
-				close(pipe_fd[1]);
-				exit(EXIT_SUCCESS);
-			}
-			close(pipe_fd[1]);
-			node->cmd_data->fd_pipe_out = pipe_fd[0];
-			waitpid(pid, NULL, 0);
-			free(limiter);
+			status = execute_heredoc(redir, data, node);
+			if (status != 0)
+				return (status);
 		}
 		redir = redir->next;
 	}
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 

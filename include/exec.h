@@ -52,6 +52,7 @@ int		process_cmds_redirs(t_data *data, t_ast *node);
 void	find_cmds(t_data *data, t_ast *node);
 void	handle_cmds(t_data *data, t_ast *node);
 void	close_pipes(t_data *data, t_ast *node);
+int		execute_heredoc(t_redir *redir, t_data *data, t_ast *node);
 
 // globbing
 char	**globe_argv(char **argv);

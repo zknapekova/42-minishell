@@ -4,6 +4,8 @@
 #include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
+#include <string.h>
 
 char	**create_env_arr(t_data *data)
 {
@@ -59,7 +61,7 @@ int	open_pipe(t_ast *node)
 	int	fd[2];
 
 	if (pipe(fd) == -1)
-		return (0);
+		return (error_handler(strerror(errno)), 0);
 //	ft_printf("pipe with fd[0]: %d fd[1]: %d\n", fd[0], fd[1]);
 	find_closest_in_cmd(node->left, fd[1]);
 	find_closest_out_cmd(node->right,  fd[0]);
