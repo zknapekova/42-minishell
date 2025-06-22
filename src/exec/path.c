@@ -48,7 +48,7 @@ int	get_fd_file(char *path, t_redir_type type)
 	if (type == REDIR_INPUT)
 	{
 		if (access(path, R_OK) == -1)
-			return (ft_eprintf("1.minishell: %s: %s", path, strerror(errno)), fd);
+			return (ft_eprintf("minishell: %s: %s", path, strerror(errno)), fd);
 		fd = open(path, O_RDONLY);
 	}
 	else if (type == REDIR_OUTPUT)
@@ -56,7 +56,7 @@ int	get_fd_file(char *path, t_redir_type type)
 	else if (type == REDIR_APPEND)
 		fd = open(path, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fd == -1)
-		return (ft_eprintf("2.minishell: %s: %s", path, strerror(errno)), fd);
+		return (ft_eprintf("minishell: %s: %s", path, strerror(errno)), fd);
 	return (fd);
 }
 

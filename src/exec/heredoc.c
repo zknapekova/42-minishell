@@ -1,41 +1,53 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/22 16:18:38 by zuknapek          #+#    #+#             */
+/*   Updated: 2025/06/22 18:20:38 by zuknapek         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "main.h"
 #include "libft.h"
 #include "env_vars.h"
 #include "exec.h"
-#include "parser_utils.h" // for print_indent()
 #include <stdlib.h> //for NULL
-#include <stdio.h> // for readline
-#include <readline/readline.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <stdio.h> // for readline
+#include <readline/readline.h>
 
 
 int	ft_get_file_cont(char *lim, int fd)
 {
 	char	*line;
 	char	*limiter;
+	char	*line2;
 
 	line = NULL;
 	limiter = ft_strjoin(lim, "\n");
 	if (!limiter)
-		return (error_handler("malloc failed"), free(lim), 0);
-	free(lim);
+		return (error_handler("malloc failed"), free(lim), close(fd), 0);
 	while (1)
 	{
-		write(1, "> ", 2);
-		line = get_next_line(STDIN_FILENO);
+		line = readline("> ");
 		if (!line)
+		{
+			ft_eprintf("bash: warning: here-document delimited by end-of-file (wanted `%s')\n", lim);
 			break ;
-		if (!ft_strcmp(limiter, line))
+		}
+		line2 = ft_strjoin(line, "\n");
+		if (!ft_strcmp(limiter, line2))
 			break ;
-		if (write(fd, line, ft_strlen(line)) == -1)
-			return (free(line), free(limiter), 0);;
+		if (write(fd, line2, ft_strlen(line2)) == -1)
+			return (free(line), free(line2), free(limiter), close(fd), 0);;
 		free(line);
 	}
-	free(line);
-	free(limiter);
-	return (1);
+	return (free(line), free(lim), free(limiter), close(fd), 1);
 }
 
 int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
@@ -57,7 +69,6 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 	{
 		if (!ft_get_file_cont(limiter, pipe_fd[1]))
 			exit(EXIT_FAILURE);
-		close(pipe_fd[1]);
 		exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, &status, 0);

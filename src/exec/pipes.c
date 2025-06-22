@@ -52,8 +52,6 @@ static void	find_closest_out_cmd(t_ast *node, int fd)
 		find_closest_out_cmd(node->left, fd);
 	else if (node->type == NODE_SUBSHELL)
 		find_closest_out_cmd(node->left, fd);
-	/*else if (node->type == NODE_PIPE)
-		find_closest_out_cmd(node->right);*/
 }
 
 int	open_pipe(t_ast *node)
