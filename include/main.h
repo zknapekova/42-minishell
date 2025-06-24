@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/21 19:40:44 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:45:54 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,9 +167,11 @@ int			env_cmd(t_data *data, char **args);
 int			unset(t_data *data, char **args);
 int			handle_new_env_value(t_data *data, char *key_value);
 int			echo_cmd(char **input, t_data *data);
+char		*read_user_input(void);
 
 // *** signal ***
 void		sig_init(void);
+void		sig_init_child(void);
 
 // lexer
 t_token		*lexer(const char *input);

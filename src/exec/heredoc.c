@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:18:38 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/22 18:20:38 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/06/24 21:05:47 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 		return (free(limiter), close(pipe_fd[1]), close(pipe_fd[0]), -1);
 	else if (pid == 0)
 	{
+		sig_init_child();
 		if (!ft_get_file_cont(limiter, pipe_fd[1]))
 			exit(EXIT_FAILURE);
 		exit(EXIT_SUCCESS);

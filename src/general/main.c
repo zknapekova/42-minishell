@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/08 16:26:03 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:53:28 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ static void	loop(t_data *data)
 	char	*line;
 	t_token	*temp_token_list;
 
-	while (g_sigstate != SIGQUIT && g_sigstate != SIGINT)
+	while (1)
 	{
-		line = readline("minishell> ");
+		line = read_user_input();
 		if (!line)
 			break ;
 		if (*line != '\0')
@@ -61,7 +61,7 @@ static void	loop(t_data *data)
 		}
 		free(line);
 	}
-	ft_printf("The end\n");
+	ft_printf("exit\n");
 }
 
 int	main(int argc, char **argv, char **env)

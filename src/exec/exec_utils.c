@@ -68,6 +68,7 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 		}
 		if (pid == 0)
 		{
+			sig_init_child();
 			if (!execute(data, node, argv))
 				exit(EXIT_FAILURE);
 			exit(EXIT_SUCCESS);

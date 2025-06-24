@@ -3,38 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:46:37 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/04 15:54:38 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/06/24 19:28:51 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h> //sigaction
 #include "../libft/libft.h"
+#include <readline/readline.h>
+#include <signal.h> //sigaction
+#include <stdio.h>  // for readline
 
 extern sig_atomic_t	g_sigstate;
 
-void	handle_signal(int signal)
+void	handle_sigint_main(int signum)
 {
-	if (signal == SIGINT)
-	{
-		ft_printf("\nIntercepted SIGINT!\n");
-		g_sigstate = SIGINT;
-	}
-	if (signal == SIGQUIT)
-		g_sigstate = SIGQUIT;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	g_sigstate = 1;
+	(void)signum;
+}
+
+void	handle_sigquit_main(int signum)
+{
+	(void)signum;
 }
 
 // more signals are to be introduced later
 void	sig_init(void)
 {
 	struct sigaction	sa;
-	// sigset_t			block_mask[2];
+
 	ft_bzero(&sa, sizeof(sa));
-	sa.sa_handler = handle_signal;
-	// sa.sa_flags = SA_RESTART;
-	// sigemptyset(&sa.sa_mask);
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = handle_sigint_main;
 	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = handle_sigquit_main;
 	sigaction(SIGQUIT, &sa, NULL);
 }
