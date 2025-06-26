@@ -68,7 +68,7 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 		}
 		if (pid == 0)
 		{
-			sig_init_child();
+			default_int_quit();
 			if (!execute(data, node, argv))
 				exit(EXIT_FAILURE);
 			exit(EXIT_SUCCESS);
@@ -112,10 +112,12 @@ void	handle_cmds(t_data *data, t_ast *node)
 	int		backup_stdin;
 	int		backup_stdout;
 
+	ignore_int_quit();
 	backup_stdin = dup(STDIN_FILENO);
 	backup_stdout = dup(STDOUT_FILENO);
 	find_cmds(data, node);
 	dup2(backup_stdin, STDIN_FILENO);
 	dup2(backup_stdout, STDOUT_FILENO);
+	sig_init();
 	close_pipes(data, data->ast);
 }

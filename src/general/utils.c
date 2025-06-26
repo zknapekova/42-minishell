@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 19:44:37 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/24 19:55:44 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:31:12 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,10 @@ extern sig_atomic_t	g_sigstate;
 		return (readline(""));
 	}
 	return (readline("minishell> "));
+}
+int	*get_rl_active(void)
+{
+	static int	is_active;
+
+	return (&is_active);
 }

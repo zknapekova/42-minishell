@@ -15,7 +15,7 @@ BUILT_INS_DIR = src/built_ins/
 BUILT_INS_SRC = built_ins.c cd.c echo.c built_ins_utils.c
 
 SIGNAL_DIR = src/signal/
-SIGNAL_SRC = signal.c child_signal.c
+SIGNAL_SRC = signal.c child_heredoc_signal.c
 
 GENERAL_DIR = src/general/
 GENERAL_SRC = main.c error_handler.c free_memory.c init.c utils.c

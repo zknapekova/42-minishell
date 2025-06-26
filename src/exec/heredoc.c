@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:18:38 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/24 21:05:47 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/26 17:45:43 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #include <sys/wait.h>
 #include <stdio.h> // for readline
 #include <readline/readline.h>
+
+extern sig_atomic_t	g_sigstate;
 
 
 int	ft_get_file_cont(char *lim, int fd)
@@ -35,6 +37,8 @@ int	ft_get_file_cont(char *lim, int fd)
 	while (1)
 	{
 		line = readline("> ");
+		if (g_sigstate)
+			return (free(line), free(limiter), close(fd), 0);
 		if (!line)
 		{
 			ft_eprintf("bash: warning: here-document delimited by end-of-file (wanted `%s')\n", lim);
@@ -44,7 +48,7 @@ int	ft_get_file_cont(char *lim, int fd)
 		if (!ft_strcmp(limiter, line2))
 			break ;
 		if (write(fd, line2, ft_strlen(line2)) == -1)
-			return (free(line), free(line2), free(limiter), close(fd), 0);;
+			return (free(line), free(line2), free(limiter), close(fd), 0);
 		free(line);
 	}
 	return (free(line), free(lim), free(limiter), close(fd), 1);
@@ -57,6 +61,8 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 	int		pipe_fd[2];
 	int		status;
 
+	g_sigstate = 0;
+	ignore_int_quit();
 	limiter = get_redir_target_str(data, redir->target);
 	if (!limiter)
 		return (error_handler("No limit word"), -1);
@@ -67,16 +73,37 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 		return (free(limiter), close(pipe_fd[1]), close(pipe_fd[0]), -1);
 	else if (pid == 0)
 	{
-		sig_init_child();
+		sig_init_heredoc();
 		if (!ft_get_file_cont(limiter, pipe_fd[1]))
+		{
+			if (g_sigstate)
+			{
+				// write(STDOUT_FILENO, "\n", 1);
+				// rl_replace_line("", 0);
+				// rl_on_new_line();
+				// rl_redisplay();
+				exit (130);
+			}
+				
 			exit(EXIT_FAILURE);
+		}
+			
 		exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, &status, 0);
+	sig_init();
 	if (WIFEXITED(status))
 	{
 		if (WEXITSTATUS(status) == 0)
 			node->cmd_data->fd_pipe_out = pipe_fd[0];
+		else if (WEXITSTATUS(status) == 130)
+		{
+			g_sigstate = 1;
+			// write(STDOUT_FILENO, "\n", 1);
+			// rl_replace_line("", 0);
+			// rl_on_new_line();
+			// rl_redisplay();
+		}
 		else
 			close(pipe_fd[0]);
 		return (free(limiter), close(pipe_fd[1]), WEXITSTATUS(status));

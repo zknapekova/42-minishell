@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/24 19:53:28 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/25 20:02:48 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ static void	loop(t_data *data)
 
 	while (1)
 	{
-		line = read_user_input();
+		// *get_rl_active() = 1;
+		line = readline("minishell> ");
+		// *get_rl_active() = 0;
 		if (!line)
 			break ;
 		if (*line != '\0')
