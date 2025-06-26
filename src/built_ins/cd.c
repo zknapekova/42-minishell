@@ -29,21 +29,21 @@ int	dir_check(char *path, char *cmd)
 		if (!access(path, F_OK))
 		{
 			if (access(path, R_OK) == 0)
-				return (ft_eprintf("minishell:%s %s: Not a directory\n", cmd, path), 0);
+				return (ft_eprintf("minishell:%s %s: Not a directory\n", cmd, path), EXIT_FAILURE);
 			else if (!access(path, R_OK) && chdir(path) == -1)
-				return (error_handler(strerror(errno)), 0);
+				return (error_handler(strerror(errno)), EXIT_FAILURE);
 		}
 		else
-			return (ft_eprintf("minishell:%s %s: No such file or directory\n", cmd, path), 0);
+			return (ft_eprintf("minishell:%s %s: No such file or directory\n", cmd, path), EXIT_FAILURE);
 	}
 	else
 	{
 		if (access(path, X_OK) == -1)
-			return (ft_eprintf("minishell:%s %s: Permission denied\n", cmd, path), closedir (dir), 0);
+			return (ft_eprintf("minishell:%s %s: Permission denied\n", cmd, path), closedir (dir), EXIT_FAILURE);
 		else if (!access(path, X_OK) && chdir(path) == -1)
-			return (error_handler(strerror(errno)), closedir (dir), 0);
+			return (error_handler(strerror(errno)), closedir (dir), EXIT_FAILURE);
 	}
-	return (closedir (dir), 1);
+	return (closedir (dir), EXIT_SUCCESS);
 }
 
 int	update_pwds(t_data *data)
@@ -123,7 +123,7 @@ int	cd(char **input, t_data *data)
 
 	path = NULL;
 	if (input[2])
-		return (error_handler("minishell: cd: too many arguments"), 0);
+		return (error_handler("minishell: cd: too many arguments"), EXIT_FAILURE);
 	if (!input[1])
 		path = handle_node(data, "HOME", "minishell: cd: HOME not set");
 	else
@@ -142,9 +142,9 @@ int	cd(char **input, t_data *data)
 	if (path)
 	{
 		status = dir_check(path, " cd:");
-		if (status == 1)
+		if (status == EXIT_SUCCESS)
 			update_pwds(data);
 		return (free(path), status);
 	}
-	return (free(path), 0);
+	return (free(path), EXIT_SUCCESS);
 }

@@ -70,7 +70,10 @@ int	echo_cmd(char **input, t_data *data)
 	int		i;
 
 	if (arr_size(input) == 1)
-		return (write(1, "\n", 1));
+	{
+		write(1, "\n", 1);
+		return (EXIT_SUCCESS);
+	}
 	i = 1;
 	if (!ft_strcmp(input[1], "-n"))
 		i = 2;
@@ -81,9 +84,9 @@ int	echo_cmd(char **input, t_data *data)
 		else
 			result = ft_strdup(input[i]);
 		if (!result)
-			return (error_handler(strerror(errno)), 0);
+			return (error_handler(strerror(errno)), EXIT_FAILURE);
 		if (write(1, result, ft_strlen(result)) == -1)
-			return (error_handler(strerror(errno)), free(result), 0);
+			return (error_handler(strerror(errno)), free(result), EXIT_FAILURE);
 		if (ft_strlen(result) > 0 && input[i + 1])
 			write(1, " ", 1);
 		free(result);
@@ -92,9 +95,9 @@ int	echo_cmd(char **input, t_data *data)
 	if (ft_strcmp(input[1], "-n") != 0)
 	{
 		if (write(1, "\n", 1) == -1)
-			return (error_handler(strerror(errno)), 0);
+			return (error_handler(strerror(errno)), EXIT_FAILURE);
 	}
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 char	*extend_env_value_nf(t_data *data, char *key_value)

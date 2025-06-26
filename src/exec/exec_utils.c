@@ -11,37 +11,38 @@
 int	execute(t_data *data, t_ast *node, char **argv)
 {
 	char	**env;
+	int		status;
 
 //	ft_printf("%s pipe input: %d pipe output: %d\n", argv[0], node->cmd_data->fd_pipe_out, node->cmd_data->fd_pipe_in);
 	if (!ft_redirect(node))
-		return (0);
+		return EXIT_FAILURE;
 	close_pipes(data, data->ast);
 	if (check_built_ins(argv[0]))
 	{
-		if (!execute_built_cmds(argv, data))
-			return (0);
-		return (1);
+		execute_built_cmds(argv, data, &status);
+		return (status);
 	}
 	else
 	{
 		node->cmd_data->cmd_path = get_cmd_path(argv[0], data);
 		if (!node->cmd_data->cmd_path)
-			return (0);
+			return EXIT_FAILURE;
 		env = create_env_arr(data);
 		if (execve(node->cmd_data->cmd_path, argv, env) == -1)
-			return (error_handler(strerror(errno)), free_argv(argv), 0);
+			return (error_handler(strerror(errno)), free_argv(argv), EXIT_FAILURE);
 	}
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 
 int	process_cmds_redirs(t_data *data, t_ast *node)
 {
-	char	**argv;
-	t_redir	*redir;
-	int		pid;
-	int status;
+	char		**argv;
+	t_redir		*redir;
+	int			pid;
+	int 		status;
 
+	status = EXIT_SUCCESS;
 	if (node->cmd_data->redirs)
 	{
 		redir = node->cmd_data->redirs;
@@ -56,32 +57,43 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 			return (EXIT_FAILURE);
 		if (check_built_ins(argv[0]) && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_pipe_out == -1)
 		{
-			if (!execute_built_cmds(argv, data))
-				return (EXIT_FAILURE);
-			return (EXIT_SUCCESS);
+			execute_built_cmds(argv, data, &status);
+			return (status);
 		}
 		pid = fork();
 		if (pid < 0)
 		{
 			error_handler(strerror(errno));
-			return (EXIT_FAILURE); //TODO CHECK if it shouldn't return pid
+			status = EXIT_FAILURE;
+			return (status); //TODO CHECK if it shouldn't return pid
 		}
 		if (pid == 0)
 		{
-			if (!execute(data, node, argv))
-				exit(EXIT_FAILURE);
-			exit(EXIT_SUCCESS);
+			status = execute(data, node, argv);
+			exit(status);
 		}
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
 		free_argv(argv);
 	}
-	return (EXIT_SUCCESS);
+	return (status);
 }
 
 void	find_cmds(t_data *data, t_ast *node)
 {
+	static int status;
+
 	if (!node)
 		return ;
+	if (node->type == NODE_OR)
+	{
+		find_cmds(data, node->left);
+		if (status == EXIT_SUCCESS)
+			return ;
+		find_cmds(data, node->right);
+		return ;
+	}
 	if (node->type == NODE_PIPE)
 	{
 		if (!open_pipe(node))
@@ -89,8 +101,8 @@ void	find_cmds(t_data *data, t_ast *node)
 	}
 	if (node->type == NODE_COMMAND && node->cmd_data)
 	{
-		if (process_cmds_redirs(data, node) != 0)
-			return ;
+		status = process_cmds_redirs(data, node);
+//		ft_printf("status: %d\n", status);
 //		ft_printf("fd_pipe_in: %d fd_pipe_out: %d\n", node->cmd_data->fd_pipe_in, node->cmd_data->fd_pipe_out);
 		if (node->cmd_data->fd_pipe_in > 1)
 			close(node->cmd_data->fd_pipe_in);
@@ -100,6 +112,8 @@ void	find_cmds(t_data *data, t_ast *node)
 			close(node->cmd_data->fd_file_in);
 		if (node->cmd_data->fd_file_out > 1)
 			close(node->cmd_data->fd_file_out);
+		if (status != EXIT_SUCCESS)
+			return ;
 	}
 	find_cmds(data, node->left);
 	find_cmds(data, node->right);
