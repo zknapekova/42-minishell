@@ -29,7 +29,7 @@ int	execute(t_data *data, t_ast *node, char **argv)
 			return (0);
 		env = create_env_arr(data);
 		if (execve(node->cmd_data->cmd_path, argv, env) == -1)
-			return (strerror(errno), free_argv(argv), 0);
+			return (error_handler(strerror(errno)), free_argv(argv), 0);
 	}
 	return (1);
 }
