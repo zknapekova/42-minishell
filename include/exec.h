@@ -33,7 +33,7 @@ char	*get_exec_path(const char *cmd, t_data *data);
 
 int		echo_cmd(char **input, t_data *data);
 int		cd(char **input, t_data *data);
-int		execute_built_cmds(char **argv, t_data *data);
+void		execute_built_cmds(char **argv, t_data *data, int *status);
 int		check_built_ins(char *cmd);
 int		ft_redirect(t_ast *node);
 int		handle_redir_files(t_redir *redir, t_data *data, t_ast *node);
