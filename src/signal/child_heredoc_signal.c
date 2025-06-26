@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 18:58:29 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/26 17:02:44 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/26 19:01:11 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ extern sig_atomic_t	g_sigstate;
 
 void	handle_heredoc_signal(int signum)
 {
-	if (signum == SIGINT || signum == SIGQUIT)
+	if (signum == SIGINT)
 	{
 		g_sigstate = 1;
 		rl_replace_line("", 0);
@@ -50,6 +50,7 @@ void sig_init_heredoc(void)
 	sa.sa_flags = 0;
 	sa.sa_handler = handle_heredoc_signal;
 	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
 }
 

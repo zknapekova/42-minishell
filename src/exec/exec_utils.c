@@ -41,6 +41,7 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 	t_redir	*redir;
 	int		pid;
 	int status;
+	int status2;
 
 	if (node->cmd_data->redirs)
 	{
@@ -73,7 +74,16 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 				exit(EXIT_FAILURE);
 			exit(EXIT_SUCCESS);
 		}
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status2, 0);
+		print_nl_after_sig(status2);
+		// if (WIFSIGNALED(status2))
+		// {
+		// 	int sig = WTERMSIG(status2);
+		// 	if (sig == SIGINT)
+		// 		write(1, "\n", 1);
+		// 	else if (sig == SIGQUIT)
+		// 		write(1, "Quit: 3\n", 8); // Mimic Bash behavior
+		// }
 		free_argv(argv);
 	}
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:15:04 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/07 20:00:52 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:26:31 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int		longer_strlen(char *str1, char *str2);
 t_file	*sorted_insert(t_file *head, t_file *new_node);
 t_file	*sort_file_list(t_file *head);
 
+// signal in exec
+void	print_nl_after_sig(int status);
 
 
 #endif

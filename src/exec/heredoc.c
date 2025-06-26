@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:18:38 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/26 17:45:43 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/26 18:38:02 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,9 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 	{
 		sig_init_heredoc();
 		if (!ft_get_file_cont(limiter, pipe_fd[1]))
-		{
-			if (g_sigstate)
-			{
-				// write(STDOUT_FILENO, "\n", 1);
-				// rl_replace_line("", 0);
-				// rl_on_new_line();
-				// rl_redisplay();
-				exit (130);
-			}
-				
+
 			exit(EXIT_FAILURE);
-		}
+	
 			
 		exit(EXIT_SUCCESS);
 	}
@@ -96,14 +87,7 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 	{
 		if (WEXITSTATUS(status) == 0)
 			node->cmd_data->fd_pipe_out = pipe_fd[0];
-		else if (WEXITSTATUS(status) == 130)
-		{
-			g_sigstate = 1;
-			// write(STDOUT_FILENO, "\n", 1);
-			// rl_replace_line("", 0);
-			// rl_on_new_line();
-			// rl_redisplay();
-		}
+
 		else
 			close(pipe_fd[0]);
 		return (free(limiter), close(pipe_fd[1]), WEXITSTATUS(status));
