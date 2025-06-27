@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:50 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/07 22:19:28 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/27 23:12:57 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	**globe_argv(char **argv)
 			return (error_handler("Error globbing argv"), \
 			free_argv(argv), NULL);
 		new_argv = get_unglobbed_argv(new_argv, argv[i], match_found);
-		if (!new_argv)
+		if (!new_argv && argv[i][0])
 			return (error_handler("Error getting uglobbed argv"), \
 			free_argv(argv), NULL);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:18:38 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/27 16:20:47 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:31:55 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 	int		pipe_fd[2];
 	int		status;
 
-	ignore_int_quit();
+	sig_ignore_int_quit();
 	limiter = get_redir_target_str(data, redir->target);
 	if (!limiter)
 		return (error_handler("No limit word"), -1);

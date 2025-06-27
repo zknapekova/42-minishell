@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 18:58:29 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/27 15:47:04 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:31:55 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void sig_init_heredoc(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
-void	ignore_int_quit(void)
+void	sig_ignore_int_quit(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);

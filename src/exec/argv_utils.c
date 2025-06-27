@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:55:18 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/07 22:08:57 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/27 23:13:23 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ char	*get_arg_str(t_data *data, t_arg **args)
 	while ((*args)->value)
 	{
 		tmp_str = get_tmp_str(data, args);
+		
 		if (!tmp_str)
 			return (error_handler("Error getting arg_str"), NULL);
 		arg_str = ft_strjoin_ed(arg_str, tmp_str, ft_strlen(tmp_str));

@@ -122,7 +122,7 @@ void	handle_cmds(t_data *data, t_ast *node)
 	int		backup_stdin;
 	int		backup_stdout;
 
-	ignore_int_quit();
+	sig_ignore_int_quit();
 	backup_stdin = dup(STDIN_FILENO);
 	backup_stdout = dup(STDOUT_FILENO);
 	find_cmds(data, node);
