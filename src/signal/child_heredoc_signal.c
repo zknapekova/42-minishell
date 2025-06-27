@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 18:58:29 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/26 19:01:11 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:47:04 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,10 @@
 #include <signal.h> //sigaction
 #include <stdio.h>  // for readline
 
-extern sig_atomic_t	g_sigstate;
-
 void	handle_heredoc_signal(int signum)
 {
 	if (signum == SIGINT)
 	{
-		g_sigstate = 1;
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();

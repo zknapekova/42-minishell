@@ -6,23 +6,20 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:18:38 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/26 18:38:02 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:20:47 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
-#include "libft.h"
 #include "env_vars.h"
 #include "exec.h"
-#include <stdlib.h> //for NULL
+#include "libft.h"
+#include "main.h"
 #include <errno.h>
+#include <readline/readline.h>
+#include <stdio.h>  // for readline
+#include <stdlib.h> //for NULL
 #include <string.h>
 #include <sys/wait.h>
-#include <stdio.h> // for readline
-#include <readline/readline.h>
-
-extern sig_atomic_t	g_sigstate;
-
 
 int	ft_get_file_cont(char *lim, int fd)
 {
@@ -37,11 +34,10 @@ int	ft_get_file_cont(char *lim, int fd)
 	while (1)
 	{
 		line = readline("> ");
-		if (g_sigstate)
-			return (free(line), free(limiter), close(fd), 0);
 		if (!line)
 		{
-			ft_eprintf("bash: warning: here-document delimited by end-of-file (wanted `%s')\n", lim);
+			ft_eprintf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
+				lim);
 			break ;
 		}
 		line2 = ft_strjoin(line, "\n");
@@ -61,7 +57,6 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 	int		pipe_fd[2];
 	int		status;
 
-	g_sigstate = 0;
 	ignore_int_quit();
 	limiter = get_redir_target_str(data, redir->target);
 	if (!limiter)
@@ -75,10 +70,7 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 	{
 		sig_init_heredoc();
 		if (!ft_get_file_cont(limiter, pipe_fd[1]))
-
 			exit(EXIT_FAILURE);
-	
-			
 		exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, &status, 0);
@@ -87,7 +79,6 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 	{
 		if (WEXITSTATUS(status) == 0)
 			node->cmd_data->fd_pipe_out = pipe_fd[0];
-
 		else
 			close(pipe_fd[0]);
 		return (free(limiter), close(pipe_fd[1]), WEXITSTATUS(status));

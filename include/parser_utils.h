@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 21:33:08 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/21 16:43:31 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:07:51 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int				is_token_append(t_token *tokens);
 int				is_token_heredoc(t_token *tokens);
 int				is_token_pipe(t_token *tokens);
 void			advance_token(t_token **tokens);
-void			append_arg(t_arg **head, const char *value, \
-	t_quote_type qtype, t_word_join wjoin);
+void			append_arg(t_arg **head, const char *value, t_quote_type qtype,
+					t_word_join wjoin);
 void			free_args(t_arg *head);
 t_cmd_data		*init_cmd_data(t_redir *leading_redir);
 void			append_redir(t_redir **redir_list, t_redir *new_redir);
@@ -50,5 +50,6 @@ const char		*quote_type_to_str(t_quote_type type);
 t_redir			*parse_redirection(t_token **tokens);
 t_redir			*collect_redirs(t_token **tokens);
 t_redir_type	get_redir_type(t_token **tokens);
+int				check_subshell_redirs(t_ast *node);
 
 #endif

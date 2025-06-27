@@ -6,31 +6,30 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:54:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/08 16:26:52 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:48:52 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h" // for ft_strncpm
 #include "main.h"
 #include "token.h"
-#include "libft.h" // for ft_strncpm
 // #include <aio.h> // defines size_t type
-#include <stdlib.h>  // here for the NULL and size_t definitions
 #include <signal.h> // for the SIG type macro
+#include <stdlib.h> // here for the NULL and size_t definitions
 
-// the lexer separates the command line into individual tokens
-// returns a linked list of tokens (*tokens) with elements of the t_token type
-extern sig_atomic_t	g_sigstate;
-static int			handle_word(const char *input, \
-	size_t *pos, t_token **tokens);
-static int			handle_operator(const char *input, \
-	size_t *pos, t_token **tokens);
+static int			handle_word(const char *input, size_t *pos,
+						t_token **tokens);
+static int			handle_operator(const char *input, size_t *pos,
+						t_token **tokens);
 static t_word_join	word_join_or_split(char next_char);
 static t_quote_type	get_quote_type(char current_char);
 
+// the lexer separates the command line into individual tokens
+// returns a linked list of tokens (*tokens) with elements of the t_token type
 t_token	*lexer(const char *input)
 {
-	t_token			*tokens;
-	size_t			pos;
+	t_token	*tokens;
+	size_t	pos;
 
 	tokens = NULL;
 	pos = 0;
@@ -62,7 +61,7 @@ static int	handle_operator(const char *input, size_t *pos, t_token **tokens)
 	type = match_operator(input, pos);
 	if (type == TOKEN_INVALID)
 	{
-		ft_eprintf("Syntax error near unexpected character: '%c'\n", \
+		ft_eprintf("Syntax error near unexpected character: '%c'\n",
 			input[*pos]);
 		return (0);
 	}
@@ -105,8 +104,8 @@ static t_word_join	word_join_or_split(char next_char)
 {
 	t_word_join	word_join;
 
-	if (next_char == '\'' || next_char == '"' \
-		|| ft_isalnum(next_char) || next_char == '$' || next_char == '*')
+	if (next_char == '\'' || next_char == '"' || ft_isalnum(next_char)
+		|| next_char == '$' || next_char == '*')
 		word_join = W_JOIN;
 	else
 		word_join = W_SPLIT;

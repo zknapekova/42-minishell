@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/25 20:02:48 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/27 16:19:45 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-
-volatile sig_atomic_t	g_sigstate;
-
 static void	loop(t_data *data)
 {
 	char	*line;
@@ -34,9 +31,7 @@ static void	loop(t_data *data)
 
 	while (1)
 	{
-		// *get_rl_active() = 1;
 		line = readline("minishell> ");
-		// *get_rl_active() = 0;
 		if (!line)
 			break ;
 		if (*line != '\0')
@@ -50,7 +45,7 @@ static void	loop(t_data *data)
 			}
 			temp_token_list = data->tokens;
 			data->ast = parser(&temp_token_list);
-			if (!data->ast)
+			if (!data->ast || check_subshell_redirs(data->ast))
 			{
 				free_token_list(&(data->tokens));
 				free(line);

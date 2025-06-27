@@ -6,7 +6,8 @@ LEXER_SRC = lexer.c lexer_utils.c
 
 PARSER_DIR = src/parser/
 PARSER_SRC = token_utils.c parser.c parser2.c token_check.c token_check2.c parser_utils.c parser_utils2.c \
-	parser_utils3.c parser_arg_utils.c parser_redir_utils.c print_ast.c print_ast_utils.c
+	parser_utils3.c parser_arg_utils.c parser_redir_utils.c print_ast.c print_ast_utils.c \
+	check_subshell_redirs.c
 
 ENV_DIR = src/env/
 ENV_SRC = env_vars_ops.c ll_ops.c utils.c env_vars_utils.c validators.c env_vars_handler.c
@@ -18,7 +19,7 @@ SIGNAL_DIR = src/signal/
 SIGNAL_SRC = signal.c child_heredoc_signal.c
 
 GENERAL_DIR = src/general/
-GENERAL_SRC = main.c error_handler.c free_memory.c init.c utils.c
+GENERAL_SRC = main.c error_handler.c free_memory.c init.c
 
 EXEC_DIR = src/exec/
 EXEC_SRC = argv_utils.c redir_utils.c heredoc.c get_cmd.c globbing.c globbing_utils.c globbing_utils2.c \

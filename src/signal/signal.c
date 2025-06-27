@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:46:37 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/25 19:59:17 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/27 15:47:34 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include <signal.h> //sigaction
 #include <stdio.h>  // for readline
 #include "main.h"
-
-extern sig_atomic_t	g_sigstate;
 
 void	handle_sigint_main(int signum)
 {
