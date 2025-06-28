@@ -44,7 +44,7 @@ char	*escape_wildcard(char *str);
 char	*get_path_from_env(const char *cmd, t_data *data);
 char	*handle_path(char *path, int free_path, int folder, int existence_check);
 int		get_fd_file(char *path, t_redir_type type);
-char	*get_cmd_path(char *cmd, t_data *data);
+char	*get_cmd_path(char *cmd, t_data *data, int *status);
 int		arr_size(char **arr);
 void	free_array(char **array);
 int		open_pipe(t_ast *node);

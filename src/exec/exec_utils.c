@@ -41,9 +41,9 @@ int	execute(t_data *data, t_ast *node, char **argv)
 	}
 	else
 	{
-		node->cmd_data->cmd_path = get_cmd_path(argv[0], data);
+		node->cmd_data->cmd_path = get_cmd_path(argv[0], data, &status);
 		if (!node->cmd_data->cmd_path)
-			return EXIT_FAILURE;
+			return (status);
 		env = create_env_arr(data);
 		if (execve(node->cmd_data->cmd_path, argv, env) == -1)
 			return (error_handler(strerror(errno)), free_argv(argv), EXIT_FAILURE);

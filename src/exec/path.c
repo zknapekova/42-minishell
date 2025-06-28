@@ -89,7 +89,7 @@ char	**get_paths(t_data *data)
 }
 
 // function to find command path or check if path to command is not already specified
-char	*get_cmd_path(char *cmd, t_data *data)
+char	*get_cmd_path(char *cmd, t_data *data, int *status)
 {
 	char		*com2;
 	int			j;
@@ -97,27 +97,32 @@ char	*get_cmd_path(char *cmd, t_data *data)
 	char 		**paths;
 
 	if (is_dir(cmd))
-		return (NULL);
+		return (*status = 126, NULL);
 	if (!access(cmd, F_OK) && !access(cmd, X_OK) && !is_dir(cmd))
 		return (ft_strdup(cmd));
+	else if (!access(cmd, F_OK) && access(cmd, X_OK) != 0 && !is_dir(cmd))
+		return (*status = 126, ft_eprintf("minishell: %s: Permission denied\n", cmd), NULL);
 	com2 = ft_strjoin("/", cmd);
 	if (!com2)
-		return (error_handler("malloc error"), NULL);
+		return (error_handler("malloc error"), *status = 1, NULL);
 	paths = get_paths(data);
 	if (!paths)
-		return (NULL);
+		return (*status = 1, NULL);
 	j = -1;
 	while (paths[++j])
 	{
 		path = ft_strjoin(paths[j], com2);
 		if (!path)
-			return (error_handler("malloc error"), free (com2), NULL);
-		if (access(path, X_OK) == 0)
+			return (error_handler("malloc error"), free (com2), *status = 1, NULL);
+		if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
 			return (free(com2), free(paths), path);
+		else if (access(path, F_OK) == 0 && access(path, X_OK) != 0)
+			return (free(com2), free(paths), *status = 126, path);
 		free(path);
 	}
 	free(com2);
 	free(paths);
+	*status = 127;
 	if (get_first_ind(cmd, '/', 0) != -1)
 		return (ft_eprintf("minishell: %s: No such file or directory\n", cmd), NULL);
 	return (ft_eprintf("%s: command not found\n", cmd), NULL);
