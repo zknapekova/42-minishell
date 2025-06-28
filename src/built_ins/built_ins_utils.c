@@ -8,7 +8,8 @@ void	execute_built_cmds(char **argv, t_data *data, int *status)
 	if (get_first_ind(argv[0], '/', 0) != -1)
 	{
 		*status = EXIT_FAILURE;
-		error_handler("Built-in command");
+		error_handler("Built-in command should not contain path");
+		return ;
 	}
 	if (!ft_strcmp(argv[0], "echo"))
 		*status = echo_cmd(argv, data);
@@ -21,7 +22,7 @@ void	execute_built_cmds(char **argv, t_data *data, int *status)
 	else if (!ft_strcmp(argv[0], "pwd"))
 		*status = pwd(argv);
 	else if (!ft_strcmp(argv[0], "export"))
-		*status = handle_new_env_value(data, argv[1]);
+		*status = export(data, argv[1]);
 }
 
 int	check_built_ins(char *cmd)

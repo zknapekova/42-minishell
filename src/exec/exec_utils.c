@@ -8,6 +8,23 @@
 #include <errno.h>
 #include <string.h>
 
+
+int	update_last_status(t_data *data, int status)
+{
+	t_env_node	*node;
+
+	node = search_env_list(data, "?");
+	node->value = ft_itoa(status);
+	if (!node->value)
+		return (error_handler("malloc error: updating $? failed"), 0);
+	free(node->key_value);
+	node->key_value = NULL;
+	node->key_value = ft_strjoin(node->key, node->value);
+	if (!node->key_value)
+		return (error_handler("malloc error: updating $? failed"), 0);
+	return (1);
+}
+
 int	execute(t_data *data, t_ast *node, char **argv)
 {
 	char	**env;
@@ -89,9 +106,11 @@ void	find_cmds(t_data *data, t_ast *node)
 	if (node->type == NODE_OR)
 	{
 		find_cmds(data, node->left);
+		update_last_status(data, status);
 		if (status == EXIT_SUCCESS)
 			return ;
 		find_cmds(data, node->right);
+		update_last_status(data, status);
 		return ;
 	}
 	if (node->type == NODE_PIPE)
@@ -112,6 +131,7 @@ void	find_cmds(t_data *data, t_ast *node)
 			close(node->cmd_data->fd_file_in);
 		if (node->cmd_data->fd_file_out > 1)
 			close(node->cmd_data->fd_file_out);
+		update_last_status(data, status);
 		if (status != EXIT_SUCCESS)
 			return ;
 	}

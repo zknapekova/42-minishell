@@ -12,6 +12,7 @@
 
 #include "../include/main.h"
 #include "../libft/libft.h"
+#include "../include/env_vars.h"
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
@@ -50,5 +51,7 @@ int	init_env(char **env, t_data *data)
 		last->next = node;
 		env++;
 	}
+	if (!add_env(data, ft_strdup("?=0")))
+		return (0);
 	return (1);
 }

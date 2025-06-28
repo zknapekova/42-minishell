@@ -45,7 +45,7 @@ char	*extend_env_value(t_data *data, char *key_value)
 		new_key_value2 = NULL;
 		dollar_ind = get_first_ind(key_value, '$', 0);
 		var_to_extend = ft_substr(key_value, dollar_ind + 1, \
-			get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
+				get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
 		if (!var_to_extend)
 			return (free (key_value), NULL);
 		new_key_value = echo_get_key_value(var_to_extend, data, key_value);
@@ -110,7 +110,7 @@ char	*extend_env_value_nf(t_data *data, char *key_value)
 	new_key_value2 = NULL;
 	dollar_ind = get_first_ind(key_value, '$', 0);
 	var_to_extend = ft_substr(key_value, dollar_ind + 1, \
-		get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
+			get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
 	if (!var_to_extend)
 		return (NULL);
 	new_key_value = get_key_value_nf(var_to_extend, data, key_value);

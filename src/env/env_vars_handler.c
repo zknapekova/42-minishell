@@ -52,19 +52,19 @@ int	update_env_list(char *key_value, int eq_ind, t_data *data, int dollar_ind)
 
 	var_name = ft_substr(key_value, 0, eq_ind);
 	if (!var_name)
-		return (error_handler("malloc error"), EXIT_FAILURE);
+		return (error_handler("malloc error"), 0);
 	node_to_update = search_env_list(data, var_name);
 	if (dollar_ind == -1)
 	{
 		if (!handle_new_node(node_to_update, data, key_value))
-			return (EXIT_FAILURE);
+			return (0);
 	}
 	else
 	{
 		if (!export_extend_env_value(data, key_value, var_name, node_to_update))
-			return (free(var_name), EXIT_FAILURE);
+			return (free(var_name), 0);
 	}
-	return (free(var_name), EXIT_SUCCESS);
+	return (free(var_name), 1);
 }
 
 //This function should be called when prompt contains "export"
@@ -77,18 +77,18 @@ int	handle_new_env_value(t_data *data, char *key_value)
 	if (eq_ind == -1 || (eq_ind != -1 && !validate_env_var_name(key_value, \
 			eq_ind)))
 		return (ft_eprintf("minishell: export: '%s': not a valid \
-identifier\n", key_value), EXIT_FAILURE);
+identifier\n", key_value), 0);
 	if (dollar_ind != -1 && dollar_ind < eq_ind)
 	{
 		key_value = extend_var_name(dollar_ind, eq_ind, data, key_value);
 		if (!key_value)
-			return (EXIT_FAILURE);
+			return (0);
 		update_dollar_eq_ind(&dollar_ind, &eq_ind, 0, key_value);
 	}
 	else
 		key_value = ft_strdup(key_value);
 	if (!validate_env_var_name(key_value, get_first_ind(key_value, '=', 0)))
 		return (ft_eprintf("minishell: export: '%s': not a valid \
-identifier\n", key_value), EXIT_FAILURE);
+identifier\n", key_value), 0);
 	return (update_env_list(key_value, eq_ind, data, dollar_ind));
 }

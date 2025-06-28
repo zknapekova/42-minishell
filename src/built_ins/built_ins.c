@@ -15,14 +15,17 @@ int	print_env_list(t_data *data)
 		temp = data->head;
 		while (temp)
 		{
-			print_key_value = add_new_line(temp->key_value);
-			if (!print_key_value)
-				return (error_handler(strerror(errno)), 0);
-			if (write(1, print_key_value, ft_strlen(print_key_value)) == -1)
-				return (error_handler(strerror(errno)), free(print_key_value), 0);
+			if (ft_strncmp(temp->key_value, "?=", 2) != 0)
+			{
+				print_key_value = add_new_line(temp->key_value);
+				if (!print_key_value)
+					return (error_handler(strerror(errno)), 0);
+				if (write(1, print_key_value, ft_strlen(print_key_value)) == -1)
+					return (error_handler(strerror(errno)), free(print_key_value), 0);
+				free(print_key_value);
+				print_key_value = NULL;
+			}
 			temp = temp->next;
-			free(print_key_value);
-			print_key_value = NULL;
 		}
 	}
 	return (1);
@@ -31,10 +34,10 @@ int	print_env_list(t_data *data)
 int	export(t_data *data, char *input)
 {
 	if (input && !handle_new_env_value(data, input))
-		return (0);
+		return (EXIT_FAILURE);
 	if (!input && !print_env_list(data))
-		return (0);
-	return (1);
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	env_cmd(t_data *data, char **argv)
@@ -76,7 +79,8 @@ int	unset(t_data *data, char **args)
 		i = 0;
 		while (args[i])
 		{
-			delete_node(data, args[i]);
+			if (args[i][0] != '?')
+				delete_node(data, args[i]);
 			i++;
 		}
 	}
