@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:00:36 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/04 19:07:21 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/28 22:40:50 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ char	*get_redir_target_str(t_data *data, t_redir_target *target)
 {
 	char			*target_str;
 	char			*tmp_str;
+	t_redir_target	*head;
 
 	target_str = NULL;
-	if (!target)
+	if (!target || !target->value)
 		return (NULL);
+	head = target;
 	while (target && target->value)
 	{
 		if (get_first_ind(target->value, '$', 0) != -1 \
@@ -44,6 +46,8 @@ char	*get_redir_target_str(t_data *data, t_redir_target *target)
 			return (error_handler("Error getting target_str"), NULL);
 		target = target->next;
 	}
+	if (!target_str[0])
+		return(free (target_str), ft_eprintf("minishell: %s: ambiguous redirect\n", head->value), NULL);
 	target_str = globe_redir_target(target_str);
 	return (target_str);
 }

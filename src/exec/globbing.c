@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:50 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/27 23:12:57 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/28 22:16:39 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	**get_unglobbed_argv(char **new_argv, char *argv, t_bool match_found)
 			new_arg = rm_escape_char(argv);
 		else
 			new_arg = ft_strdup(argv);
-		if (!new_arg)
+		if (!new_arg && argv[0])
 			return (free_argv(new_argv), NULL);
 		new_argv = append_str_to_array(new_argv, new_arg);
 		free(new_arg);
