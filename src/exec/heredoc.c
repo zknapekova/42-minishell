@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:18:38 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/27 16:31:55 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:35:34 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,11 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 	{
 		sig_init_heredoc();
 		if (!ft_get_file_cont(limiter, pipe_fd[1]))
+		{
+			free_all(data);
 			exit(EXIT_FAILURE);
+		}
+		free_all(data);
 		exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, &status, 0);

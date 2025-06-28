@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 18:22:27 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/26 18:44:58 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:21:06 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ void	print_nl_after_sig(int status)
 		if (sig == SIGINT)
 			write(1, "\n", 1);
 		else if (sig == SIGQUIT)
-			write(1, "Quit \n", 6); // Mimic Bash behavior
+			write(1, "Quit \n", 6);
 	}
 }

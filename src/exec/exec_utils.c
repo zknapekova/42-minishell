@@ -71,19 +71,18 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 		{
 			default_int_quit();
 			if (!execute(data, node, argv))
+			{
+				free(argv);
+				free_all(data);
 				exit(EXIT_FAILURE);
+			}
+			free(argv);
+			free_all(data);
 			exit(EXIT_SUCCESS);
 		}
 		waitpid(pid, &status2, 0);
 		print_nl_after_sig(status2);
-		// if (WIFSIGNALED(status2))
-		// {
-		// 	int sig = WTERMSIG(status2);
-		// 	if (sig == SIGINT)
-		// 		write(1, "\n", 1);
-		// 	else if (sig == SIGQUIT)
-		// 		write(1, "Quit: 3\n", 8); // Mimic Bash behavior
-		// }
+	
 		free_argv(argv);
 	}
 	return (EXIT_SUCCESS);
