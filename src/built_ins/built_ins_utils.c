@@ -3,26 +3,26 @@
 #include "env_vars.h"
 #include "exec.h"
 
-int	execute_built_cmds(char **argv, t_data *data)
+void	execute_built_cmds(char **argv, t_data *data, int *status)
 {
-	int		status;
-
-	status = 1;
 	if (get_first_ind(argv[0], '/', 0) != -1)
-		return (error_handler("Built-in command"), 0);
+	{
+		*status = EXIT_FAILURE;
+		error_handler("Built-in command should not contain path");
+		return ;
+	}
 	if (!ft_strcmp(argv[0], "echo"))
-		status = echo_cmd(argv, data);
+		*status = echo_cmd(argv, data);
 	else if (!ft_strcmp(argv[0], "env"))
-		status = env_cmd(data, argv);
+		*status = env_cmd(data, argv);
 	else if (!ft_strcmp(argv[0], "unset"))
-		status = unset(data, argv);
+		*status = unset(data, argv);
 	else if (!ft_strcmp(argv[0], "cd"))
-		status = cd(argv, data);
+		*status = cd(argv, data);
 	else if (!ft_strcmp(argv[0], "pwd"))
-		status = pwd(argv);
+		*status = pwd(argv);
 	else if (!ft_strcmp(argv[0], "export"))
-		status = handle_new_env_value(data, argv[1]);
-	return (status);
+		*status = export(data, argv[1]);
 }
 
 int	check_built_ins(char *cmd)

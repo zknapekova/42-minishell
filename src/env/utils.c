@@ -31,6 +31,8 @@ int	get_first_non_alnum(char *str, int start)
 	int	i;
 
 	i = start;
+	if (str[i] == '?')
+		i++;
 	while (str[i])
 	{
 		if (!ft_isalnum(str[i]) && str[i] != '_')
