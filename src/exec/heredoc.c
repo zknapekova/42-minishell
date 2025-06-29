@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:18:38 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/28 19:35:34 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:26:39 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,20 @@
 #include <string.h>
 #include <sys/wait.h>
 
-int	ft_get_file_cont(char *lim, int fd)
+// expands env variables present in heredoc, frees line
+char	*expand_line(char *line, t_data *data)
+{
+	char	*expanded;
+
+	if (get_first_ind(line, '$', 0) != -1)
+		expanded = extend_env_value_nf(data, line);
+	else
+		expanded = ft_strdup(line);
+	free(line);
+	return (expanded);
+}
+
+int	ft_get_file_cont(char *lim, int fd, t_data *data)
 {
 	char	*line;
 	char	*limiter;
@@ -41,6 +54,7 @@ int	ft_get_file_cont(char *lim, int fd)
 			break ;
 		}
 		line2 = ft_strjoin(line, "\n");
+		line2 = expand_line(line2, data);
 		if (!ft_strcmp(limiter, line2))
 			break ;
 		if (write(fd, line2, ft_strlen(line2)) == -1)
@@ -69,7 +83,7 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 	else if (pid == 0)
 	{
 		sig_init_heredoc();
-		if (!ft_get_file_cont(limiter, pipe_fd[1]))
+		if (!ft_get_file_cont(limiter, pipe_fd[1], data))
 		{
 			free_all(data);
 			exit(EXIT_FAILURE);

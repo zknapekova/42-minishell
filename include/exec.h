@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:15:04 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/26 18:26:31 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:23:22 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void		execute_built_cmds(char **argv, t_data *data, int *status);
 int		check_built_ins(char *cmd);
 int		ft_redirect(t_ast *node);
 int		handle_redir_files(t_redir *redir, t_data *data, t_ast *node);
-int		ft_get_file_cont(char *lim, int fd);
+int		ft_get_file_cont(char *lim, int fd, t_data *data);
 char	**create_env_arr(t_data *data);
 char	*escape_wildcard(char *str);
 
