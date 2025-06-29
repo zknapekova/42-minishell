@@ -30,7 +30,6 @@ int	execute(t_data *data, t_ast *node, char **argv)
 	char	**env;
 	int		status;
 
-//	ft_printf("%s pipe input: %d pipe output: %d\n", argv[0], node->cmd_data->fd_pipe_out, node->cmd_data->fd_pipe_in);
 	if (!ft_redirect(node))
 		return EXIT_FAILURE;
 	close_pipes(data, data->ast);
@@ -51,12 +50,50 @@ int	execute(t_data *data, t_ast *node, char **argv)
 	return (EXIT_SUCCESS);
 }
 
+void	execute_child_process(t_data *data, t_ast *node, int *status, char **argv)
+{
+	node->cmd_data->pid = fork();
+	if (node->cmd_data->pid < 0)
+	{
+		error_handler(strerror(errno));
+		*status = EXIT_FAILURE; //TODO CHECK if it shouldn't return pid
+	}
+	if (node->cmd_data->pid == 0)
+	{
+		default_int_quit();
+		*status = execute(data, node, argv);
+		free(argv);
+		free_all(data);
+		exit(*status);
+	}
+}
+
+void	wait_all_cmds(t_data *data, t_ast *node, int status)
+{
+	if (!node)
+		return ;
+	if (node->type == NODE_COMMAND)
+	{
+		if (node->cmd_data->pid == -1)
+			return ;
+		else
+		{
+			waitpid(node->cmd_data->pid, &status, 0);
+			if (WIFEXITED(status))
+				update_last_status(data, WEXITSTATUS(status));
+			else if (WIFSIGNALED(status))
+				update_last_status(data, 128 + WTERMSIG(status));
+		}
+	}
+	wait_all_cmds(data, node->left, status);
+	wait_all_cmds(data, node->right, status);
+}
+
 
 int	process_cmds_redirs(t_data *data, t_ast *node)
 {
 	char		**argv;
 	t_redir		*redir;
-	int			pid;
 	int 		status;
 
 	status = EXIT_SUCCESS;
@@ -76,51 +113,42 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 		{
 			execute_built_cmds(argv, data, &status);
 			if (!ft_strcmp(argv[0], "exit"))
+			{
+				free_argv(argv);
 				exit(status); //TODO: add free memory
+			}
 			return (status);
 		}
-		pid = fork();
-		if (pid < 0)
+		execute_child_process(data, node, &status, argv);
+		if (ft_strcmp(argv[0], "exit") == 0)
 		{
-			error_handler(strerror(errno));
-			status = EXIT_FAILURE;
-			return (status); //TODO CHECK if it shouldn't return pid
+			free_argv(argv);
+			exit(status);//TODO add memory release
 		}
-		if (pid == 0)
-		{
-			default_int_quit();
-			status = execute(data, node, argv);
-			free(argv);
-			free_all(data);
-			exit(status);
-		}
-		waitpid(pid, &status, 0);
 		print_nl_after_sig(status);
-		if (WIFEXITED(status))
-		{
-			if (ft_strcmp(argv[0], "exit") == 0)
-				exit(WEXITSTATUS(status)); //TODO add memory release
-			return (WEXITSTATUS(status));
-		}
 		free_argv(argv);
+		return (status);
 	}
 	return (status);
 }
 
-void	find_cmds(t_data *data, t_ast *node)
+void	find_cmds(t_data *data, t_ast *node, int *status)
 {
-	static int status;
+	static int status_stat;
 
+	*status = status_stat;
 	if (!node)
 		return ;
 	if (node->type == NODE_OR)
 	{
-		find_cmds(data, node->left);
-		update_last_status(data, status);
-		if (status == EXIT_SUCCESS)
+		find_cmds(data, node->left, &status_stat);
+		update_last_status(data, status_stat);
+		*status = status_stat;
+		if (status_stat == EXIT_SUCCESS)
 			return ;
-		find_cmds(data, node->right);
-		update_last_status(data, status);
+		find_cmds(data, node->right, &status_stat);
+		update_last_status(data, status_stat);
+		*status = status_stat;
 		return ;
 	}
 	if (node->type == NODE_PIPE)
@@ -130,9 +158,7 @@ void	find_cmds(t_data *data, t_ast *node)
 	}
 	if (node->type == NODE_COMMAND && node->cmd_data)
 	{
-		status = process_cmds_redirs(data, node);
-//		ft_printf("status: %d\n", status);
-//		ft_printf("fd_pipe_in: %d fd_pipe_out: %d\n", node->cmd_data->fd_pipe_in, node->cmd_data->fd_pipe_out);
+		status_stat = process_cmds_redirs(data, node);
 		if (node->cmd_data->fd_pipe_in > 1)
 			close(node->cmd_data->fd_pipe_in);
 		if (node->cmd_data->fd_pipe_out > 1)
@@ -141,26 +167,30 @@ void	find_cmds(t_data *data, t_ast *node)
 			close(node->cmd_data->fd_file_in);
 		if (node->cmd_data->fd_file_out > 1)
 			close(node->cmd_data->fd_file_out);
-		update_last_status(data, status);
-		if (status != EXIT_SUCCESS)
+		update_last_status(data, status_stat);
+		*status = status_stat;
+		if (status_stat != EXIT_SUCCESS)
 			return ;
 	}
-	find_cmds(data, node->left);
-	find_cmds(data, node->right);
+	find_cmds(data, node->left, &status_stat);
+	find_cmds(data, node->right, &status_stat);
 }
-
 
 void	handle_cmds(t_data *data, t_ast *node)
 {
 	int		backup_stdin;
 	int		backup_stdout;
+	int		status;
 
+	status = EXIT_SUCCESS;
 	sig_ignore_int_quit();
 	backup_stdin = dup(STDIN_FILENO);
 	backup_stdout = dup(STDOUT_FILENO);
-	find_cmds(data, node);
+	find_cmds(data, node, &status);
+	update_last_status(data, status);
 	dup2(backup_stdin, STDIN_FILENO);
 	dup2(backup_stdout, STDOUT_FILENO);
 	sig_init();
 	close_pipes(data, data->ast);
+	wait_all_cmds(data, data->ast, status);
 }

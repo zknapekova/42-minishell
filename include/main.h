@@ -131,7 +131,7 @@ typedef struct s_cmd_data
 	int		fd_pipe_out;
 	int		fd_file_in;
 	int		fd_file_out;
-	int		exit_status;
+	int				pid;
 }	t_cmd_data;
 
 // t_cmd_data cmd is used only if type is NODE_COMMAND or NODE_SUBSHELL

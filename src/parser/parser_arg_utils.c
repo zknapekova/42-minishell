@@ -67,6 +67,7 @@ t_cmd_data	*init_cmd_data(t_redir *leading_redir)
 	cmd_data->fd_pipe_out = -1;
 	cmd_data->fd_file_in = -1;
 	cmd_data->fd_file_out = -1;
+	cmd_data->pid = -1;
 	cmd_data->cmd_path = NULL;
 	return (cmd_data);
 }

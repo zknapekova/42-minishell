@@ -49,7 +49,7 @@ int		arr_size(char **arr);
 void	free_array(char **array);
 int		open_pipe(t_ast *node);
 int		process_cmds_redirs(t_data *data, t_ast *node);
-void	find_cmds(t_data *data, t_ast *node);
+void	find_cmds(t_data *data, t_ast *node, int *status);
 void	handle_cmds(t_data *data, t_ast *node);
 void	close_pipes(t_data *data, t_ast *node);
 int		execute_heredoc(t_redir *redir, t_data *data, t_ast *node);
