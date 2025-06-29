@@ -53,6 +53,10 @@ void	find_cmds(t_data *data, t_ast *node, int *status);
 void	handle_cmds(t_data *data, t_ast *node);
 void	close_pipes(t_data *data, t_ast *node);
 int		execute_heredoc(t_redir *redir, t_data *data, t_ast *node);
+int		update_last_status(t_data *data, int status);
+void	wait_all_cmds(t_data *data, t_ast *node, int *status);
+void	execute_child_process(t_data *data, t_ast *node, int *status, char **argv);
+int		execute(t_data *data, t_ast *node, char **argv);
 
 // globbing
 char	**globe_argv(char **argv);
