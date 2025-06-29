@@ -75,6 +75,8 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 		if (check_built_ins(argv[0]) && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_pipe_out == -1)
 		{
 			execute_built_cmds(argv, data, &status);
+			if (!ft_strcmp(argv[0], "exit"))
+				exit(status); //TODO: add free memory
 			return (status);
 		}
 		pid = fork();
@@ -95,7 +97,11 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 		waitpid(pid, &status, 0);
 		print_nl_after_sig(status);
 		if (WIFEXITED(status))
+		{
+			if (ft_strcmp(argv[0], "exit") == 0)
+				exit(WEXITSTATUS(status)); //TODO add memory release
 			return (WEXITSTATUS(status));
+		}
 		free_argv(argv);
 	}
 	return (status);

@@ -44,6 +44,7 @@ char		*echo_extend_env_value(t_data *data, char *key_value);
 char		*extend_env_value(t_data *data, char *key_value);
 char		*echo_get_key_value(char *var_to_extend, t_data *data, char *key_value);
 char		*replace_tilde(char *input, int ind);
+char		*replace_special_parameter(char *str, t_data *data);
 int			dir_check(char *path, char *cmd);
 // no freeing the key_value
 char		*extend_env_value_nf(t_data *data, char *key_value);

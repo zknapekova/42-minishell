@@ -82,25 +82,29 @@ char	*replace_tilde(char *input, int ind)
 	char	*temp;
 
 	pre_tilde = NULL;
-	if (ind != 0)
+	if (ind != -1)
 	{
-		pre_tilde = ft_substr(input, 0, ft_strlen(input) - ind);
-		if (!pre_tilde)
+		if (ind != 0)
+		{
+			pre_tilde = ft_substr(input, 0, ft_strlen(input) - ind);
+			if (!pre_tilde)
+				return (error_handler(strerror(errno)), NULL);
+			temp = ft_strjoin(pre_tilde, "$HOME");
+			free(pre_tilde);
+		}
+		else
+			temp = ft_strdup("$HOME");
+		if (!temp)
 			return (error_handler(strerror(errno)), NULL);
-		temp = ft_strjoin(pre_tilde, "$HOME");
-		free(pre_tilde);
+		post_tilde = ft_substr(input, ind + 1, ft_strlen(input) - ind - 1);
+		if (!post_tilde)
+			return (free(temp), error_handler(strerror(errno)), NULL);
+		path = ft_strjoin(temp, post_tilde);
+		if (!path)
+			return (free(temp), free(post_tilde), error_handler(strerror(errno)), NULL);
+		return (free(temp), free(post_tilde), path);
 	}
-	else
-		temp = ft_strdup("$HOME");
-	if (!temp)
-		return (error_handler(strerror(errno)), NULL);
-	post_tilde = ft_substr(input, ind + 1, ft_strlen(input) - ind - 1);
-	if (!post_tilde)
-		return (free(temp), error_handler(strerror(errno)), NULL);
-	path = ft_strjoin(temp, post_tilde);
-	if (!path)
-		return (free(temp), free(post_tilde), error_handler(strerror(errno)), NULL);
-	return (free(temp), free(post_tilde), path);
+	return (input);
 }
 
 char	*handle_node(t_data *data, char *var_name, char *message)

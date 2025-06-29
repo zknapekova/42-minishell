@@ -33,34 +33,39 @@ char	*echo_get_key_value(char *var_to_extend, t_data *data, char *key_value)
 	return (new_value);
 }
 
-char	*extend_env_value(t_data *data, char *key_value)
+char	*extend_env_value(t_data *data, char *key_value1)
 {
 	char	*var_to_extend;
 	char	*new_key_value;
 	char	*new_key_value2;
+	char	*key_value;
 	int 	dollar_ind;
 
-	if (key_value)
+	if (key_value1)
 	{
 		new_key_value2 = NULL;
+		key_value = replace_special_parameter(key_value1, data);
 		dollar_ind = get_first_ind(key_value, '$', 0);
-		var_to_extend = ft_substr(key_value, dollar_ind + 1, \
-				get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
-		if (!var_to_extend)
-			return (free (key_value), NULL);
-		new_key_value = echo_get_key_value(var_to_extend, data, key_value);
-		free (var_to_extend);
-		free (key_value);
-		key_value = NULL;
-		if (!new_key_value)
-			return (NULL);
-		if (get_first_ind(new_key_value, '$', 0) != -1)
-			new_key_value2 = extend_env_value(data, new_key_value);
-		if (new_key_value2)
-			return (new_key_value2);
-		return (new_key_value);
+		if (dollar_ind > -1)
+		{
+			var_to_extend = ft_substr(key_value, dollar_ind + 1, \
+					get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
+			if (!var_to_extend)
+				return (free (key_value), NULL);
+			new_key_value = echo_get_key_value(var_to_extend, data, key_value);
+			free (var_to_extend);
+			free (key_value);
+			key_value = NULL;
+			if (!new_key_value)
+				return (NULL);
+			if (get_first_ind(new_key_value, '$', 0) != -1)
+				new_key_value2 = extend_env_value(data, new_key_value);
+			if (new_key_value2)
+				return (new_key_value2);
+			return (new_key_value);
+		}
 	}
-	return (NULL);
+	return (key_value1);
 }
 
 //in case of multiple strings these should be joined into 1, for instance input = "word1 word2"
@@ -79,8 +84,8 @@ int	echo_cmd(char **input, t_data *data)
 		i = 2;
 	while (input[i])
 	{
-		if (get_first_ind(input[i], '$', 0) != -1)
-			result = extend_env_value(data, ft_strdup(input[i]));
+		if (get_first_ind(input[i], '~', 0) > -1 || get_first_ind(input[i], '$', 0) > -1)
+			result = extend_env_value(data, replace_tilde(input[i], get_first_ind(input[i], '~', 0)));
 		else
 			result = ft_strdup(input[i]);
 		if (!result)
@@ -100,14 +105,16 @@ int	echo_cmd(char **input, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-char	*extend_env_value_nf(t_data *data, char *key_value)
+char	*extend_env_value_nf(t_data *data, char *key_value1)
 {
 	char	*var_to_extend;
 	char	*new_key_value;
 	char	*new_key_value2;
+	char	*key_value;
 	int 	dollar_ind;
 
 	new_key_value2 = NULL;
+	key_value = replace_special_parameter(key_value1, data);
 	dollar_ind = get_first_ind(key_value, '$', 0);
 	var_to_extend = ft_substr(key_value, dollar_ind + 1, \
 			get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
