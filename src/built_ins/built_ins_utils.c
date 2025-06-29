@@ -3,6 +3,34 @@
 #include "env_vars.h"
 #include "exec.h"
 
+int	ft_is_str_digit(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	exit_cmd(char **argv)
+{
+	ft_printf("exit\n");
+	if (arr_size(argv) > 2)
+		return (ft_eprintf("minishell: exit: too many arguments\n"), EXIT_FAILURE);
+	if (arr_size(argv) == 2)
+	{
+		if (!ft_is_str_digit(argv[1]))
+			return (ft_eprintf("minishell: exit: %s numeric argument required\n", argv[1]), 2);
+		return(ft_atoi(argv[1]));
+	}
+	return (EXIT_SUCCESS);
+}
+
 void	execute_built_cmds(char **argv, t_data *data, int *status)
 {
 	if (get_first_ind(argv[0], '/', 0) != -1)
@@ -23,6 +51,8 @@ void	execute_built_cmds(char **argv, t_data *data, int *status)
 		*status = pwd(argv);
 	else if (!ft_strcmp(argv[0], "export"))
 		*status = export(data, argv[1]);
+	else if (!ft_strcmp(argv[0], "exit"))
+		*status = exit_cmd(argv);
 }
 
 int	check_built_ins(char *cmd)
