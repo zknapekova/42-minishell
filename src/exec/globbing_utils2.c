@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 18:38:27 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/28 22:19:48 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:05:22 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_file	*get_cwd_file_list(void)
 
 	if (getcwd(cwd, 1024) == NULL)
 		return (error_handler("getcwd failed"), NULL);
-	if (!dir_check(cwd, ""))
+	if (dir_check(cwd, "") == EXIT_FAILURE)
 		return (NULL);
 	dir = opendir(cwd);
 	sdirent = readdir(dir);
