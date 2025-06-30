@@ -28,7 +28,7 @@ int	execute(t_data *data, t_ast *node, char **argv)
 			return (status);
 		env = create_env_arr(data);
 		if (execve(node->cmd_data->cmd_path, argv, env) == -1)
-			return (error_handler(strerror(errno)), free_argv(argv), EXIT_FAILURE);
+			return (error_handler(strerror(errno)), free_argv(argv), free_all(data, 1), EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -58,7 +58,8 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 			if (!ft_strcmp(argv[0], "exit"))
 			{
 				free_argv(argv);
-				exit(status); //TODO: add free memory
+				free_all(data, 1);
+				exit(status);
 			}
 			return (status);
 		}
@@ -66,7 +67,8 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 		if (ft_strcmp(argv[0], "exit") == 0)
 		{
 			free_argv(argv);
-			exit(status);//TODO add memory release
+			free_all(data, 1);
+			exit(status);
 		}
 		print_nl_after_sig(status);
 		free_argv(argv);

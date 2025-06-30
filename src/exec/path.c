@@ -119,6 +119,7 @@ char	*get_cmd_path(char *cmd, t_data *data, int *status)
 		else if (access(path, F_OK) == 0 && access(path, X_OK) != 0)
 			return (free(com2), free(paths), *status = 126, path);
 		free(path);
+		free(paths[j]);
 	}
 	free(com2);
 	free(paths);

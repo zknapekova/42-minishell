@@ -89,10 +89,10 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 		sig_init_heredoc();
 		if (!ft_get_file_cont(limiter, pipe_fd[1], data))
 		{
-			free_all(data);
+			free_all(data, 1);
 			exit(EXIT_FAILURE);
 		}
-		free_all(data);
+		free_all(data, 1);
 		exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, &status, 0);
@@ -105,14 +105,11 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 			close(pipe_fd[0]);
 		return (free(limiter), close(pipe_fd[1]), WEXITSTATUS(status));
 	}
-	return (free(limiter), close(pipe_fd[1]), close(pipe_fd[0]), EXIT_FAILURE);
-}
-
-int	handle_status(int status)
-{
 	if (WIFSIGNALED(status))
-		status = 128 + WTERMSIG(status);
-	else if (WIFEXITED(status))
-		status = WEXITSTATUS(status);
-	return (status);
+	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		return (free(limiter), 128 + WTERMSIG(status));
+	}
+	return (free(limiter), close(pipe_fd[1]), close(pipe_fd[0]), EXIT_FAILURE);
 }

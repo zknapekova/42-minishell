@@ -13,6 +13,8 @@ int	update_last_status(t_data *data, int status)
 	t_env_node	*node;
 
 	node = search_env_list(data, "?");
+	free(node->value);
+	node->value = NULL;
 	node->value = ft_itoa(status);
 	if (!node->value)
 		return (error_handler("malloc error: updating $? failed"), 0);
@@ -65,8 +67,8 @@ void	execute_child_process(t_data *data, t_ast *node, int *status, char **argv)
 	{
 		default_int_quit();
 		*status = execute(data, node, argv);
-		free(argv);
-		free_all(data);
+		free_argv(argv);
+		free_all(data, 1);
 		exit(*status);
 	}
 }

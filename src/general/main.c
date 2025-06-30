@@ -72,9 +72,9 @@ int	main(int argc, char **argv, char **env)
 	if (!data)
 		return (EXIT_FAILURE);
 	if (!init_env(env, data))
-		return (free_all(data), EXIT_FAILURE);
+		return (free_all(data, 0), EXIT_FAILURE);
 	sig_init();
 	loop(data);
-	free_all(data);
+	free_all(data, 0);
 	return (EXIT_SUCCESS);
 }

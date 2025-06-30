@@ -20,11 +20,12 @@ char	**create_env_arr(t_data *data)
 	result = (char **)malloc(sizeof(char *) * (size + 1));
 	if (!result)
 		return (error_handler("malloc error"), NULL);
-	while (i < size + 1 && temp)
+	while (i < size && temp)
 	{
 		result[i++] = temp->key_value;
 		temp = temp->next;
 	}
+	result[size] = NULL;
 	return result;
 }
 
