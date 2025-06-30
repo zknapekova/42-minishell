@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "main.h"
 #include "parser_utils.h"
-#include "libft.h"
 
 int	check_subshell_redirs(t_ast *node)
 {
@@ -29,4 +29,23 @@ int	check_subshell_redirs(t_ast *node)
 	result += check_subshell_redirs(node->left);
 	result += check_subshell_redirs(node->right);
 	return (result);
+}
+void	set_heredoc_flag(t_ast *node)
+{
+	t_redir	*redir;
+
+	if (!node)
+		return ;
+	if (node->type == NODE_COMMAND && node->cmd_data)
+	{
+		redir = node->cmd_data->redirs;
+		while (redir)
+		{
+			if (redir->type == REDIR_HEREDOC)
+				node->cmd_data->has_heredoc = true;
+			redir = redir->next;
+		}
+	}
+	set_heredoc_flag(node->left);
+	set_heredoc_flag(node->right);
 }

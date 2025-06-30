@@ -1,6 +1,7 @@
 #include "exec.h"
 #include "env_vars.h"
 #include "main.h"
+#include "parser_utils.h"
 #include "libft.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -141,6 +142,7 @@ void	handle_cmds(t_data *data, t_ast *node)
 	int		backup_stdout;
 	int		status;
 
+	set_heredoc_flag(data->ast);
 	status = EXIT_SUCCESS;
 	sig_ignore_int_quit();
 	backup_stdin = dup(STDIN_FILENO);

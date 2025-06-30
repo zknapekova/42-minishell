@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 21:33:08 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/27 16:07:51 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/01 00:27:23 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,5 @@ t_redir			*parse_redirection(t_token **tokens);
 t_redir			*collect_redirs(t_token **tokens);
 t_redir_type	get_redir_type(t_token **tokens);
 int				check_subshell_redirs(t_ast *node);
-
+void			set_heredoc_flag(t_ast *node);
 #endif

@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:18:00 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/19 19:06:25 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/30 23:45:59 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ t_cmd_data	*init_cmd_data(t_redir *leading_redir)
 	cmd_data->fd_file_out = -1;
 	cmd_data->pid = -1;
 	cmd_data->cmd_path = NULL;
+	cmd_data->has_heredoc = false;
 	return (cmd_data);
 }

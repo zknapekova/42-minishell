@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/27 16:19:45 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/01 00:30:18 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	loop(t_data *data)
 			if (!data->tokens)
 			{
 				free(line);
-				continue;
+				continue ;
 			}
 			temp_token_list = data->tokens;
 			data->ast = parser(&temp_token_list);
@@ -49,7 +49,7 @@ static void	loop(t_data *data)
 			{
 				free_token_list(&(data->tokens));
 				free(line);
-				continue;
+				continue ;
 			}
 			handle_cmds(data, data->ast);
 			free_token_list(&(data->tokens));
