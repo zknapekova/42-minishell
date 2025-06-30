@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:18:38 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/29 22:26:39 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:43:38 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_get_file_cont(char *lim, int fd, t_data *data)
 {
 	char	*line;
 	char	*limiter;
-	char	*line2;
+	// char	*line2;
 
 	line = NULL;
 	limiter = ft_strjoin(lim, "\n");
@@ -53,15 +53,19 @@ int	ft_get_file_cont(char *lim, int fd, t_data *data)
 				lim);
 			break ;
 		}
-		line2 = ft_strjoin(line, "\n");
-		line2 = expand_line(line2, data);
-		if (!ft_strcmp(limiter, line2))
+		line = ft_strjoin_ed(line, "\n", 1);
+		line = expand_line(line, data);
+		if (!ft_strcmp(limiter, line))
+		{
+			free(line);
 			break ;
-		if (write(fd, line2, ft_strlen(line2)) == -1)
-			return (free(line), free(line2), free(limiter), close(fd), 0);
+		}
+			
+		if (write(fd, line, ft_strlen(line)) == -1)
+			return (free(line), free(limiter), close(fd), 0);
 		free(line);
 	}
-	return (free(line), free(lim), free(limiter), close(fd), 1);
+	return (free(lim), free(limiter), close(fd), 1);
 }
 
 int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
