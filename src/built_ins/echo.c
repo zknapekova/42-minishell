@@ -122,7 +122,7 @@ char	*extend_env_value_nf(t_data *data, char *key_value1)
 		return (NULL);
 	new_key_value = get_key_value_nf(var_to_extend, data, key_value);
 	free (var_to_extend);
-	// free (key_value);
+	free (key_value);
 	if (!new_key_value)
 		return (NULL);
 	if (get_first_ind(new_key_value, '$', 0) != -1)
@@ -148,8 +148,10 @@ char	*get_key_value_nf(char *var_to_extend, t_data *data, char *key_value)
 		new_value_post = ft_substr(key_value, dollar_ind + ft_strlen(var_to_extend) + 1, \
 			ft_strlen(key_value) - dollar_ind - ft_strlen(var_to_extend));
 		if (!new_value_post)
-			return (error_handler("malloc error"), NULL);
+			return (error_handler("malloc error"), free(new_value_pre), NULL);
 		new_value = ft_strjoin(new_value_pre, new_value_post);
+		free (new_value_pre);
+		free (new_value_post);
 	}
 	else
 		new_value = parse_env_value(search_env_list(data, var_to_extend), \

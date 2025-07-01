@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:18:38 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/07/01 22:53:17 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/01 23:38:33 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,6 @@ int	ft_get_file_cont(char *lim, int fd, t_data *data)
 			return (free(line), free(limiter), close(fd), 0);
 		free(line);
 	}
-	// if (g_heredoc_sig == 1)
-	// {
-	// 	free (limiter);
-	// 	free_all(data, 1);
-	// 	exit (130);
-	// }
 	return (free(lim), free(limiter), close(fd), 1);
 }
 
