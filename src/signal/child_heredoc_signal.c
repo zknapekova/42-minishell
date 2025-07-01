@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 18:58:29 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/01 16:50:22 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/01 22:40:50 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <readline/readline.h>
 #include <signal.h> //sigaction
 #include <stdio.h>  // for readline
+
+volatile int g_heredoc_sig;
 
 void	handle_heredoc_signal(int signum)
 {
@@ -23,7 +25,8 @@ void	handle_heredoc_signal(int signum)
 		rl_on_new_line();
 		rl_redisplay();
 		// write(1, "\n", 1);
-		exit (130);
+		close(STDIN_FILENO);
+		g_heredoc_sig = 1;
 	}
 	
 }

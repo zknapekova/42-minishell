@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:18:38 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/07/01 20:23:41 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/01 22:53:17 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 #include "libft.h"
 #include "main.h"
 #include <errno.h>
+#include <readline/history.h>
 #include <readline/readline.h>
 #include <stdio.h>  // for readline
-#include <readline/history.h>
 #include <stdlib.h> //for NULL
 #include <string.h>
 #include <sys/wait.h>
 
+extern int	g_heredoc_sig;
 
 // expands env variables present in heredoc, frees line
 char	*expand_line(char *line, t_data *data)
@@ -40,8 +41,8 @@ int	ft_get_file_cont(char *lim, int fd, t_data *data)
 {
 	char	*line;
 	char	*limiter;
-	// char	*line2;
 
+	// char	*line2;
 	line = NULL;
 	limiter = ft_strjoin(lim, "\n");
 	if (!limiter)
@@ -51,6 +52,13 @@ int	ft_get_file_cont(char *lim, int fd, t_data *data)
 		line = readline("> ");
 		if (!line)
 		{
+			if (g_heredoc_sig == 1)
+			{
+				free(limiter);
+				free(lim);
+				free_all(data, 1);
+				exit(130);
+			}
 			ft_eprintf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
 				lim);
 			break ;
@@ -62,11 +70,16 @@ int	ft_get_file_cont(char *lim, int fd, t_data *data)
 			free(line);
 			break ;
 		}
-			
 		if (write(fd, line, ft_strlen(line)) == -1)
 			return (free(line), free(limiter), close(fd), 0);
 		free(line);
 	}
+	// if (g_heredoc_sig == 1)
+	// {
+	// 	free (limiter);
+	// 	free_all(data, 1);
+	// 	exit (130);
+	// }
 	return (free(lim), free(limiter), close(fd), 1);
 }
 
