@@ -71,7 +71,6 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 			free_all(data, 1);
 			exit(status);
 		}
-		print_nl_after_sig(status);
 		free_argv(argv);
 		return (status);
 	}
@@ -151,7 +150,8 @@ void	handle_cmds(t_data *data, t_ast *node)
 	update_last_status(data, status);
 	dup2(backup_stdin, STDIN_FILENO);
 	dup2(backup_stdout, STDOUT_FILENO);
-	sig_init();
 	close_pipes(data, data->ast);
 	wait_all_cmds(data, data->ast, &status);
+	print_nl_after_sig(status);
+	sig_init();
 }

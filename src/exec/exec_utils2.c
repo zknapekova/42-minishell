@@ -46,7 +46,7 @@ void	wait_all_cmds(t_data *data, t_ast *node, int *status)
 			}
 			else if (WIFSIGNALED(status1))
 			{
-				*status = WEXITSTATUS(status1);
+				*status = WTERMSIG(status1);
 				update_last_status(data, 128 + WTERMSIG(status1));
 			}
 		}

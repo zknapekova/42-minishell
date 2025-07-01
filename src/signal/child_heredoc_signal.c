@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 18:58:29 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/27 16:31:55 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/01 16:50:22 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	handle_heredoc_signal(int signum)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		write(1, "\n", 1);
+		// write(1, "\n", 1);
 		exit (130);
 	}
 	
