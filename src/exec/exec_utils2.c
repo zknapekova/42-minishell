@@ -14,6 +14,7 @@
 int	update_last_status(t_data *data, int status)
 {
 	t_env_node	*node;
+	char		*temp;
 
 	node = search_env_list(data, "?");
 	free(node->value);
@@ -23,7 +24,11 @@ int	update_last_status(t_data *data, int status)
 		return (error_handler("malloc error: updating $? failed"), 0);
 	free(node->key_value);
 	node->key_value = NULL;
-	node->key_value = ft_strjoin(node->key, node->value);
+	temp = ft_strjoin(node->key, "=");
+	if (!temp)
+		return (error_handler("malloc error: updating $? failed"), 0);
+	node->key_value = ft_strjoin(temp, node->value);
+	free(temp);
 	if (!node->key_value)
 		return (error_handler("malloc error: updating $? failed"), 0);
 	return (1);

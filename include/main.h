@@ -163,7 +163,7 @@ t_env_node					*search_env_list(t_data *data, char *var_name);
 void						free_all(t_data *data, int free_ast_ind);
 int							handle_new_env_value(t_data *data, char *key_value);
 int							export(t_data *data, char *input);
-int							pwd(char **argv);
+int							pwd();
 int							env_cmd(t_data *data, char **args);
 int							unset(t_data *data, char **args);
 int							handle_new_env_value(t_data *data, char *key_value);

@@ -67,10 +67,7 @@ int	is_dir(char *path)
 
 	dir = opendir(path);
 	if (dir)
-	{
-		ft_eprintf("minishell: %s: Is a directory\n", path);
 		return (closedir (dir), 1);
-	}
 	return (closedir (dir), 0);
 }
 
@@ -96,11 +93,14 @@ char	*get_cmd_path(char *cmd, t_data *data, int *status)
 	char		*path;
 	char 		**paths;
 
-	if (is_dir(cmd))
-		return (*status = 126, NULL);
+	if (get_first_ind(cmd, '/', 0) != -1)
+	{
+		if (is_dir(cmd))
+			return (*status = 126, ft_eprintf("minishell: %s: Is a directory\n", cmd), NULL);
+	}
 	if (!access(cmd, F_OK) && !access(cmd, X_OK) && !is_dir(cmd))
 		return (ft_strdup(cmd));
-	else if (!access(cmd, F_OK) && access(cmd, X_OK) != 0 && !is_dir(cmd))
+	else if (!access(cmd, F_OK) && access(cmd, X_OK) != 0 && !is_dir(cmd) && get_first_ind(cmd, '.', 1) == -1)
 		return (*status = 126, ft_eprintf("minishell: %s: Permission denied\n", cmd), NULL);
 	com2 = ft_strjoin("/", cmd);
 	if (!com2)

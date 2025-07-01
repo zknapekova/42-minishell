@@ -36,7 +36,6 @@ char		*get_key_value(char *var_to_extend, t_data *data, \
 			char *key_value, char *var_name);
 int			get_first_ind(char *str, char c, int start);
 int			get_first_non_alnum(char *str, int start);
-int			validate_env_var_name(char *key_value, int eq_ind);
 int			handle_new_env_value(t_data *data, char *key_value);
 void		error_handler(char *str);
 char		*add_new_line(char *str);

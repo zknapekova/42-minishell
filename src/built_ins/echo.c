@@ -84,7 +84,7 @@ int	echo_cmd(char **input, t_data *data)
 		i = 2;
 	while (input[i])
 	{
-		if (get_first_ind(input[i], '~', 0) > -1 || get_first_ind(input[i], '$', 0) > -1)
+		if (get_first_ind(input[i], '~', 0) > -1)
 			result = extend_env_value(data, replace_tilde(input[i], get_first_ind(input[i], '~', 0)));
 		else
 			result = ft_strdup(input[i]);

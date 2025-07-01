@@ -25,6 +25,16 @@ int	delete_node(t_data *data, char *key)
 	if (data->head && key)
 	{
 		temp = data->head;
+		if (ft_strncmp(data->head->key, key, ft_strlen(key)) == 0 &&
+			ft_strlen(key) == ft_strlen(data->head->key))
+		{
+			data->head = data->head->next;
+			free(temp->key_value);
+			free(temp->value);
+			free(temp->key);
+			free(temp);
+		}
+		temp = data->head;
 		prev = data->head;
 		while (temp)
 		{
@@ -74,10 +84,11 @@ int	handle_new_env_value(t_data *data, char *key_value)
 	int		dollar_ind;
 
 	update_dollar_eq_ind(&dollar_ind, &eq_ind, 0, key_value);
-	if (eq_ind == -1 || (eq_ind != -1 && !validate_env_var_name(key_value, \
-			eq_ind)))
+	if (!validate_env_var_name(key_value, eq_ind))
 		return (ft_eprintf("minishell: export: '%s': not a valid \
 identifier\n", key_value), 0);
+	if (eq_ind == -1)
+		return (1);
 	if (dollar_ind != -1 && dollar_ind < eq_ind)
 	{
 		key_value = extend_var_name(dollar_ind, eq_ind, data, key_value);

@@ -49,13 +49,11 @@ int	env_cmd(t_data *data, char **argv)
 	return (EXIT_SUCCESS);
 }
 
-int	pwd(char **argv)
+int	pwd()
 {
 	char	*cwd;
 	char	*cwd_print;
 
-	if (arr_size(argv) > 1)
-		return (error_handler("No options or arguments allowed in pwd command."), EXIT_FAILURE);
 	cwd = malloc(1024 * sizeof(char));
 	if (!cwd)
 		return (error_handler("malloc error"), EXIT_FAILURE);

@@ -10,7 +10,7 @@ int	ft_is_str_digit(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (!ft_isdigit(str[i]))
+		if (!ft_isdigit(str[i]) && str[i] != '+' && str[i] != '-')
 			return (0);
 		i++;
 	}
@@ -48,7 +48,7 @@ void	execute_built_cmds(char **argv, t_data *data, int *status)
 	else if (!ft_strcmp(argv[0], "cd"))
 		*status = cd(argv, data);
 	else if (!ft_strcmp(argv[0], "pwd"))
-		*status = pwd(argv);
+		*status = pwd();
 	else if (!ft_strcmp(argv[0], "export"))
 		*status = export(data, argv[1]);
 	else if (!ft_strcmp(argv[0], "exit"))
