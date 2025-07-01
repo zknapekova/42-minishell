@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 18:38:27 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/30 17:05:22 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/01 17:34:06 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,36 @@ char	**append_str_to_array(char **arr, char *str)
 	i = 0;
 	while (arr && arr[i])
 		i++;
+
 	new_arr = malloc(sizeof(char *) * (i + 2));
 	if (!new_arr)
-		return (NULL);
+		return (free_array(arr), NULL);
+
 	j = 0;
 	while (j < i)
 	{
-		new_arr[j] = arr[j];
+		new_arr[j] = ft_strdup(arr[j]);
+		if (!new_arr[j])
+		{
+			new_arr[j] = NULL;
+			free_array(new_arr);
+			free_array(arr);
+			return (error_handler("Error copying array"), NULL);
+		}
 		j++;
 	}
+
 	new_arr[i] = ft_strdup(str);
 	if (!new_arr[i])
-		return (error_handler("Error appending str to array"), \
-		free(new_arr), NULL);
+	{
+		new_arr[i] = NULL;
+		free_array(new_arr);
+		free_array(arr);
+		return (error_handler("Error appending str"), NULL);
+	}
+
 	new_arr[i + 1] = NULL;
-	free(arr);
+
+	free_array(arr); // full cleanup: strings + pointer array
 	return (new_arr);
 }

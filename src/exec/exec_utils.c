@@ -62,6 +62,7 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 				free_all(data, 1);
 				exit(status);
 			}
+			free_argv(argv);
 			return (status);
 		}
 		execute_child_process(data, node, &status, argv);

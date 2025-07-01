@@ -7,6 +7,9 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <string.h>
+#include <stdio.h> // for readline
+#include <readline/readline.h>
+#include <readline/history.h>
 
 int	update_last_status(t_data *data, int status)
 {
@@ -65,6 +68,7 @@ void	execute_child_process(t_data *data, t_ast *node, int *status, char **argv)
 	}
 	if (node->cmd_data->pid == 0)
 	{
+		rl_clear_history();
 		default_int_quit();
 		*status = execute(data, node, argv);
 		free_argv(argv);

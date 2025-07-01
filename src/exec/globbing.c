@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:50 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/30 17:24:27 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/01 17:00:05 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	**globe_argv(char **argv)
 
 	i = 1;
 	if (!argv || !argv[0])
-		return (NULL);
+		return (free_argv(argv), NULL);
 	new_argv = NULL;
 	new_argv = append_str_to_array(new_argv, argv[0]);
 	if (!new_argv)

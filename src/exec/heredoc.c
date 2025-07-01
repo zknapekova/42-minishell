@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:18:38 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/29 22:43:38 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/01 20:23:41 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@
 #include <errno.h>
 #include <readline/readline.h>
 #include <stdio.h>  // for readline
+#include <readline/history.h>
 #include <stdlib.h> //for NULL
 #include <string.h>
 #include <sys/wait.h>
+
 
 // expands env variables present in heredoc, frees line
 char	*expand_line(char *line, t_data *data)
@@ -86,6 +88,7 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 		return (free(limiter), close(pipe_fd[1]), close(pipe_fd[0]), -1);
 	else if (pid == 0)
 	{
+		rl_clear_history();
 		sig_init_heredoc();
 		if (!ft_get_file_cont(limiter, pipe_fd[1], data))
 		{
