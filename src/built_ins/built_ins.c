@@ -12,14 +12,14 @@ int	print_env_list(t_data *data, t_ast *node)
 	int			fd;
 
 	fd = 1;
-	if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_file_out == -1)
+	if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_pipe_out == -1)
 		fd = node->cmd_data->fd_file_out;
 	if (data->head)
 	{
 		temp = data->head;
 		while (temp)
 		{
-			if (ft_strncmp(temp->key_value, "?=", 2) != 0)
+			if (ft_strncmp(temp->key_value, "?=", 2) != 0 && ft_strncmp(temp->key_value, "EMPTY=", 6) != 0)
 			{
 				print_key_value = add_new_line(temp->key_value);
 				if (!print_key_value)
@@ -67,7 +67,7 @@ int	pwd(t_ast *node)
 	cwd_print = add_new_line(cwd);
 	free(cwd);
 	fd = 1;
-	if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_file_out == -1)
+	if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_pipe_out == -1)
 		fd = node->cmd_data->fd_file_out;
 	if (write(fd, cwd_print, ft_strlen(cwd_print)) == -1)
 		return (error_handler(strerror(errno)), free(cwd_print), EXIT_FAILURE);

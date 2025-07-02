@@ -115,25 +115,35 @@ char	*extend_env_value_nf(t_data *data, char *key_value1)
 	char	*new_key_value;
 	char	*new_key_value2;
 	char	*key_value;
+	char	*key_value2;
 	int 	dollar_ind;
 
 	new_key_value2 = NULL;
-	key_value = replace_special_parameter(key_value1, data);
-	dollar_ind = get_first_ind(key_value, '$', 0);
-	var_to_extend = ft_substr(key_value, dollar_ind + 1, \
-			get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
-	if (!var_to_extend)
-		return (NULL);
-	new_key_value = get_key_value_nf(var_to_extend, data, key_value);
-	free (var_to_extend);
-	//free (key_value);
-	if (!new_key_value)
-		return (NULL);
-	if (get_first_ind(new_key_value, '$', 0) != -1)
-		new_key_value2 = extend_env_value_nf(data, new_key_value);
-	if (new_key_value2)
-		return (free (new_key_value), new_key_value2);
-	return (new_key_value);
+	if (key_value1)
+	{
+		key_value2 = replace_special_parameter(key_value1, data);
+		key_value = replace_empty(key_value2, data);
+		dollar_ind = get_first_ind(key_value, '$', 0);
+		if (dollar_ind != -1)
+		{
+			var_to_extend = ft_substr(key_value, dollar_ind + 1, \
+					get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
+			if (!var_to_extend)
+				return (NULL);
+			new_key_value = get_key_value_nf(var_to_extend, data, key_value);
+			free (var_to_extend);
+			//free (key_value);
+			if (!new_key_value)
+				return (NULL);
+			if (get_first_ind(new_key_value, '$', 0) != -1)
+				new_key_value2 = extend_env_value_nf(data, new_key_value);
+			if (new_key_value2)
+				return (free (new_key_value), new_key_value2);
+			return (new_key_value);
+		}
+		return (key_value);
+	}
+	return (key_value1);
 }
 
 char	*get_key_value_nf(char *var_to_extend, t_data *data, char *key_value)

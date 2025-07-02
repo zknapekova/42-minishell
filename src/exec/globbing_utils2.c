@@ -88,11 +88,9 @@ char	**append_str_to_array(char **arr, char *str)
 	i = 0;
 	while (arr && arr[i])
 		i++;
-
 	new_arr = malloc(sizeof(char *) * (i + 2));
 	if (!new_arr)
 		return (free_array(arr), NULL);
-
 	j = 0;
 	while (j < i)
 	{
@@ -106,7 +104,6 @@ char	**append_str_to_array(char **arr, char *str)
 		}
 		j++;
 	}
-
 	new_arr[i] = ft_strdup(str);
 	if (!new_arr[i])
 	{
@@ -115,9 +112,7 @@ char	**append_str_to_array(char **arr, char *str)
 		free_array(arr);
 		return (error_handler("Error appending str"), NULL);
 	}
-
 	new_arr[i + 1] = NULL;
-
 	free_array(arr); // full cleanup: strings + pointer array
 	return (new_arr);
 }

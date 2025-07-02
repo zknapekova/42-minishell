@@ -53,5 +53,7 @@ int	init_env(char **env, t_data *data)
 	}
 	if (!add_env(data, ft_strdup("?=0")))
 		return (0);
+	if (!add_env(data, ft_strdup("EMPTY=\0")))
+		return (0);
 	return (1);
 }
