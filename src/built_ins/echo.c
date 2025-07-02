@@ -69,10 +69,11 @@ char	*extend_env_value(t_data *data, char *key_value1)
 }
 
 //in case of multiple strings these should be joined into 1, for instance input = "word1 word2"
-int	echo_cmd(char **input, t_data *data)
+int	echo_cmd(char **input, t_data *data, t_ast *node)
 {
 	char	*result;
 	int		i;
+	int		fd;
 
 	if (arr_size(input) == 1)
 	{
@@ -90,16 +91,19 @@ int	echo_cmd(char **input, t_data *data)
 			result = ft_strdup(input[i]);
 		if (!result)
 			return (error_handler(strerror(errno)), EXIT_FAILURE);
-		if (write(1, result, ft_strlen(result)) == -1)
+		fd = 1;
+		if (node->cmd_data->fd_file_out != -1)
+			fd = node->cmd_data->fd_file_out;
+		if (write(fd, result, ft_strlen(result)) == -1)
 			return (error_handler(strerror(errno)), free(result), EXIT_FAILURE);
 		if (ft_strlen(result) > 0 && input[i + 1])
-			write(1, " ", 1);
+			write(fd, " ", 1);
 		free(result);
 		i++;
 	}
 	if (ft_strcmp(input[1], "-n") != 0)
 	{
-		if (write(1, "\n", 1) == -1)
+		if (write(fd, "\n", 1) == -1)
 			return (error_handler(strerror(errno)), EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -122,7 +126,7 @@ char	*extend_env_value_nf(t_data *data, char *key_value1)
 		return (NULL);
 	new_key_value = get_key_value_nf(var_to_extend, data, key_value);
 	free (var_to_extend);
-	free (key_value);
+	//free (key_value);
 	if (!new_key_value)
 		return (NULL);
 	if (get_first_ind(new_key_value, '$', 0) != -1)

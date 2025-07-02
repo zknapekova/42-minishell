@@ -31,9 +31,9 @@ char	*get_redir_target_str(t_data *data, t_redir_target *target);
 void	setup_heredoc(char *target);
 char	*get_exec_path(const char *cmd, t_data *data);
 
-int		echo_cmd(char **input, t_data *data);
-int		cd(char **input, t_data *data);
-void		execute_built_cmds(char **argv, t_data *data, int *status);
+int		echo_cmd(char **input, t_data *data, t_ast *node);
+int		cd(char **input, t_data *data, t_ast *node);
+void	execute_built_cmds(char **argv, t_data *data, int *status, t_ast *node);
 int		check_built_ins(char *cmd);
 int		ft_redirect(t_ast *node);
 int		handle_redir_files(t_redir *redir, t_data *data, t_ast *node);

@@ -5,11 +5,15 @@
 #include <unistd.h>
 
 
-int	print_env_list(t_data *data)
+int	print_env_list(t_data *data, t_ast *node)
 {
 	t_env_node	*temp;
 	char		*print_key_value;
+	int			fd;
 
+	fd = 1;
+	if (node->cmd_data->fd_file_out != -1)
+		fd = node->cmd_data->fd_file_out;
 	if (data->head)
 	{
 		temp = data->head;
@@ -20,7 +24,7 @@ int	print_env_list(t_data *data)
 				print_key_value = add_new_line(temp->key_value);
 				if (!print_key_value)
 					return (error_handler(strerror(errno)), 0);
-				if (write(1, print_key_value, ft_strlen(print_key_value)) == -1)
+				if (write(fd, print_key_value, ft_strlen(print_key_value)) == -1)
 					return (error_handler(strerror(errno)), free(print_key_value), 0);
 				free(print_key_value);
 				print_key_value = NULL;
@@ -31,28 +35,29 @@ int	print_env_list(t_data *data)
 	return (1);
 }
 
-int	export(t_data *data, char *input)
+int	export(t_data *data, char *input, t_ast *node)
 {
 	if (input && !handle_new_env_value(data, input))
 		return (EXIT_FAILURE);
-	if (!input && !print_env_list(data))
+	if (!input && !print_env_list(data, node))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-int	env_cmd(t_data *data, char **argv)
+int	env_cmd(t_data *data, char **argv, t_ast *node)
 {
 	if (arr_size(argv) > 1)
 		return (error_handler("No options or arguments allowed in env command."), EXIT_FAILURE);
-	if (!print_env_list(data))
+	if (!print_env_list(data, node))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-int	pwd()
+int	pwd(t_ast *node)
 {
 	char	*cwd;
 	char	*cwd_print;
+	int		fd;
 
 	cwd = malloc(1024 * sizeof(char));
 	if (!cwd)
@@ -61,7 +66,10 @@ int	pwd()
 		return (error_handler("getcwd failed"), free (cwd), EXIT_FAILURE);
 	cwd_print = add_new_line(cwd);
 	free(cwd);
-	if (write(1, cwd_print, ft_strlen(cwd_print)) == -1)
+	fd = 1;
+	if (node->cmd_data->fd_file_out != -1)
+		fd = node->cmd_data->fd_file_out;
+	if (write(fd, cwd_print, ft_strlen(cwd_print)) == -1)
 		return (error_handler(strerror(errno)), free(cwd_print), EXIT_FAILURE);
 	free(cwd_print);
 	return (EXIT_SUCCESS);

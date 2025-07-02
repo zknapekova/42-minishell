@@ -31,8 +31,11 @@ int	exit_cmd(char **argv)
 	return (EXIT_SUCCESS);
 }
 
-void	execute_built_cmds(char **argv, t_data *data, int *status)
+void	execute_built_cmds(char **argv, t_data *data, int *status, t_ast *node)
 {
+	int	i;
+
+	i = 0;
 	if (get_first_ind(argv[0], '/', 0) != -1)
 	{
 		*status = EXIT_FAILURE;
@@ -40,17 +43,20 @@ void	execute_built_cmds(char **argv, t_data *data, int *status)
 		return ;
 	}
 	if (!ft_strcmp(argv[0], "echo"))
-		*status = echo_cmd(argv, data);
+		*status = echo_cmd(argv, data, node);
 	else if (!ft_strcmp(argv[0], "env"))
-		*status = env_cmd(data, argv);
+		*status = env_cmd(data, argv, node);
 	else if (!ft_strcmp(argv[0], "unset"))
 		*status = unset(data, argv);
 	else if (!ft_strcmp(argv[0], "cd"))
-		*status = cd(argv, data);
+		*status = cd(argv, data, node);
 	else if (!ft_strcmp(argv[0], "pwd"))
-		*status = pwd();
+		*status = pwd(node);
 	else if (!ft_strcmp(argv[0], "export"))
-		*status = export(data, argv[1]);
+	{
+		while (argv[++i])
+			*status = export(data, argv[i], node);
+	}
 	else if (!ft_strcmp(argv[0], "exit"))
 		*status = exit_cmd(argv);
 }
