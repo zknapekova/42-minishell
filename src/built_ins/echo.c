@@ -92,7 +92,7 @@ int	echo_cmd(char **input, t_data *data, t_ast *node)
 		if (!result)
 			return (error_handler(strerror(errno)), EXIT_FAILURE);
 		fd = 1;
-		if (node->cmd_data->fd_file_out != -1)
+		if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_out == -1 && node->cmd_data->fd_pipe_in == -1)
 			fd = node->cmd_data->fd_file_out;
 		if (write(fd, result, ft_strlen(result)) == -1)
 			return (error_handler(strerror(errno)), free(result), EXIT_FAILURE);

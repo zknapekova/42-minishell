@@ -12,7 +12,7 @@ int	print_env_list(t_data *data, t_ast *node)
 	int			fd;
 
 	fd = 1;
-	if (node->cmd_data->fd_file_out != -1)
+	if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_file_out == -1)
 		fd = node->cmd_data->fd_file_out;
 	if (data->head)
 	{
@@ -67,7 +67,7 @@ int	pwd(t_ast *node)
 	cwd_print = add_new_line(cwd);
 	free(cwd);
 	fd = 1;
-	if (node->cmd_data->fd_file_out != -1)
+	if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_file_out == -1)
 		fd = node->cmd_data->fd_file_out;
 	if (write(fd, cwd_print, ft_strlen(cwd_print)) == -1)
 		return (error_handler(strerror(errno)), free(cwd_print), EXIT_FAILURE);

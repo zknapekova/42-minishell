@@ -132,7 +132,7 @@ int	cd(char **input, t_data *data, t_ast *node)
 
 	path = NULL;
 	fd = 1;
-	if (node->cmd_data->fd_file_out != -1)
+	if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_pipe_out == -1)
 		fd = node->cmd_data->fd_file_out;
 	if (arr_size(input) > 2)
 		return (error_handler("minishell: cd: too many arguments"),
