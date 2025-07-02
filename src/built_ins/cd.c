@@ -124,8 +124,6 @@ char	*handle_node(t_data *data, char *var_name, char *message)
 	return (path);
 }
 
-int	cd(char **input, t_data *data)
-
 int	cd(char **input, t_data *data, t_ast *node)
 {
 	char		*path;
@@ -136,7 +134,7 @@ int	cd(char **input, t_data *data, t_ast *node)
 	fd = 1;
 	if (node->cmd_data->fd_file_out != -1)
 		fd = node->cmd_data->fd_file_out;
-	if (input[2])
+	if (arr_size(input) > 2)
 		return (error_handler("minishell: cd: too many arguments"),
 			EXIT_FAILURE);
 	if (!input[1])
