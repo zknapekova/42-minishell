@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/07/01 20:33:56 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/02 02:07:30 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	loop(t_data *data)
 
 	while (1)
 	{
-		line = readline("minishell> ");
+		line = readline("\001\033[1;34m\002minishell>\001\033[0m\002 ");
 		if (!line)
 			break ;
 		if (*line != '\0')
