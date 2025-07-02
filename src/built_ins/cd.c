@@ -3,21 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 15:04:19 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/11 19:54:25 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:51:27 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/env_vars.h"
 #include "../libft/libft.h"
+#include <dirent.h>
 #include <errno.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/types.h>
-#include <dirent.h>
-
+#include <unistd.h>
 
 int	dir_check(char *path, char *cmd)
 {
@@ -29,21 +28,25 @@ int	dir_check(char *path, char *cmd)
 		if (!access(path, F_OK))
 		{
 			if (access(path, R_OK) == 0)
-				return (ft_eprintf("minishell:%s %s: Not a directory\n", cmd, path), EXIT_FAILURE);
+				return (ft_eprintf("minishell:%s %s: Not a directory\n", cmd,
+						path), EXIT_FAILURE);
 			else if (!access(path, R_OK) && chdir(path) == -1)
 				return (error_handler(strerror(errno)), EXIT_FAILURE);
 		}
 		else
-			return (ft_eprintf("minishell:%s %s: No such file or directory\n", cmd, path), EXIT_FAILURE);
+			return (ft_eprintf("minishell:%s %s: No such file or directory\n",
+					cmd, path), EXIT_FAILURE);
 	}
 	else
 	{
 		if (access(path, X_OK) == -1)
-			return (ft_eprintf("minishell:%s %s: Permission denied\n", cmd, path), closedir (dir), EXIT_FAILURE);
+			return (ft_eprintf("minishell:%s %s: Permission denied\n", cmd,
+					path), closedir(dir), EXIT_FAILURE);
 		else if (!access(path, X_OK) && chdir(path) == -1)
-			return (error_handler(strerror(errno)), closedir (dir), EXIT_FAILURE);
+			return (error_handler(strerror(errno)), closedir(dir),
+				EXIT_FAILURE);
 	}
-	return (closedir (dir), EXIT_SUCCESS);
+	return (closedir(dir), EXIT_SUCCESS);
 }
 
 int	update_pwds(t_data *data)
@@ -102,7 +105,8 @@ char	*replace_tilde(char *input, int ind)
 			return (free(temp), error_handler(strerror(errno)), NULL);
 		path = ft_strjoin(temp, post_tilde);
 		if (!path)
-			return (free(temp), free(post_tilde), error_handler(strerror(errno)), NULL);
+			return (free(temp), free(post_tilde),
+				error_handler(strerror(errno)), NULL);
 		return (free(temp), free(post_tilde), path);
 	}
 	return (input);
@@ -120,6 +124,7 @@ char	*handle_node(t_data *data, char *var_name, char *message)
 	return (path);
 }
 
+int	cd(char **input, t_data *data)
 
 int	cd(char **input, t_data *data, t_ast *node)
 {
@@ -132,15 +137,18 @@ int	cd(char **input, t_data *data, t_ast *node)
 	if (node->cmd_data->fd_file_out != -1)
 		fd = node->cmd_data->fd_file_out;
 	if (input[2])
-		return (error_handler("minishell: cd: too many arguments"), EXIT_FAILURE);
+		return (error_handler("minishell: cd: too many arguments"),
+			EXIT_FAILURE);
 	if (!input[1])
 		path = handle_node(data, "HOME", "minishell: cd: HOME not set");
 	else
 	{
 		if (input[1][0] == '~' && ft_strlen(input[1]) == 1)
 			path = handle_node(data, "HOME", "minishell: cd: HOME not set");
-		else if ((input[1][0] == '~' && ft_strlen(input[1]) > 1) || get_first_ind(input[1], '~', 0) != -1)
-			path = extend_env_value(data, replace_tilde(input[1], get_first_ind(input[1], '~', 0)));
+		else if ((input[1][0] == '~' && ft_strlen(input[1]) > 1)
+			|| get_first_ind(input[1], '~', 0) != -1)
+			path = extend_env_value(data, replace_tilde(input[1],
+						get_first_ind(input[1], '~', 0)));
 		else if (input[1][0] == '-' && ft_strlen(input[1]) == 1)
 		{
 			path = handle_node(data, "OLDPWD", "minishell: cd: OLDPWD not set");
