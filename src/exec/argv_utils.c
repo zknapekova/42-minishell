@@ -78,7 +78,7 @@ char	*get_tmp_str(t_data *data, t_arg **args)
 	char	*tmp_str;
 
 	if (get_first_ind((*args)->value, '$', 0) != -1 \
-		&& (*args)->quote_type != QUOTE_SINGLE)
+		&& (*args)->quote_type != QUOTE_SINGLE && ft_strlen((*args)->value) > 1)
 		tmp_str = extend_env_value_nf(data, (*args)->value);
 	else if ((*args)->quote_type != QUOTE_NONE)
 		tmp_str = escape_wildcard((*args)->value);
