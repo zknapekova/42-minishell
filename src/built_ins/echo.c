@@ -69,10 +69,11 @@ char	*extend_env_value(t_data *data, char *key_value1)
 }
 
 //in case of multiple strings these should be joined into 1, for instance input = "word1 word2"
-int	echo_cmd(char **input, t_data *data)
+int	echo_cmd(char **input, t_data *data, t_ast *node)
 {
 	char	*result;
 	int		i;
+	int		fd;
 
 	if (arr_size(input) == 1)
 	{
@@ -90,16 +91,19 @@ int	echo_cmd(char **input, t_data *data)
 			result = ft_strdup(input[i]);
 		if (!result)
 			return (error_handler(strerror(errno)), EXIT_FAILURE);
-		if (write(1, result, ft_strlen(result)) == -1)
+		fd = 1;
+		if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_out == -1 && node->cmd_data->fd_pipe_in == -1)
+			fd = node->cmd_data->fd_file_out;
+		if (write(fd, result, ft_strlen(result)) == -1)
 			return (error_handler(strerror(errno)), free(result), EXIT_FAILURE);
 		if (ft_strlen(result) > 0 && input[i + 1])
-			write(1, " ", 1);
+			write(fd, " ", 1);
 		free(result);
 		i++;
 	}
 	if (ft_strcmp(input[1], "-n") != 0)
 	{
-		if (write(1, "\n", 1) == -1)
+		if (write(fd, "\n", 1) == -1)
 			return (error_handler(strerror(errno)), EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -138,35 +142,35 @@ char	*extend_env_value_nf(t_data *data, char *key_value1)
 	char	*new_key_value;
 	char	*new_key_value2;
 	char	*key_value;
+	char	*key_value2;
 	int 	dollar_ind;
 
 	new_key_value2 = NULL;
-	key_value = replace_special_parameter(key_value1, data);
-	dollar_ind = get_first_ind(key_value, '$', 0);
-	var_to_extend = ft_substr(key_value, dollar_ind + 1,
-		get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
-	if (!var_to_extend)
+	if (key_value1)
 	{
-		if (key_value != key_value1)
-			free(key_value);
-		return (NULL);
-	}
-	new_key_value = get_key_value_nf(var_to_extend, data, key_value);
-	free(var_to_extend);
-	if (key_value != key_value1)
-		free(key_value);
-	if (!new_key_value)
-		return (NULL);
-	if (get_first_ind(new_key_value, '$', 0) != -1)
-	{
-		new_key_value2 = extend_env_value_nf(data, new_key_value);
-		if (new_key_value2)
+		key_value2 = replace_special_parameter(key_value1, data);
+		key_value = replace_empty(key_value2, data);
+		dollar_ind = get_first_ind(key_value, '$', 0);
+		if (dollar_ind != -1)
 		{
-			free(new_key_value);
-			return (new_key_value2);
+			var_to_extend = ft_substr(key_value, dollar_ind + 1, \
+					get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
+			if (!var_to_extend)
+				return (NULL);
+			new_key_value = get_key_value_nf(var_to_extend, data, key_value);
+			free (var_to_extend);
+			//free (key_value);
+			if (!new_key_value)
+				return (NULL);
+			if (get_first_ind(new_key_value, '$', 0) != -1)
+				new_key_value2 = extend_env_value_nf(data, new_key_value);
+			if (new_key_value2)
+				return (free (new_key_value), new_key_value2);
+			return (new_key_value);
 		}
+		return (key_value);
 	}
-	return (new_key_value);
+	return (key_value1);
 }
 
 char	*get_key_value_nf(char *var_to_extend, t_data *data, char *key_value)

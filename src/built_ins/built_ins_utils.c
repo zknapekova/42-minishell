@@ -31,8 +31,11 @@ int	exit_cmd(char **argv)
 	return (EXIT_SUCCESS);
 }
 
-void	execute_built_cmds(char **argv, t_data *data, int *status)
+void	execute_built_cmds(char **argv, t_data *data, int *status, t_ast *node)
 {
+	int	i;
+
+	i = 0;
 	if (get_first_ind(argv[0], '/', 0) != -1)
 	{
 		*status = EXIT_FAILURE;
@@ -40,17 +43,20 @@ void	execute_built_cmds(char **argv, t_data *data, int *status)
 		return ;
 	}
 	if (!ft_strcmp(argv[0], "echo"))
-		*status = echo_cmd(argv, data);
+		*status = echo_cmd(argv, data, node);
 	else if (!ft_strcmp(argv[0], "env"))
-		*status = env_cmd(data, argv);
+		*status = env_cmd(data, argv, node);
 	else if (!ft_strcmp(argv[0], "unset"))
 		*status = unset(data, argv);
 	else if (!ft_strcmp(argv[0], "cd"))
-		*status = cd(argv, data);
+		*status = cd(argv, data, node);
 	else if (!ft_strcmp(argv[0], "pwd"))
-		*status = pwd();
+		*status = pwd(node);
 	else if (!ft_strcmp(argv[0], "export"))
-		*status = export(data, argv[1]);
+	{
+		while (argv[++i])
+			*status = export(data, argv[i], node);
+	}
 	else if (!ft_strcmp(argv[0], "exit"))
 		*status = exit_cmd(argv);
 }
@@ -94,6 +100,45 @@ char	*replace_special_parameter(char *str, t_data *data)
 			if (!pre_str)
 				return (error_handler("malloc error"), free(post_str), free(temp_str), NULL);
 			replaced_str = replace_special_parameter(pre_str, data);
+			return (free(temp_str), free(post_str), replaced_str);
+		}
+		i++;
+	}
+	return (str);
+}
+
+char	*replace_empty(char *str, t_data *data)
+{
+	int	i;
+	t_env_node	*node;
+	char		*pre_str;
+	char		*post_str;
+	char		*temp_str;
+	char		*replaced_str;
+	int			len;
+
+	i = 0;
+	len = ft_strlen(str);
+	while (len >= 6 + i)
+	{
+		if (str[i] == '$' && str[i + 1] == 'E' && str[i + 2] == 'M' && str[i + 3] == 'P' && str[i + 4] == 'T' && str[i + 5] == 'Y')
+		{
+			node = search_env_list(data, "EMPTY");
+			pre_str = ft_substr(str, 0, i);
+			if (!pre_str)
+				return (error_handler("malloc error"), NULL);
+			temp_str = ft_strjoin(pre_str, node->value);
+			if (!temp_str)
+				return (free(pre_str), error_handler("malloc error"), NULL);
+			free(pre_str);
+			pre_str = NULL;
+			post_str = ft_substr(str, i + 6, ft_strlen(str) - (i + 1));
+			if (!post_str)
+				return (error_handler("malloc error"), NULL);
+			pre_str = ft_strjoin(temp_str, post_str);
+			if (!pre_str)
+				return (error_handler("malloc error"), free(post_str), free(temp_str), NULL);
+			replaced_str = replace_empty(pre_str, data);
 			return (free(temp_str), free(post_str), replaced_str);
 		}
 		i++;

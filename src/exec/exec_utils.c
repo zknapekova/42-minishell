@@ -19,7 +19,7 @@ int	execute(t_data *data, t_ast *node, char **argv)
 	close_pipes(data, data->ast);
 	if (check_built_ins(argv[0]))
 	{
-		execute_built_cmds(argv, data, &status);
+		execute_built_cmds(argv, data, &status, node);
 		return (status);
 	}
 	else
@@ -55,7 +55,7 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 			return (EXIT_FAILURE);
 		if (check_built_ins(argv[0]) && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_pipe_out == -1)
 		{
-			execute_built_cmds(argv, data, &status);
+			execute_built_cmds(argv, data, &status, node);
 			if (!ft_strcmp(argv[0], "exit"))
 			{
 				free_argv(argv);
