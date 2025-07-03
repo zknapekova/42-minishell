@@ -40,6 +40,7 @@ void	wait_all_cmds(t_data *data, t_ast *node, int *status)
 
 	if (!node)
 		return ;
+	status1 = 0;
 	if (node->type == NODE_COMMAND)
 	{
 		if (node->cmd_data->pid == -1)
