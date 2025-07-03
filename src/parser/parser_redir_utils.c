@@ -6,17 +6,17 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:52:37 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/01 00:14:13 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:49:37 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
 #include "libft.h" //for ft_strdup
-#include "token.h"
+#include "main.h"
 #include "parser_utils.h"
+#include "token.h"
 
-static void	append_target(t_redir_target **head, \
-	const char *value, t_quote_type qtype);
+static void		append_target(t_redir_target **head, const char *value,
+					t_quote_type qtype);
 
 void	append_redir(t_redir **redir_list, t_redir *new_redir)
 {
@@ -45,8 +45,8 @@ t_redir	*parse_redirection(t_token **tokens)
 	redir->type = get_redir_type(tokens);
 	advance_token(tokens);
 	if (!(*tokens) || (*tokens)->type != TOKEN_WORD)
-		return (free (redir), \
-		error_handler("Expected filename or delimiter\n"), NULL);
+		return (free(redir), error_handler("Expected filename or delimiter\n"),
+			NULL);
 	redir->target = NULL;
 	while ((*tokens)->type == TOKEN_WORD)
 	{
@@ -58,7 +58,7 @@ t_redir	*parse_redirection(t_token **tokens)
 		}
 		advance_token(tokens);
 	}
-	redir->fd = -1; // We can further expand it to handle things like 2> error.log
+	redir->fd = -1;
 	redir->next = NULL;
 	return (redir);
 }
@@ -96,8 +96,8 @@ t_redir_type	get_redir_type(t_token **tokens)
 	return (type);
 }
 
-static void	append_target(t_redir_target **head, \
-	const char *value, t_quote_type qtype)
+static void	append_target(t_redir_target **head, const char *value,
+		t_quote_type qtype)
 {
 	t_redir_target	*new_target;
 	t_redir_target	*curr;
@@ -107,8 +107,8 @@ static void	append_target(t_redir_target **head, \
 		return (error_handler("Failed to allocate new_target\n"));
 	new_target->value = ft_strdup(value);
 	if (!new_target->value)
-		return (free (new_target), \
-		error_handler("ft_strdup failed in append_target\n"));
+		return (free(new_target),
+			error_handler("ft_strdup failed in append_target\n"));
 	new_target->quote_type = qtype;
 	new_target->next = NULL;
 	if (*head == NULL)

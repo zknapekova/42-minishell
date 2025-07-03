@@ -6,18 +6,21 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 18:38:27 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/01 17:34:06 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/03 19:11:17 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
-#include "libft.h"
+#include "built_ins.h"
 #include "env_vars.h"
 #include "exec.h"
-#include <stdlib.h> //for NULL
-#include <errno.h>
+#include "libft.h"
+#include "main.h"
 #include <dirent.h> // for  opendir
-#include "built_ins.h"
+#include <errno.h>
+#include <stdlib.h> //for NULL
+
+t_bool	handle_copy_error(int i, char ***new_arr, char ***arr,
+		char *error_msg);
 
 t_file	*get_cwd_file_list(void)
 {
@@ -52,8 +55,8 @@ t_file	*append_file(t_file *head, const char *name)
 		return (error_handler("malloc failed in append_file"), NULL);
 	new->name = ft_strdup(name);
 	if (!new->name)
-		return (free(new), \
-		error_handler("ft_strdup failed in append_file"), NULL);
+		return (free(new), error_handler("ft_strdup failed in append_file"),
+			NULL);
 	new->next = NULL;
 	if (!head)
 		return (new);
@@ -88,36 +91,34 @@ char	**append_str_to_array(char **arr, char *str)
 	i = 0;
 	while (arr && arr[i])
 		i++;
-
 	new_arr = malloc(sizeof(char *) * (i + 2));
 	if (!new_arr)
 		return (free_array(arr), NULL);
-
 	j = 0;
 	while (j < i)
 	{
 		new_arr[j] = ft_strdup(arr[j]);
-		if (!new_arr[j])
-		{
-			new_arr[j] = NULL;
-			free_array(new_arr);
-			free_array(arr);
-			return (error_handler("Error copying array"), NULL);
-		}
+		if (handle_copy_error(j, &new_arr, &arr, "Error copying array"))
+			return (NULL);
 		j++;
 	}
-
 	new_arr[i] = ft_strdup(str);
-	if (!new_arr[i])
-	{
-		new_arr[i] = NULL;
-		free_array(new_arr);
-		free_array(arr);
-		return (error_handler("Error appending str"), NULL);
-	}
-
+	if (handle_copy_error(i, &new_arr, &arr, "Error appending str"))
+			return (NULL);
 	new_arr[i + 1] = NULL;
-
-	free_array(arr); // full cleanup: strings + pointer array
-	return (new_arr);
+	return (free_array(arr), new_arr);
+}
+t_bool	handle_copy_error(int i, char ***new_arr, char ***arr,
+		char *error_msg)
+{
+	if (!(*new_arr)[i])
+	{
+		(*new_arr)[i] = NULL;
+		free_array(*new_arr);
+		free_array(*arr);
+		error_handler(error_msg);
+		return (true);
+	}
+	else
+		return (false);
 }

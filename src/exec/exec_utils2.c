@@ -1,15 +1,27 @@
-#include "exec.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_utils2.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/03 18:52:52 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/07/03 18:53:47 by jgrigorj         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "env_vars.h"
-#include "main.h"
+#include "exec.h"
 #include "libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
+#include "main.h"
 #include <errno.h>
-#include <string.h>
-#include <stdio.h> // for readline
-#include <readline/readline.h>
 #include <readline/history.h>
+#include <readline/readline.h>
+#include <stdio.h>
+#include <stdio.h> // for readline
+#include <stdlib.h>
+#include <string.h>
+#include <sys/wait.h>
 
 int	update_last_status(t_data *data, int status)
 {
@@ -63,13 +75,14 @@ void	wait_all_cmds(t_data *data, t_ast *node, int *status)
 	wait_all_cmds(data, node->right, status);
 }
 
-void	execute_child_process(t_data *data, t_ast *node, int *status, char **argv)
+void	execute_child_process(t_data *data, t_ast *node, int *status,
+		char **argv)
 {
 	node->cmd_data->pid = fork();
 	if (node->cmd_data->pid < 0)
 	{
 		error_handler(strerror(errno));
-		*status = EXIT_FAILURE; //TODO CHECK if it shouldn't return pid
+		*status = EXIT_FAILURE; // TODO CHECK if it shouldn't return pid
 	}
 	if (node->cmd_data->pid == 0)
 	{

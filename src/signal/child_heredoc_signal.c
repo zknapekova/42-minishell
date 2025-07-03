@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 18:58:29 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/01 22:40:50 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:48:23 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <signal.h> //sigaction
 #include <stdio.h>  // for readline
 
-volatile int g_heredoc_sig;
+volatile int	g_heredoc_sig;
 
 void	handle_heredoc_signal(int signum)
 {
@@ -24,28 +24,27 @@ void	handle_heredoc_signal(int signum)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		// write(1, "\n", 1);
 		close(STDIN_FILENO);
 		g_heredoc_sig = 1;
 	}
-	
 }
 
 void	sig_init_child(void)
 {
-	struct sigaction act;
+	struct sigaction	act;
 
 	ft_bzero(&act, sizeof(act));
-    sigemptyset(&act.sa_mask);
-    act.sa_flags = 0;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = 0;
 	act.sa_handler = SIG_DFL;
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
 }
 
-void sig_init_heredoc(void)
+void	sig_init_heredoc(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
+
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sa.sa_handler = handle_heredoc_signal;

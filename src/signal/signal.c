@@ -6,26 +6,24 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:46:37 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/27 15:47:34 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:48:49 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
+#include "main.h"
 #include <readline/readline.h>
 #include <signal.h> //sigaction
 #include <stdio.h>  // for readline
-#include "main.h"
 
 void	handle_sigint_main(int signum)
 {
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
-	rl_redisplay();	
-	// g_sigstate = 1;
+	rl_redisplay();
 	(void)signum;
 }
-
 
 void	sig_init(void)
 {
