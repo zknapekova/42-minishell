@@ -57,20 +57,23 @@ void	wait_all_cmds(t_data *data, t_ast *node, int *status)
 	{
 		if (node->cmd_data->pid == -1)
 			return ;
-		else
+		else if (node->cmd_data->pid != -2)
 		{
 			waitpid(node->cmd_data->pid, &status1, 0);
 			if (WIFEXITED(status1))
 			{
-				*status = WEXITSTATUS(status1);
+				node->cmd_data->status = WEXITSTATUS(status1);
 				update_last_status(data, WEXITSTATUS(status1));
 			}
 			else if (WIFSIGNALED(status1))
 			{
-				*status = WTERMSIG(status1);
+				node->cmd_data->status = 128 + WTERMSIG(status1);
 				update_last_status(data, 128 + WTERMSIG(status1));
 			}
 		}
+		else if (node->cmd_data->pid == -2)
+			update_last_status(data, node->cmd_data->status);
+		*status = node->cmd_data->status;
 	}
 	wait_all_cmds(data, node->left, status);
 	wait_all_cmds(data, node->right, status);

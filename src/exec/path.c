@@ -126,5 +126,6 @@ char	*get_cmd_path(char *cmd, t_data *data, int *status)
 	*status = 127;
 	if (get_first_ind(cmd, '/', 0) != -1)
 		return (ft_eprintf("minishell: %s: No such file or directory\n", cmd), NULL);
+	*status=EXIT_FAILURE;
 	return (ft_eprintf("%s: command not found\n", cmd), NULL);
 }

@@ -132,6 +132,7 @@ typedef struct s_cmd_data
 	int						fd_file_in;
 	int						fd_file_out;
 	int						pid;
+	int						status;
 	t_bool					has_heredoc;
 }							t_cmd_data;
 
