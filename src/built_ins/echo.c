@@ -1,6 +1,7 @@
-#include "../include/env_vars.h"
-#include "../libft/libft.h"
+#include "env_vars.h"
+#include "libft.h"
 #include "exec.h"
+#include "built_ins.h"
 #include <errno.h>
 #include <string.h>
 
@@ -81,6 +82,7 @@ int	echo_cmd(char **input, t_data *data, t_ast *node)
 		return (EXIT_SUCCESS);
 	}
 	i = 1;
+	normalize_n_flag(input);
 	if (!ft_strcmp(input[1], "-n"))
 		i = 2;
 	while (input[i])
@@ -109,32 +111,6 @@ int	echo_cmd(char **input, t_data *data, t_ast *node)
 	return (EXIT_SUCCESS);
 }
 
-// char	*extend_env_value_nf(t_data *data, char *key_value1)
-// {
-// 	char	*var_to_extend;
-// 	char	*new_key_value;
-// 	char	*new_key_value2;
-// 	char	*key_value;
-// 	int 	dollar_ind;
-
-// 	new_key_value2 = NULL;
-// 	// new_key_value = NULL;
-// 	key_value = replace_special_parameter(key_value1, data);
-// 	dollar_ind = get_first_ind(key_value, '$', 0);
-// 	var_to_extend = ft_substr(key_value, dollar_ind + 1, get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
-// 	if (!var_to_extend)
-// 		return (NULL);
-// 	new_key_value = get_key_value_nf(var_to_extend, data, key_value);
-// 	free (var_to_extend);
-// 	free (key_value);
-// 	if (!new_key_value)
-// 		return (NULL);
-// 	if (get_first_ind(new_key_value, '$', 0) != -1)
-// 		new_key_value2 = extend_env_value_nf(data, new_key_value);
-// 	if (new_key_value2)
-// 		return (free (new_key_value), new_key_value2);
-// 	return (new_key_value);
-// }
 char	*extend_env_value_nf(t_data *data, char *key_value1)
 {
 	char	*var_to_extend;

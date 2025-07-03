@@ -1,4 +1,0 @@
-asdf
-foo ;kl
-as
-search input.txt
