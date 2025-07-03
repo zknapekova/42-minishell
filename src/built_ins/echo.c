@@ -168,6 +168,7 @@ char	*extend_env_value_nf(t_data *data, char *key_value1)
 	}
 	return (new_key_value);
 }
+
 char	*get_key_value_nf(char *var_to_extend, t_data *data, char *key_value)
 {
 	char	*new_value_pre;
