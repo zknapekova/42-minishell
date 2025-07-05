@@ -87,10 +87,11 @@ void	find_cmds(t_data *data, t_ast *node, int *status)
 		return ;
 	if (node->type == NODE_OR)
 	{
-		//ft_printf("OR found\n");
 		find_cmds(data, node->left, &status_stat);
 		update_last_status(data, status_stat);
+//		ft_printf("5status: %d\n", status_stat);
 		wait_all_cmds(data, data->ast, &status_stat);
+//		ft_printf("6status: %d\n", status_stat);
 		*status = status_stat;
 		if (status_stat == EXIT_SUCCESS)
 			return ;
@@ -101,18 +102,15 @@ void	find_cmds(t_data *data, t_ast *node, int *status)
 	}
 	if (node->type == NODE_AND)
 	{
-		//ft_printf("AND found\n");
 		find_cmds(data, node->left, &status_stat);
 		update_last_status(data, status_stat);
-		//ft_printf("11status: %d\n", status_stat);
 		wait_all_cmds(data, data->ast, &status_stat);
 		*status = status_stat;
-		//ft_printf("22status: %d\n", status_stat);
 		if (status_stat != EXIT_SUCCESS)
 			return ;
 		find_cmds(data, node->right, &status_stat);
 		update_last_status(data, status_stat);
-//		wait_all_cmds(data, data->ast, &status_stat);
+		wait_all_cmds(data, data->ast, &status_stat);
 		*status = status_stat;
 		return ;
 	}

@@ -52,7 +52,6 @@ void	wait_all_cmds(t_data *data, t_ast *node, int *status)
 
 	if (!node)
 		return ;
-	status1 = 0;
 	if (node->type == NODE_COMMAND)
 	{
 		if (node->cmd_data->pid == -1)
@@ -71,9 +70,10 @@ void	wait_all_cmds(t_data *data, t_ast *node, int *status)
 				update_last_status(data, 128 + WTERMSIG(status1));
 			}
 		}
-		else if (node->cmd_data->pid == -2)
+		else if (node->cmd_data->pid == -2 && node->cmd_data->status != -10)
 			update_last_status(data, node->cmd_data->status);
-		*status = node->cmd_data->status;
+		if (node->cmd_data->status != -10)
+			*status = node->cmd_data->status;
 	}
 	wait_all_cmds(data, node->left, status);
 	wait_all_cmds(data, node->right, status);
@@ -86,7 +86,7 @@ void	execute_child_process(t_data *data, t_ast *node, int *status,
 	if (node->cmd_data->pid < 0)
 	{
 		error_handler(strerror(errno));
-		*status = EXIT_FAILURE; // TODO CHECK if it shouldn't return pid
+		*status = EXIT_FAILURE;
 	}
 	if (node->cmd_data->pid == 0)
 	{

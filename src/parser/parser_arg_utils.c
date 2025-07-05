@@ -68,6 +68,7 @@ t_cmd_data	*init_cmd_data(t_redir *leading_redir)
 	cmd_data->fd_file_in = -1;
 	cmd_data->fd_file_out = -1;
 	cmd_data->pid = -2;
+	cmd_data->status = -10;
 	cmd_data->cmd_path = NULL;
 	cmd_data->has_heredoc = false;
 	return (cmd_data);
