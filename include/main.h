@@ -133,6 +133,7 @@ typedef struct s_cmd_data
 	int						fd_file_out;
 	int						pid;
 	int						status;
+	int						pid_waited;
 	t_bool					has_heredoc;
 }							t_cmd_data;
 

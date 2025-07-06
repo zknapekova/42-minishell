@@ -52,7 +52,7 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 	{
 		argv = get_argv(data, node->cmd_data->args);
 		if (!argv)
-			return (EXIT_FAILURE);
+			return (EXIT_SUCCESS);
 		if (check_built_ins(argv[0]) && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_pipe_out == -1)
 		{
 			execute_built_cmds(argv, data, &status, node);
@@ -87,11 +87,10 @@ void	find_cmds(t_data *data, t_ast *node, int *status)
 		return ;
 	if (node->type == NODE_OR)
 	{
+		//ft_printf("OR found\n");
 		find_cmds(data, node->left, &status_stat);
 		update_last_status(data, status_stat);
-//		ft_printf("5status: %d\n", status_stat);
 		wait_all_cmds(data, data->ast, &status_stat);
-//		ft_printf("6status: %d\n", status_stat);
 		*status = status_stat;
 		if (status_stat == EXIT_SUCCESS)
 			return ;
@@ -102,14 +101,17 @@ void	find_cmds(t_data *data, t_ast *node, int *status)
 	}
 	if (node->type == NODE_AND)
 	{
+		//ft_printf("status1: %d\n", status_stat);
 		find_cmds(data, node->left, &status_stat);
 		update_last_status(data, status_stat);
 		wait_all_cmds(data, data->ast, &status_stat);
 		*status = status_stat;
+		//ft_printf("status1: %d\n", status_stat);
 		if (status_stat != EXIT_SUCCESS)
 			return ;
 		find_cmds(data, node->right, &status_stat);
 		update_last_status(data, status_stat);
+		//ft_printf("status2: %d\n", status_stat);
 		wait_all_cmds(data, data->ast, &status_stat);
 		*status = status_stat;
 		return ;
