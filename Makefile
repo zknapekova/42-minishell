@@ -38,6 +38,7 @@ SRC = \
 OBJS = $(SRC:.c=.o)
 
 NAME = minishell
+BONUS_NAME = minishell_bonus
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -45,12 +46,16 @@ LIBFT = $(LIBFT_DIR)/libft.a
 # Default target
 all: $(NAME)
 
-# Bonus target (same as 'all')
-bonus: all
+# Bonus target
+bonus: $(BONUS_NAME)
 
 # Build the minishell
 $(NAME): $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -lhistory -o $(NAME)
+
+# Build the bonus
+$(BONUS_NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -lhistory -o $(BONUS_NAME)
 
 # Compile .o files from .c files
 %.o: %.c
@@ -67,7 +72,7 @@ clean:
 
 # Clean all build artifacts
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(BONUS_NAME) 
 	$(MAKE) -C $(LIBFT_DIR) fclean
 
 # Rebuild everything
