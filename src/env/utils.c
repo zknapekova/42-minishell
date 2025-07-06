@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 17:41:41 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/04 15:41:27 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:39:33 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int	ft_strcmp(const char *s1, const char *s2)
 	}
 	return (0);
 }
-
 
 int	arr_size(char **arr)
 {

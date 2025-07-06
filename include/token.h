@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:32:07 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/12 18:40:00 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:30:40 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,5 @@ char			*parse_quoted(const char *input, size_t *pos, char quote);
 char			*parse_word(const char *input, size_t *pos);
 int				check_tokens(t_token *tokens);
 int				check_operator(t_token *tokens);
-
 
 #endif

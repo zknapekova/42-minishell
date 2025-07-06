@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zuknapek <zuknapek@student.42prague.fr>    +#+  +:+       +#+        */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 16:17:55 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/04 18:47:29 by zuknapek         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:39:08 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,3 @@ char	*get_key_value(char *var_to_extend, t_data *data, char *key_value, \
 		free(key_value);
 	return (free(temp_key_value), free(new_value), new_key_value);
 }
-

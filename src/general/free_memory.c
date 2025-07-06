@@ -6,15 +6,15 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:35:54 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/05/19 19:06:25 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:38:24 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-#include "token.h"
 #include "parser_utils.h"
-#include <stdlib.h>
+#include "token.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 static void	free_ll(t_data *data)
 {
@@ -66,7 +66,6 @@ void	free_ast(t_ast *node)
 	free(node);
 }
 
-
 void	free_redir(t_redir *head)
 {
 	t_redir			*next;
@@ -78,11 +77,11 @@ void	free_redir(t_redir *head)
 		while (head->target)
 		{
 			next_target = head->target->next;
-			free (head->target->value);
-			free (head->target);
+			free(head->target->value);
+			free(head->target);
 			head->target = next_target;
 		}
-		free (head);
+		free(head);
 		head = next;
 	}
 }

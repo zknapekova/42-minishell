@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:18:57 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/30 23:43:45 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:35:46 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ typedef struct s_ast
 // tato struktura moze byt pre vseobecne data, nie nevyhnutne iba pre env LL
 typedef struct s_data
 {
-	t_env_node *head; // pointer to head of LL
+	t_env_node				*head;
 	char					*pwd;
 	t_token					*tokens;
 	t_ast					*ast;

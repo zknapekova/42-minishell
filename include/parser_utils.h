@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 21:33:08 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/06 20:59:02 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:36:35 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "../include/main.h"
 
 t_ast			*new_ast_node(t_node_type type);
-t_ast	*parse_logical(t_token **tokens);
+t_ast			*parse_logical(t_token **tokens);
 
 t_ast			*parse_pipeline(t_token **tokens);
 t_ast			*parse_cmd_or_subshell(t_token **tokens);

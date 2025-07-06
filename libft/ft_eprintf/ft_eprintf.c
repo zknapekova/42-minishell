@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 16:03:22 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/17 16:18:59 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:29:26 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static void	get_flags(const char *str, int *i, char *flags)
 {
 	ft_strlcpy(flags, "00000", 6);
-	while (str[*i] == '+' || str[*i] == '-' || str[*i] == '0' \
-		|| str[*i] == ' ' || str[*i] == '#')
+	while (str[*i] == '+' || str[*i] == '-' || str[*i] == '0' || str[*i] == ' '
+		|| str[*i] == '#')
 	{
 		if (str[*i] == '+')
 			flags[0] = '+';
@@ -45,13 +45,15 @@ static int	print_format(const char *str, va_list args, int *i, char *flags)
 	else if (str[*i] == 's')
 		ch_printed += eprint_str(va_arg(args, char *), wp, flags);
 	else if (str[*i] == 'p')
-		ch_printed += eprint_ptr(va_arg(args, unsigned long long), flags, wp[0]);
+		ch_printed += eprint_ptr(va_arg(args, unsigned long long), flags,
+				wp[0]);
 	else if (str[*i] == 'd' || str[*i] == 'i')
 		ch_printed += eprint_dec(va_arg(args, int), wp, flags);
 	else if (str[*i] == 'u')
 		ch_printed += eprint_undec(va_arg(args, unsigned int), wp, flags);
 	else if (str[*i] == 'x' || str[*i] == 'X')
-		ch_printed += eprint_hex(va_arg(args, unsigned int), wp, flags, str[*i]);
+		ch_printed += eprint_hex(va_arg(args, unsigned int), wp, flags,
+				str[*i]);
 	else if (str[*i] == '%')
 		ch_printed += eprint_percent();
 	else

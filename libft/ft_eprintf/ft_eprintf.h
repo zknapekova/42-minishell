@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 22:55:59 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/04/17 16:17:30 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:29:44 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "../libft.h"
 # include <stdarg.h>
 # include <stdint.h>
-
 
 int		ft_eprintf(const char *str, ...);
 int		eget_width(const char *str, int *i);

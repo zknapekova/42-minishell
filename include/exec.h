@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:15:04 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/06 19:07:37 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:33:27 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 typedef struct s_file
 {
 	char			*name;
-	// unsigned char	d_type;
 	struct s_file	*next;
 }	t_file;
 
@@ -30,7 +29,6 @@ void	free_argv(char **argv);
 char	*get_redir_target_str(t_data *data, t_redir_target *target);
 void	setup_heredoc(char *target);
 char	*get_exec_path(const char *cmd, t_data *data);
-
 int		echo_cmd(char **input, t_data *data, t_ast *node);
 int		cd(char **input, t_data *data, t_ast *node);
 void	execute_built_cmds(char **argv, t_data *data, int *status, t_ast *node);
@@ -42,7 +40,8 @@ char	**create_env_arr(t_data *data);
 char	*escape_wildcard(char *str);
 
 char	*get_path_from_env(const char *cmd, t_data *data);
-char	*handle_path(char *path, int free_path, int folder, int existence_check);
+char	*handle_path(char *path, int free_path, int folder, \
+		int existence_check);
 int		get_fd_file(char *path, t_redir_type type);
 char	*get_cmd_path(char *cmd, t_data *data, int *status);
 int		arr_size(char **arr);
@@ -55,7 +54,8 @@ void	close_pipes(t_data *data, t_ast *node);
 int		execute_heredoc(t_redir *redir, t_data *data, t_ast *node);
 int		update_last_status(t_data *data, int status);
 void	wait_all_cmds(t_data *data, t_ast *node, int *status);
-void	execute_child_process(t_data *data, t_ast *node, int *status, char **argv);
+void	execute_child_process(t_data *data, t_ast *node, \
+		int *status, char **argv);
 int		execute(t_data *data, t_ast *node, char **argv);
 
 // globbing
@@ -69,7 +69,7 @@ char	*handle_ambiguous_error(char *target, t_file *head);
 t_file	*append_file(t_file *head, const char *name);
 void	free_file_list(t_file *head);
 t_file	*get_cwd_file_list(void);
-int 	match_star_pattern(char *pattern, char *str);
+int		match_star_pattern(char *pattern, char *str);
 int		is_in_cwd(char *str);
 char	**append_str_to_array(char **arr, char *str);
 char	*rm_escape_char(char *str);
@@ -77,10 +77,9 @@ int		is_hidden_file(char *str);
 int		longer_strlen(char *str1, char *str2);
 t_file	*sorted_insert(t_file *head, t_file *new_node);
 t_file	*sort_file_list(t_file *head);
-void remove_empty_strings(char **array);
+void	remove_empty_strings(char **array);
 
 // signal in exec
 void	print_nl_after_sig(int status);
-
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 17:00:09 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/08 16:22:58 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:34:37 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENV_VARS_H
 # define ENV_VARS_H
-#include "main.h"
+# include "main.h"
 
 t_env_node	*new_node(t_data *data, char *key_value);
 t_env_node	*last_node(t_data *data);
@@ -41,14 +41,16 @@ void		error_handler(char *str);
 char		*add_new_line(char *str);
 char		*echo_extend_env_value(t_data *data, char *key_value);
 char		*extend_env_value(t_data *data, char *key_value);
-char		*echo_get_key_value(char *var_to_extend, t_data *data, char *key_value);
+char		*echo_get_key_value(char *var_to_extend, t_data *data, \
+	char *key_value);
 char		*replace_tilde(char *input, int ind);
 char		*replace_special_parameter(char *str, t_data *data);
 char		*replace_empty(char *str, t_data *data);
 int			dir_check(char *path, char *cmd);
 // no freeing the key_value
 char		*extend_env_value_nf(t_data *data, char *key_value);
-char		*get_key_value_nf(char *var_to_extend, t_data *data, char *key_value);
+char		*get_key_value_nf(char *var_to_extend, t_data *data, \
+	char *key_value);
 int			ft_strcmp(const char *s1, const char *s2);
 int			arr_size(char **arr);
 
