@@ -6,14 +6,14 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:32:45 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/06 20:56:35 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:20:47 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
 #include "libft.h"
-#include "token.h"
+#include "main.h"
 #include "parser_utils.h"
+#include "token.h"
 
 t_ast	*parser(t_token **tokens)
 {
@@ -27,22 +27,18 @@ t_ast	*parse_logical(t_token **tokens)
 	t_ast	*left;
 	t_ast	*right;
 	t_ast	*node;
+	t_token	*operator_token;
 
 	left = parse_pipeline(tokens);
 	while (is_token_and(*tokens) || is_token_or(*tokens))
 	{
-		if (is_token_and(*tokens))
-		{
-			advance_token(tokens);
-			right = parse_pipeline(tokens);
+		operator_token = *tokens;
+		advance_token(tokens);
+		right = parse_pipeline(tokens);
+		if (is_token_and(operator_token))
 			node = new_ast_node(NODE_AND);
-		}
 		else
-		{
-			advance_token(tokens);
-			right = parse_pipeline(tokens);
 			node = new_ast_node(NODE_OR);
-		}
 		if (!node)
 			return (NULL);
 		node->left = left;
