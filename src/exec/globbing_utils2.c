@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 18:38:27 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/06 18:50:29 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:58:17 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <errno.h>
 #include <stdlib.h> //for NULL
 
-t_bool	handle_copy_error(int i, char ***new_arr, char ***arr,
+t_bool	handle_copy_error(int i, char ***new_arr, char ***arr, \
 		char *error_msg);
 
 t_file	*get_cwd_file_list(void)
@@ -86,11 +86,6 @@ char	**append_str_to_array(char **arr, char *str)
 	int		j;
 	char	**new_arr;
 
-	// if (!arr)
-	// {
-	// 	arr = malloc(sizeof(char *));
-	// 	arr[0] = NULL;
-	// }
 	if (!str || !str[0])
 		return (arr);
 	i = 0;
@@ -109,10 +104,11 @@ char	**append_str_to_array(char **arr, char *str)
 	}
 	new_arr[i] = ft_strdup(str);
 	if (handle_copy_error(i, &new_arr, &arr, "Error appending str"))
-			return (NULL);
+		return (NULL);
 	new_arr[i + 1] = NULL;
 	return (free_array(arr), new_arr);
 }
+
 t_bool	handle_copy_error(int i, char ***new_arr, char ***arr,
 		char *error_msg)
 {
