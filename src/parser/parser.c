@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:32:45 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/05/18 21:55:11 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 20:56:35 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,47 +19,35 @@ t_ast	*parser(t_token **tokens)
 {
 	if (!(*tokens) || !check_tokens(*tokens))
 		return (NULL);
-	return (parse_or(tokens));
+	return (parse_logical(tokens));
 }
 
-t_ast	*parse_or(t_token **tokens)
+t_ast	*parse_logical(t_token **tokens)
 {
 	t_ast	*left;
 	t_ast	*right;
-	t_ast	*or_node;
-
-	left = parse_and(tokens);
-	while (is_token_or(*tokens))
-	{
-		advance_token(tokens);
-		right = parse_and(tokens);
-		or_node = new_ast_node(NODE_OR);
-		if (!or_node)
-			return (NULL);
-		or_node->left = left;
-		or_node->right = right;
-		left = or_node;
-	}
-	return (left);
-}
-
-t_ast	*parse_and(t_token **tokens)
-{
-	t_ast	*left;
-	t_ast	*right;
-	t_ast	*and_node;
+	t_ast	*node;
 
 	left = parse_pipeline(tokens);
-	while (is_token_and(*tokens))
+	while (is_token_and(*tokens) || is_token_or(*tokens))
 	{
-		advance_token(tokens);
-		right = parse_pipeline(tokens);
-		and_node = new_ast_node(NODE_AND);
-		if (!and_node)
+		if (is_token_and(*tokens))
+		{
+			advance_token(tokens);
+			right = parse_pipeline(tokens);
+			node = new_ast_node(NODE_AND);
+		}
+		else
+		{
+			advance_token(tokens);
+			right = parse_pipeline(tokens);
+			node = new_ast_node(NODE_OR);
+		}
+		if (!node)
 			return (NULL);
-		and_node->left = left;
-		and_node->right = right;
-		left = and_node;
+		node->left = left;
+		node->right = right;
+		left = node;
 	}
 	return (left);
 }

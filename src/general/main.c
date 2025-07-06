@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 19:13:59 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/07/02 02:07:30 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 20:32:39 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void	loop(t_data *data)
 			free_token_list(&(data->tokens));
 			if (!data->ast || check_subshell_redirs(data->ast))			
 				continue ;
+			// print_ast(data->ast, 0);
 			handle_cmds(data, data->ast);
 			data->tokens = NULL;
 			free_ast(data->ast);

@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:39:33 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/01 00:13:01 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 20:50:20 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_ast	*parse_subshell(t_token **tokens, t_redir *leading_redir)
 	t_ast		*subshell_node;
 
 	advance_token(tokens);
-	subtree = parse_or(tokens);
+	subtree = parse_logical(tokens);
 	if (!subtree)
 		return (error_handler("Failed parsing subshell/n"), NULL);
 	if (!is_token_rparen(*tokens))

@@ -87,7 +87,7 @@ void	find_cmds(t_data *data, t_ast *node, int *status)
 		return ;
 	if (node->type == NODE_OR)
 	{
-		//ft_printf("OR found\n");
+		ft_printf("OR found\n");
 		find_cmds(data, node->left, &status_stat);
 		update_last_status(data, status_stat);
 		wait_all_cmds(data, data->ast, &status_stat);
@@ -101,6 +101,7 @@ void	find_cmds(t_data *data, t_ast *node, int *status)
 	}
 	if (node->type == NODE_AND)
 	{
+		ft_printf("AND found\n");
 		//ft_printf("status1: %d\n", status_stat);
 		find_cmds(data, node->left, &status_stat);
 		update_last_status(data, status_stat);
