@@ -6,20 +6,19 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 19:38:52 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/07 21:52:21 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 19:28:20 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-#include <stdlib.h> //for NULL
-#include "main.h"
 #include "libft.h"
+#include "main.h"
+#include <stdlib.h> //for NULL
 
 int	is_match(char *str, t_file *file_list)
 {
-	return (match_star_pattern(str, file_list->name) \
-	&& (is_hidden_file(str) || (!is_hidden_file(str) \
-	&& file_list->name[0] != '.')));
+	return (match_star_pattern(str, file_list->name) && (is_hidden_file(str)
+			|| (!is_hidden_file(str) && file_list->name[0] != '.')));
 }
 
 char	*handle_ambiguous_error(char *target, t_file *head)
@@ -31,4 +30,24 @@ char	*handle_ambiguous_error(char *target, t_file *head)
 	free(temp);
 	free_file_list(head);
 	return (NULL);
+}
+
+void	remove_empty_strings(char **array)
+{
+	int	read;
+	int	write;
+
+	if (!array)
+		return ;
+	read = 0;
+	write = 0;
+	while (array[read])
+	{
+		if (array[read][0] != '\0')
+			array[write++] = array[read];
+		else
+			free(array[read]);
+		read++;
+	}
+	array[write] = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:15:04 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/29 22:23:22 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 19:07:37 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int		is_hidden_file(char *str);
 int		longer_strlen(char *str1, char *str2);
 t_file	*sorted_insert(t_file *head, t_file *new_node);
 t_file	*sort_file_list(t_file *head);
+void remove_empty_strings(char **array);
 
 // signal in exec
 void	print_nl_after_sig(int status);
