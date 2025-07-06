@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 18:38:27 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/03 20:04:56 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 18:50:29 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,11 @@ char	**append_str_to_array(char **arr, char *str)
 	int		j;
 	char	**new_arr;
 
+	// if (!arr)
+	// {
+	// 	arr = malloc(sizeof(char *));
+	// 	arr[0] = NULL;
+	// }
 	if (!str || !str[0])
 		return (arr);
 	i = 0;

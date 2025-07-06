@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:50 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/01 17:00:05 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/06 19:11:22 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,15 @@ char	**globe_argv(char **argv)
 	int		i;
 	t_bool	match_found;
 
+	remove_empty_strings(argv);
 	i = 1;
 	if (!argv || !argv[0])
 		return (free_argv(argv), NULL);
 	new_argv = NULL;
 	new_argv = append_str_to_array(new_argv, argv[0]);
-	if (!new_argv)
+	if (!new_argv && argv[0][0])
 		return (free_argv(argv), error_handler("Error in globe_argv"), NULL);
-	while (argv[i])
+	while (argv[i] && argv[i][0])
 	{
 		match_found = false;
 		new_argv = get_globbed_argv(new_argv, argv[i], &match_found);
