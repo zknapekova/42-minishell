@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 00:13:08 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/07 01:55:07 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/07 02:26:13 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ t_bool	fill_argv_list(t_data *data, char **argv, t_arg **args, int *i)
 	
 	while (*args)
 	{
-		// arg_str = handle_empty_quotes(args);
-		// if (arg_str)
-		// {
-		// 	argv[(*i)++] = arg_str;
-		// 	continue ;
-		// }
+		arg_str = handle_empty_quotes(args);
+		if (arg_str)
+		{
+			argv[(*i)++] = arg_str;
+			continue ;
+		}
 		arg_str = get_arg_str(data, args);
 		if (!arg_str)
 		{

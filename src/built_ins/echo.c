@@ -87,15 +87,22 @@ int	echo_cmd(char **input, t_data *data, t_ast *node)
 		i = 2;
 	while (input[i])
 	{
-		if (get_first_ind(input[i], '~', 0) > -1)
+		fd = 1;
+		if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_out == -1 && node->cmd_data->fd_pipe_in == -1)
+			fd = node->cmd_data->fd_file_out;
+		if (!ft_strcmp(input[i], "''"))
+		{
+			if (input[i + 1])
+				write(fd, " ", 1);
+			i++;
+			continue ;
+		}
+		else if (get_first_ind(input[i], '~', 0) > -1)
 			result = extend_env_value(data, replace_tilde(input[i], get_first_ind(input[i], '~', 0)));
 		else
 			result = ft_strdup(input[i]);
 		if (!result)
 			return (error_handler(strerror(errno)), EXIT_FAILURE);
-		fd = 1;
-		if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_out == -1 && node->cmd_data->fd_pipe_in == -1)
-			fd = node->cmd_data->fd_file_out;
 		if (write(fd, result, ft_strlen(result)) == -1)
 			return (error_handler(strerror(errno)), free(result), EXIT_FAILURE);
 		if (ft_strlen(result) > 0 && input[i + 1])
