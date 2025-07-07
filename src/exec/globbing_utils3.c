@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 19:38:52 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/06 19:28:20 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/07 01:42:47 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,12 @@ void	remove_empty_strings(char **array)
 	write = 0;
 	while (array[read])
 	{
-		if (array[read][0] != '\0')
+		if (read && !ft_strncmp(array[read], "''", 2))
+		{
+			free(array[read]);
+			array[write++] = ft_strdup("\0");
+		}
+		else if (array[read][0] != '\0')
 			array[write++] = array[read];
 		else
 			free(array[read]);

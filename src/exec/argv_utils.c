@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:55:18 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/06/27 23:15:26 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/07 01:29:13 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,12 @@ char	**get_argv(t_data *data, t_arg *args)
 	argv = malloc(sizeof(char *) * (list_len + 1));
 	if (!argv)
 		return (error_handler("failed to allocate argv list"), NULL);
+	arg_str = handle_empty_quotes(&args_copy);
 	i = 0;
-	while (i < list_len)
-	{
-		arg_str = get_arg_str(data, &args_copy);
-		if (!arg_str)
-			return (free_argv(argv), NULL);
-		argv[i] = arg_str;
-		i++;
-	}
+	if (arg_str)
+		argv[i++] = arg_str;
+	if (!fill_argv_list(data, argv, &args_copy, &i))
+		return (NULL);
 	argv[i] = NULL;
 	argv = globe_argv(argv);
 	return (argv);
