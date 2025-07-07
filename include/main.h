@@ -170,6 +170,11 @@ int							env_cmd(t_data *data, char **args, t_ast *node);
 int							unset(t_data *data, char **args);
 int							handle_new_env_value(t_data *data, char *key_value);
 char						*read_user_input(void);
+char 						*echo_preprocessing(char *str, t_arg *temp_node, t_data *data);
+int							echo_set_fd(t_ast *node);
+void						echo_write_new_line(char *str, int fd);
+void						echo_write_space(char *str, int fd, int ind, char *free_str);
+t_arg						*echo_set_node(int *i, t_ast *node, char *str);
 
 // *** signal ***
 void						sig_init(void);

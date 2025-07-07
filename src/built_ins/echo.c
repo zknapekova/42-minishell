@@ -18,8 +18,9 @@ char	*echo_get_key_value(char *var_to_extend, t_data *data, char *key_value)
 		new_value_pre = ft_substr(key_value, 0, dollar_ind);
 		if (!new_value_pre)
 			return (error_handler("malloc error"), NULL);
-		new_value_post = ft_substr(key_value, dollar_ind + ft_strlen(var_to_extend) + 1, \
-			ft_strlen(key_value) - dollar_ind - ft_strlen(var_to_extend));
+		new_value_post = ft_substr(key_value, dollar_ind + \
+		ft_strlen(var_to_extend) + 1, ft_strlen(key_value) - \
+		dollar_ind - ft_strlen(var_to_extend));
 		if (!new_value_post)
 			return (error_handler("malloc error"), NULL);
 		new_value = ft_strjoin(new_value_pre, new_value_post);
@@ -40,92 +41,57 @@ char	*extend_env_value(t_data *data, char *key_value1)
 	char	*new_key_value;
 	char	*new_key_value2;
 	char	*key_value;
-	int 	dollar_ind;
 
-	if (key_value1)
-	{
-		new_key_value2 = NULL;
-		key_value = replace_special_parameter(key_value1, data);
-		dollar_ind = get_first_ind(key_value, '$', 0);
-		if (dollar_ind > -1)
-		{
-			var_to_extend = ft_substr(key_value, dollar_ind + 1, \
-					get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
-			if (!var_to_extend)
-				return (free (key_value), NULL);
-			new_key_value = echo_get_key_value(var_to_extend, data, key_value);
-			free (var_to_extend);
-			free (key_value);
-			key_value = NULL;
-			if (!new_key_value)
-				return (NULL);
-			if (get_first_ind(new_key_value, '$', 0) != -1)
-				new_key_value2 = extend_env_value(data, new_key_value);
-			if (new_key_value2)
-				return (new_key_value2);
-			return (new_key_value);
-		}
-	}
-	return (key_value1);
+	if (!key_value1)
+		return (key_value1);
+	new_key_value2 = NULL;
+	key_value = replace_special_parameter(key_value1, data);
+	if (get_first_ind(key_value, '$', 0) == -1)
+		return (key_value);
+	var_to_extend = ft_substr(key_value, get_first_ind(key_value, '$', 0) + 1, \
+			get_first_non_alnum(key_value, get_first_ind(key_value, '$', 0) \
+			+ 1) - get_first_ind(key_value, '$', 0) - 1);
+	if (!var_to_extend)
+		return (free (key_value), NULL);
+	new_key_value = echo_get_key_value(var_to_extend, data, key_value);
+	free (var_to_extend);
+	free (key_value);
+	key_value = NULL;
+	if (!new_key_value)
+		return (NULL);
+	if (get_first_ind(new_key_value, '$', 0) != -1)
+		new_key_value2 = extend_env_value(data, new_key_value);
+	if (new_key_value2)
+		return (new_key_value2);
+	return (new_key_value);
 }
 
-//in case of multiple strings these should be joined into 1, for instance input = "word1 word2"
 int	echo_cmd(char **input, t_data *data, t_ast *node)
 {
 	char	*result;
 	int		i;
-	int		fd;
-	char	*temp;
 	t_arg	*temp_node;
 
 	if (arr_size(input) == 1)
-	{
-		write(1, "\n", 1);
-		return (EXIT_SUCCESS);
-	}
-	i = 1;
-	temp_node = node->cmd_data->args->next;
+		return (write(1, "\n", 1), EXIT_SUCCESS);
+	i = 0;
+	temp_node = echo_set_node(&i, node, input[1]);
 	normalize_n_flag(input);
-	if (!ft_strcmp(input[1], "-n"))
+	while (input[++i])
 	{
-		i = 2;
-		temp_node = node->cmd_data->args->next->next;
-	}
-	while (input[i])
-	{
-		fd = 1;
-		if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_out == -1 && node->cmd_data->fd_pipe_in == -1)
-			fd = node->cmd_data->fd_file_out;
 		if (!ft_strcmp(input[i], "''"))
 		{
-			if (input[i + 1])
-				write(fd, " ", 1);
-			i++;
+			echo_write_space(input[i + 1], echo_set_fd(node), 1, NULL);
 			continue ;
 		}
-		else if (get_first_ind(input[i], '~', 0) > -1 && temp_node->quote_type == QUOTE_NONE)
-		{
-			temp = replace_tilde(input[i], get_first_ind(input[i], '~', 0));
-			result = extend_env_value(data, ft_strdup(temp));
-			free(temp);
-		}
-		else
-			result = ft_strdup(input[i]);
+		result = echo_preprocessing(input[i], temp_node, data);
 		if (!result)
-			return (error_handler(strerror(errno)), EXIT_FAILURE);
-		if (write(fd, result, ft_strlen(result)) == -1)
-			return (error_handler(strerror(errno)), free(result), EXIT_FAILURE);
-		if (ft_strlen(result) > 0 && input[i + 1])
-			write(fd, " ", 1);
-		free(result);
-		i++;
+			return (error_handler(strerror(errno)), 1);
+		write(echo_set_fd(node), result, ft_strlen(result));
+		echo_write_space(input[i + 1], echo_set_fd(node), ft_strlen(result), result);
 		temp_node = temp_node->next;
 	}
-	if (ft_strcmp(input[1], "-n") != 0)
-	{
-		if (write(fd, "\n", 1) == -1)
-			return (error_handler(strerror(errno)), EXIT_FAILURE);
-	}
+	echo_write_new_line(input[1], echo_set_fd(node));
 	return (EXIT_SUCCESS);
 }
 
@@ -136,34 +102,28 @@ char	*extend_env_value_nf(t_data *data, char *key_value1)
 	char	*new_key_value2;
 	char	*key_value;
 	char	*key_value2;
-	int 	dollar_ind;
 
 	new_key_value2 = NULL;
-	if (key_value1)
-	{
-		key_value2 = replace_special_parameter(key_value1, data);
-		key_value = replace_empty(key_value2, data);
-		dollar_ind = get_first_ind(key_value, '$', 0);
-		if (dollar_ind != -1)
-		{
-			var_to_extend = ft_substr(key_value, dollar_ind + 1, \
-					get_first_non_alnum(key_value, dollar_ind + 1) - dollar_ind - 1);
-			if (!var_to_extend)
-				return (NULL);
-			new_key_value = get_key_value_nf(var_to_extend, data, key_value);
-			free (var_to_extend);
-			//free (key_value);
-			if (!new_key_value)
-				return (NULL);
-			if (get_first_ind(new_key_value, '$', 0) != -1)
-				new_key_value2 = extend_env_value_nf(data, new_key_value);
-			if (new_key_value2)
-				return (free (new_key_value), new_key_value2);
-			return (new_key_value);
-		}
+	if (!key_value1)
+		return (NULL);
+	key_value2 = replace_special_parameter(key_value1, data);
+	key_value = replace_empty(key_value2, data);
+	if (get_first_ind(key_value, '$', 0) == -1)
 		return (key_value);
-	}
-	return (key_value1);
+	var_to_extend = ft_substr(key_value, get_first_ind(key_value, '$', 0) + 1, \
+			get_first_non_alnum(key_value,get_first_ind(key_value, '$', 0) + \
+			1) - get_first_ind(key_value, '$', 0) - 1);
+	if (!var_to_extend)
+		return (NULL);
+	new_key_value = get_key_value_nf(var_to_extend, data, key_value);
+	free (var_to_extend);
+	if (!new_key_value)
+		return (NULL);
+	if (get_first_ind(new_key_value, '$', 0) != -1)
+		new_key_value2 = extend_env_value_nf(data, new_key_value);
+	if (new_key_value2)
+		return (free (new_key_value), new_key_value2);
+	return (new_key_value);
 }
 
 char	*get_key_value_nf(char *var_to_extend, t_data *data, char *key_value)
@@ -179,8 +139,9 @@ char	*get_key_value_nf(char *var_to_extend, t_data *data, char *key_value)
 		new_value_pre = ft_substr(key_value, 0, dollar_ind);
 		if (!new_value_pre)
 			return (error_handler("malloc error"), NULL);
-		new_value_post = ft_substr(key_value, dollar_ind + ft_strlen(var_to_extend) + 1, \
-			ft_strlen(key_value) - dollar_ind - ft_strlen(var_to_extend));
+		new_value_post = ft_substr(key_value, dollar_ind + \
+ft_strlen(var_to_extend) + 1, ft_strlen(key_value) - dollar_ind \
+- ft_strlen(var_to_extend));
 		if (!new_value_post)
 			return (error_handler("malloc error"), free(new_value_pre), NULL);
 		new_value = ft_strjoin(new_value_pre, new_value_post);
@@ -189,10 +150,8 @@ char	*get_key_value_nf(char *var_to_extend, t_data *data, char *key_value)
 	}
 	else
 		new_value = parse_env_value(search_env_list(data, var_to_extend), \
-			key_value, dollar_ind, -1);
+key_value, dollar_ind, -1);
 	if (!new_value)
 		return (error_handler(strerror(errno)), NULL);
-	// if (get_first_ind(key_value, '$', 0) == -1)
-	// 	free(key_value);
 	return (new_value);
 }

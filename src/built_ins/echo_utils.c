@@ -12,6 +12,8 @@
 
 #include "libft.h"
 #include "main.h"
+#include "env_vars.h"
+
 
 t_bool	is_n_flag(char *str);
 
@@ -51,4 +53,41 @@ t_bool	is_n_flag(char *str)
 		i++;
 	}
 	return (true);
+}
+
+char *echo_preprocessing(char *str, t_arg *temp_node, t_data *data)
+{
+	char	*temp;
+	char	*result;
+
+	if (get_first_ind(str, '~', 0) > -1 && str[get_first_ind(str, '~', 0) + 1] \
+	!='\0' && str[get_first_ind(str, '~', 0) + 1] != '/')
+		result = ft_strdup(str);
+	else if (get_first_ind(str, '~', 0) > -1 && temp_node->quote_type == QUOTE_NONE)
+	{
+		temp = replace_tilde(str, get_first_ind(str, '~', 0));
+		result = extend_env_value(data, ft_strdup(temp));
+		free(temp);
+	}
+	else
+		result = ft_strdup(str);
+	return (result);
+}
+
+int	echo_set_fd(t_ast *node)
+{
+	int	fd;
+
+	fd = 1;
+	if (node->cmd_data->fd_file_out != -1 && \
+	node->cmd_data->fd_pipe_out == -1 && node->cmd_data->fd_pipe_in == -1)
+		fd = node->cmd_data->fd_file_out;
+	return (fd);
+}
+
+
+void	echo_write_new_line(char *str, int fd)
+{
+	if (ft_strcmp(str, "-n") != 0)
+		write(fd, "\n", 1);
 }

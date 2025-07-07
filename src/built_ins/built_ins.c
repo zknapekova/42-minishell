@@ -11,23 +11,21 @@ int	print_env_list(t_data *data, t_ast *node, int export)
 	char		*print_key_value;
 	int			fd;
 
-	fd = 1;
-	if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_pipe_out == -1)
-		fd = node->cmd_data->fd_file_out;
+	fd = echo_set_fd(node);
 	if (data->head)
 	{
 		temp = data->head;
 		while (temp)
 		{
-			if (ft_strncmp(temp->key_value, "?=", 2) != 0 && ft_strncmp(temp->key_value, "EMPTY=", 6) != 0)
+			if (ft_strncmp(temp->key_value, "?=", 2) != 0 && \
+			ft_strncmp(temp->key_value, "EMPTY=", 6) != 0)
 			{
 				print_key_value = add_new_line(temp->key_value);
 				if (!print_key_value)
 					return (error_handler(strerror(errno)), 0);
 				if (export)
 					write(fd, "declare -x ", 11);
-				if (write(fd, print_key_value, ft_strlen(print_key_value)) == -1)
-					return (error_handler(strerror(errno)), free(print_key_value), 0);
+				write(fd, print_key_value, ft_strlen(print_key_value));
 				free(print_key_value);
 				print_key_value = NULL;
 			}
@@ -96,6 +94,3 @@ int	unset(t_data *data, char **args)
 	}
 	return (EXIT_SUCCESS);
 }
-
-
-
