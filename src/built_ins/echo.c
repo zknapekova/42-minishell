@@ -75,6 +75,8 @@ int	echo_cmd(char **input, t_data *data, t_ast *node)
 	char	*result;
 	int		i;
 	int		fd;
+	char	*temp;
+	t_arg	*temp_node;
 
 	if (arr_size(input) == 1)
 	{
@@ -82,9 +84,13 @@ int	echo_cmd(char **input, t_data *data, t_ast *node)
 		return (EXIT_SUCCESS);
 	}
 	i = 1;
+	temp_node = node->cmd_data->args->next;
 	normalize_n_flag(input);
 	if (!ft_strcmp(input[1], "-n"))
+	{
 		i = 2;
+		temp_node = node->cmd_data->args->next->next;
+	}
 	while (input[i])
 	{
 		fd = 1;
@@ -97,8 +103,12 @@ int	echo_cmd(char **input, t_data *data, t_ast *node)
 			i++;
 			continue ;
 		}
-		else if (get_first_ind(input[i], '~', 0) > -1)
-			result = extend_env_value(data, replace_tilde(input[i], get_first_ind(input[i], '~', 0)));
+		else if (get_first_ind(input[i], '~', 0) > -1 && temp_node->quote_type == QUOTE_NONE)
+		{
+			temp = replace_tilde(input[i], get_first_ind(input[i], '~', 0));
+			result = extend_env_value(data, ft_strdup(temp));
+			free(temp);
+		}
 		else
 			result = ft_strdup(input[i]);
 		if (!result)
@@ -109,6 +119,7 @@ int	echo_cmd(char **input, t_data *data, t_ast *node)
 			write(fd, " ", 1);
 		free(result);
 		i++;
+		temp_node = temp_node->next;
 	}
 	if (ft_strcmp(input[1], "-n") != 0)
 	{

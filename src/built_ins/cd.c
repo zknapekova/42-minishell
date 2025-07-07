@@ -90,7 +90,7 @@ char	*replace_tilde(char *input, int ind)
 	{
 		if (ind != 0)
 		{
-			pre_tilde = ft_substr(input, 0, ft_strlen(input) - ind);
+			pre_tilde = ft_substr(input, 0, ind);
 			if (!pre_tilde)
 				return (error_handler(strerror(errno)), NULL);
 			temp = ft_strjoin(pre_tilde, "$HOME");

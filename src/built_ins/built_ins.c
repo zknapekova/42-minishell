@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 
-int	print_env_list(t_data *data, t_ast *node)
+int	print_env_list(t_data *data, t_ast *node, int export)
 {
 	t_env_node	*temp;
 	char		*print_key_value;
@@ -24,6 +24,8 @@ int	print_env_list(t_data *data, t_ast *node)
 				print_key_value = add_new_line(temp->key_value);
 				if (!print_key_value)
 					return (error_handler(strerror(errno)), 0);
+				if (export)
+					write(fd, "declare -x ", 11);
 				if (write(fd, print_key_value, ft_strlen(print_key_value)) == -1)
 					return (error_handler(strerror(errno)), free(print_key_value), 0);
 				free(print_key_value);
@@ -39,7 +41,7 @@ int	export(t_data *data, char *input, t_ast *node)
 {
 	if (input && !handle_new_env_value(data, input))
 		return (EXIT_FAILURE);
-	if (!input && !print_env_list(data, node))
+	if (!input && !print_env_list(data, node, 1))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -48,7 +50,7 @@ int	env_cmd(t_data *data, char **argv, t_ast *node)
 {
 	if (arr_size(argv) > 1)
 		return (error_handler("No options or arguments allowed in env command."), EXIT_FAILURE);
-	if (!print_env_list(data, node))
+	if (!print_env_list(data, node, 0))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -85,6 +87,8 @@ int	unset(t_data *data, char **args)
 		i = 0;
 		while (args[i])
 		{
+			if (args[i][0] == '-')
+				return (ft_eprintf("invalid option"), 2);
 			if (args[i][0] != '?')
 				delete_node(data, args[i]);
 			i++;

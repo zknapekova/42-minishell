@@ -73,9 +73,15 @@ char	*get_arg_str(t_data *data, t_arg **args)
 char	*get_tmp_str(t_data *data, t_arg **args)
 {
 	char	*tmp_str;
+	int		dollar_ind;
+	int		len;
 
-	if (get_first_ind((*args)->value, '$', 0) != -1 \
-		&& (*args)->quote_type != QUOTE_SINGLE && ft_strlen((*args)->value) > 1)
+	dollar_ind = get_first_ind((*args)->value, '$', 0);
+	len = ft_strlen((*args)->value);
+	if (dollar_ind != -1 && (len - 1 > dollar_ind \
+		&& (ft_isalnum((*args)->value[dollar_ind + 1]) == 1 || \
+		(*args)->value[dollar_ind + 1] == '?'))
+		&& (*args)->quote_type != QUOTE_SINGLE && len > 1)
 		tmp_str = extend_env_value_nf(data, (*args)->value);
 	else if ((*args)->quote_type != QUOTE_NONE)
 		tmp_str = escape_wildcard((*args)->value);

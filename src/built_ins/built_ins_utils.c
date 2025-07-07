@@ -12,6 +12,8 @@ int	ft_is_str_digit(char *str)
 	{
 		if (!ft_isdigit(str[i]) && str[i] != '+' && str[i] != '-')
 			return (0);
+		if ((str[i] == '+' && str[i + 1] == '+') || (str[i] == '-' && str[i + 1] == '-'))
+			return (0);
 		i++;
 	}
 	return (1);
@@ -19,14 +21,21 @@ int	ft_is_str_digit(char *str)
 
 int	exit_cmd(char **argv)
 {
+	int	i;
+
 	ft_printf("exit\n");
-	if (arr_size(argv) > 2)
-		return (ft_eprintf("minishell: exit: too many arguments\n"), EXIT_FAILURE);
+	i = 1;
 	if (arr_size(argv) == 2)
 	{
 		if (!ft_is_str_digit(argv[1]))
 			return (ft_eprintf("minishell: exit: %s numeric argument required\n", argv[1]), 2);
 		return(ft_atoi(argv[1]));
+	}
+	if (arr_size(argv) > 2)
+	{
+		if (!ft_is_str_digit(argv[1]))
+			return (ft_eprintf("minishell: exit: %s numeric argument required\n", argv[i]), 2);
+		return (ft_eprintf("minishell: exit: too many arguments\n"), EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -35,7 +44,6 @@ void	execute_built_cmds(char **argv, t_data *data, int *status, t_ast *node)
 {
 	int	i;
 
-	i = 0;
 	if (get_first_ind(argv[0], '/', 0) != -1)
 	{
 		*status = EXIT_FAILURE;
@@ -54,6 +62,8 @@ void	execute_built_cmds(char **argv, t_data *data, int *status, t_ast *node)
 		*status = pwd(node);
 	else if (!ft_strcmp(argv[0], "export"))
 	{
+		*status = export(data, argv[1], node);
+		i = 1;
 		while (argv[++i])
 			*status = export(data, argv[i], node);
 	}
