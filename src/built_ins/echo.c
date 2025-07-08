@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 16:33:04 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/07/08 23:31:47 by jgrigorj         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "env_vars.h"
 #include "libft.h"
 #include "exec.h"
@@ -18,9 +30,7 @@ char	*echo_get_key_value(char *var_to_extend, t_data *data, char *key_value)
 		new_value_pre = ft_substr(key_value, 0, dollar_ind);
 		if (!new_value_pre)
 			return (error_handler("malloc error"), NULL);
-		new_value_post = ft_substr(key_value, dollar_ind + \
-		ft_strlen(var_to_extend) + 1, ft_strlen(key_value) - \
-		dollar_ind - ft_strlen(var_to_extend));
+		new_value_post = get_new_val_post(key_value, dollar_ind, var_to_extend);
 		if (!new_value_post)
 			return (error_handler("malloc error"), NULL);
 		new_value = ft_strjoin(new_value_pre, new_value_post);
@@ -48,9 +58,7 @@ char	*extend_env_value(t_data *data, char *key_value1)
 	key_value = replace_special_parameter(key_value1, data);
 	if (get_first_ind(key_value, '$', 0) == -1)
 		return (key_value);
-	var_to_extend = ft_substr(key_value, get_first_ind(key_value, '$', 0) + 1, \
-			get_first_non_alnum(key_value, get_first_ind(key_value, '$', 0) \
-			+ 1) - get_first_ind(key_value, '$', 0) - 1);
+	var_to_extend = get_extended_var(key_value);
 	if (!var_to_extend)
 		return (free (key_value), NULL);
 	new_key_value = echo_get_key_value(var_to_extend, data, key_value);
@@ -66,9 +74,10 @@ char	*extend_env_value(t_data *data, char *key_value1)
 	return (new_key_value);
 }
 
+// res stands for result, thank you norminette!
 int	echo_cmd(char **input, t_data *data, t_ast *node)
 {
-	char	*result;
+	char	*res;
 	int		i;
 	t_arg	*temp_node;
 
@@ -84,11 +93,11 @@ int	echo_cmd(char **input, t_data *data, t_ast *node)
 			echo_write_space(input[i + 1], echo_set_fd(node), 1, NULL);
 			continue ;
 		}
-		result = echo_preprocessing(input[i], temp_node, data);
-		if (!result)
+		res = echo_preprocessing(input[i], temp_node, data);
+		if (!res)
 			return (error_handler(strerror(errno)), 1);
-		write(echo_set_fd(node), result, ft_strlen(result));
-		echo_write_space(input[i + 1], echo_set_fd(node), ft_strlen(result), result);
+		write(echo_set_fd(node), res, ft_strlen(res));
+		echo_write_space(input[i + 1], echo_set_fd(node), ft_strlen(res), res);
 		if (temp_node)
 			temp_node = temp_node->next;
 	}
@@ -110,9 +119,7 @@ char	*extend_env_value_nf(t_data *data, char *key_value1)
 	key_value = replace_empty(key_value2, data);
 	if (get_first_ind(key_value, '$', 0) == -1)
 		return (key_value);
-	var_to_extend = ft_substr(key_value, get_first_ind(key_value, '$', 0) + 1, \
-			get_first_non_alnum(key_value,get_first_ind(key_value, '$', 0) + \
-			1) - get_first_ind(key_value, '$', 0) - 1);
+	var_to_extend = get_extended_var(key_value);
 	if (!var_to_extend)
 		return (NULL);
 	new_key_value = get_key_value_nf(var_to_extend, data, key_value);
@@ -139,9 +146,7 @@ char	*get_key_value_nf(char *var_to_extend, t_data *data, char *key_value)
 		new_value_pre = ft_substr(key_value, 0, dollar_ind);
 		if (!new_value_pre)
 			return (error_handler("malloc error"), NULL);
-		new_value_post = ft_substr(key_value, dollar_ind + \
-ft_strlen(var_to_extend) + 1, ft_strlen(key_value) - dollar_ind \
-- ft_strlen(var_to_extend));
+		new_value_post = get_new_val_post(key_value, dollar_ind, var_to_extend);
 		if (!new_value_post)
 			return (error_handler("malloc error"), free(new_value_pre), NULL);
 		new_value = ft_strjoin(new_value_pre, new_value_post);

@@ -6,16 +6,15 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 21:40:33 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/06 23:15:25 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/08 23:24:26 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "env_vars.h"
 #include "libft.h"
 #include "main.h"
-#include "env_vars.h"
 
-
-t_bool	is_n_flag(char *str);
+static t_bool	is_n_flag(char *str);
 
 void	normalize_n_flag(char **input)
 {
@@ -39,7 +38,7 @@ void	normalize_n_flag(char **input)
 	input[write] = NULL;
 }
 
-t_bool	is_n_flag(char *str)
+static t_bool	is_n_flag(char *str)
 {
 	int	i;
 
@@ -55,13 +54,14 @@ t_bool	is_n_flag(char *str)
 	return (true);
 }
 
-char *echo_preprocessing(char *str, t_arg *temp_node, t_data *data)
+char	*echo_preprocessing(char *str, t_arg *temp_node, t_data *data)
 {
 	char	*temp;
 	char	*result;
 
-	if (get_first_ind(str, '~', 0) > -1 && str[get_first_ind(str, '~', 0) + 1] \
-	!='\0' && str[get_first_ind(str, '~', 0) + 1] != '/')
+	if (get_first_ind(str, '~', 0) > -1 \
+	&& str[get_first_ind(str, '~', 0) + 1] != '\0' \
+	&& str[get_first_ind(str, '~', 0) + 1] != '/')
 		result = ft_strdup(str);
 	else if (get_first_ind(str, '~', 0) > -1 && temp_node)
 	{
@@ -84,12 +84,11 @@ int	echo_set_fd(t_ast *node)
 	int	fd;
 
 	fd = 1;
-	if (node->cmd_data->fd_file_out != -1 && \
-	node->cmd_data->fd_pipe_out == -1 && node->cmd_data->fd_pipe_in == -1)
+	if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_out == -1
+		&& node->cmd_data->fd_pipe_in == -1)
 		fd = node->cmd_data->fd_file_out;
 	return (fd);
 }
-
 
 void	echo_write_new_line(char *str, int fd)
 {
