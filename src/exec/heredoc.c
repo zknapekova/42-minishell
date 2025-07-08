@@ -24,19 +24,6 @@
 
 extern int	g_heredoc_sig;
 
-// expands env variables present in heredoc, frees line
-char	*expand_line(char *line, t_data *data)
-{
-	char	*expanded;
-
-	if (get_first_ind(line, '$', 0) != -1)
-		expanded = extend_env_value_nf(data, line);
-	else
-		expanded = ft_strdup(line);
-	free(line);
-	return (expanded);
-}
-
 int	ft_get_file_cont(char *lim, int fd, t_data *data)
 {
 	char	*line;
@@ -52,58 +39,22 @@ int	ft_get_file_cont(char *lim, int fd, t_data *data)
 		if (!line)
 		{
 			if (g_heredoc_sig == 1)
-			{
-				free(limiter);
-				free(lim);
-				free_all(data, 1);
-				exit(130);
-			}
-			ft_eprintf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
-				lim);
+				heredoc_signal_handler(limiter, lim, data);
+			print_heredoc_error(lim);
 			break ;
 		}
-		line = ft_strjoin_ed(line, "\n", 1);
-		line = expand_line(line, data);
-		if (!ft_strcmp(limiter, line))
-		{
-			free(line);
+		line = get_line(line, limiter, data);
+		if (!line)
 			break ;
-		}
-		if (write(fd, line, ft_strlen(line)) == -1)
-			return (free(line), free(limiter), close(fd), 0);
-		free(line);
+		heredoc_write_line(fd, line);
 	}
 	return (free(lim), free(limiter), close(fd), 1);
 }
 
-int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
+int	handle_status(int pid, t_ast *node, int pipe_fd[2])
 {
-	char	*limiter;
-	int		pid;
-	int		pipe_fd[2];
 	int		status;
 
-	sig_ignore_int_quit();
-	limiter = get_redir_target_str(data, redir->target);
-	if (!limiter)
-		return (error_handler("No limit word"), -1);
-	if (pipe(pipe_fd) == -1)
-		return (error_handler(strerror(errno)), free(limiter), -1);
-	pid = fork();
-	if (pid < 0)
-		return (free(limiter), close(pipe_fd[1]), close(pipe_fd[0]), -1);
-	else if (pid == 0)
-	{
-		rl_clear_history();
-		sig_init_heredoc();
-		if (!ft_get_file_cont(limiter, pipe_fd[1], data))
-		{
-			free_all(data, 1);
-			exit(EXIT_FAILURE);
-		}
-		free_all(data, 1);
-		exit(EXIT_SUCCESS);
-	}
 	waitpid(pid, &status, 0);
 	sig_init();
 	if (WIFEXITED(status))
@@ -112,13 +63,48 @@ int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
 			node->cmd_data->fd_pipe_out = pipe_fd[0];
 		else
 			close(pipe_fd[0]);
-		return (free(limiter), close(pipe_fd[1]), WEXITSTATUS(status));
+		return (close(pipe_fd[1]), WEXITSTATUS(status));
 	}
 	if (WIFSIGNALED(status))
 	{
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
-		return (free(limiter), 128 + WTERMSIG(status));
+		return (128 + WTERMSIG(status));
 	}
-	return (free(limiter), close(pipe_fd[1]), close(pipe_fd[0]), EXIT_FAILURE);
+	return (close(pipe_fd[1]), close(pipe_fd[0]), EXIT_FAILURE);
+}
+
+void	execute_heredoc_child(char *limiter, int pipe_fd, t_data *data)
+{
+	if (!ft_get_file_cont(limiter, pipe_fd, data))
+	{
+		free_all(data, 1);
+		exit(EXIT_FAILURE);
+	}
+	free_all(data, 1);
+	exit(EXIT_SUCCESS);
+}
+
+int	execute_heredoc(t_redir *redir, t_data *data, t_ast *node)
+{
+	char	*limiter;
+	int		pid;
+	int		pipe_fd[2];
+
+	sig_ignore_int_quit();
+	limiter = get_redir_target_str(data, redir->target);
+	if (!limiter)
+		return (error_handler("No limit word"), 1);
+	if (pipe(pipe_fd) == -1)
+		return (error_handler(strerror(errno)), free(limiter), 1);
+	pid = fork();
+	if (pid < 0)
+		return (free(limiter), close(pipe_fd[1]), close(pipe_fd[0]), 1);
+	else if (pid == 0)
+	{
+		rl_clear_history();
+		sig_init_heredoc();
+		execute_heredoc_child(limiter, pipe_fd[1], data);
+	}
+	return (free(limiter), handle_status(pid, node, pipe_fd));
 }

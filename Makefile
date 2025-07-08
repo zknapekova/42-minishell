@@ -24,7 +24,7 @@ GENERAL_SRC = main.c error_handler.c free_memory.c init.c
 EXEC_DIR = src/exec/
 EXEC_SRC = argv_utils.c argv_utils2.c redir_utils.c heredoc.c get_cmd.c globbing.c globbing_utils.c globbing_utils2.c \
 			globbing_utils3.c add_rm_escape_char.c match_star_pattern.c print_ast_argv.c path.c exec_utils.c pipes.c \
-			exec_sig_utils.c exec_utils2.c
+			exec_sig_utils.c exec_utils2.c heredoc_utils.c
 
 
 SRC = \

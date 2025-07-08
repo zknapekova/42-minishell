@@ -60,6 +60,11 @@ void	execute_child_process(t_data *data, t_ast *node, \
 		int *status, char **argv);
 int		execute(t_data *data, t_ast *node, char **argv);
 int		is_dir(char *path);
+void	heredoc_signal_handler(char *limiter, char *lim, t_data *data);
+void	heredoc_write_line(int fd, char *line);
+void	print_heredoc_error(char *lim);
+char	*get_line(char *line, char *limiter, t_data *data);
+char	*expand_line(char *line, t_data *data);
 
 // globbing
 char	**globe_argv(char **argv);
