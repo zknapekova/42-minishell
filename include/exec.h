@@ -40,6 +40,8 @@ int		handle_redir_files(t_redir *redir, t_data *data, t_ast *node);
 int		ft_get_file_cont(char *lim, int fd, t_data *data);
 char	**create_env_arr(t_data *data);
 char	*escape_wildcard(char *str);
+void	get_input_output_fd(int *input_fd, int *output_fd, t_ast *node);
+int		input_output_redirect(t_data *data, t_redir *redir, t_ast *node);
 
 char	*get_path_from_env(const char *cmd, t_data *data);
 char	*handle_path(char *path, int free_path, int folder, \
