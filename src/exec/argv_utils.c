@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:55:18 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/08 22:53:09 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 00:06:57 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*get_tmp_str(t_data *data, t_arg **args)
 	char	*tilde_replaced;
 
 	tilde_ind = get_first_ind((*args)->value, '~', 0);
-	if (tilde_ind > -1 && (*args)->quote_type != QUOTE_SINGLE)
+	if (tilde_ind > -1 && (*args)->quote_type == QUOTE_NONE)
 	{
 		tilde_replaced = replace_tilde((*args)->value, tilde_ind);
 		if (tilde_replaced)

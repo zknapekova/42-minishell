@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 00:13:08 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/07 02:26:13 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 00:01:55 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*handle_empty_quotes(t_arg **args)
 t_bool	fill_argv_list(t_data *data, char **argv, t_arg **args, int *i)
 {
 	char	*arg_str;
-	
+
 	while (*args)
 	{
 		arg_str = handle_empty_quotes(args);
