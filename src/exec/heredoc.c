@@ -42,7 +42,6 @@ int	ft_get_file_cont(char *lim, int fd, t_data *data)
 	char	*line;
 	char	*limiter;
 
-	// char	*line2;
 	line = NULL;
 	limiter = ft_strjoin(lim, "\n");
 	if (!limiter)

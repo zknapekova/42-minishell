@@ -37,7 +37,6 @@ static void	free_ll(t_data *data)
 void	free_all(t_data *data, int free_ast_ind)
 {
 	free_ll(data);
-	free_token_list(&(data->tokens));
 	if (free_ast_ind)
 		free_ast(data->ast);
 	free(data);

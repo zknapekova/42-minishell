@@ -40,3 +40,13 @@ int	dir_check(char *path, char *cmd)
 	}
 	return (check_and_alter(path, cmd, dir));
 }
+
+int	is_dir(char *path)
+{
+	DIR	*dir;
+
+	dir = opendir(path);
+	if (dir)
+		return (closedir (dir), 1);
+	return (closedir (dir), 0);
+}

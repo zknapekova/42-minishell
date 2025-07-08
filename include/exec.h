@@ -59,6 +59,7 @@ void	wait_all_cmds(t_data *data, t_ast *node, int *status);
 void	execute_child_process(t_data *data, t_ast *node, \
 		int *status, char **argv);
 int		execute(t_data *data, t_ast *node, char **argv);
+int		is_dir(char *path);
 
 // globbing
 char	**globe_argv(char **argv);
