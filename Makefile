@@ -13,7 +13,7 @@ ENV_DIR = src/env/
 ENV_SRC = env_vars_ops.c ll_ops.c utils.c env_vars_utils.c validators.c env_vars_handler.c
 
 BUILT_INS_DIR = src/built_ins/
-BUILT_INS_SRC = built_ins.c cd.c echo.c built_ins_utils.c echo_utils.c echo_utils2.c dir_check.c
+BUILT_INS_SRC = built_ins.c cd.c echo.c built_ins_utils.c echo_utils.c echo_utils2.c dir_check.c replace.c
 
 SIGNAL_DIR = src/signal/
 SIGNAL_SRC = signal.c child_heredoc_signal.c
