@@ -18,36 +18,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-int	dir_check(char *path, char *cmd)
-{
-	DIR	*dir;
-
-	dir = opendir(path);
-	if (!dir)
-	{
-		if (!access(path, F_OK))
-		{
-			if (access(path, R_OK) == 0)
-				return (ft_eprintf("minishell:%s %s: Not a directory\n", cmd,
-						path), EXIT_FAILURE);
-			else if (!access(path, R_OK) && chdir(path) == -1)
-				return (error_handler(strerror(errno)), EXIT_FAILURE);
-		}
-		else
-			return (ft_eprintf("minishell:%s %s: No such file or directory\n",
-					cmd, path), EXIT_FAILURE);
-	}
-	else
-	{
-		if (access(path, X_OK) == -1)
-			return (ft_eprintf("minishell:%s %s: Permission denied\n", cmd,
-					path), closedir(dir), EXIT_FAILURE);
-		else if (!access(path, X_OK) && chdir(path) == -1)
-			return (error_handler(strerror(errno)), closedir(dir),
-				EXIT_FAILURE);
-	}
-	return (closedir(dir), EXIT_SUCCESS);
-}
 
 int	update_pwds(t_data *data)
 {
@@ -91,20 +61,20 @@ char	*replace_tilde(char *input, int ind)
 	{
 		pre_tilde = ft_substr(input, 0, ind);
 		if (!pre_tilde)
-			return (error_handler(strerror(errno)), NULL);
+			return (error_handler("malloc error"), NULL);
 		temp = ft_strjoin(pre_tilde, "$HOME");
 		free(pre_tilde);
 	}
 	else
 		temp = ft_strdup("$HOME");
 	if (!temp)
-		return (error_handler(strerror(errno)), NULL);
+		return (error_handler("malloc error"), NULL);
 	p = ft_substr(input, ind + 1, ft_strlen(input) - ind - 1);
 	if (!p)
-		return (free(temp), error_handler(strerror(errno)), NULL);
+		return (free(temp), error_handler("malloc error"), NULL);
 	path = ft_strjoin(temp, p);
 	if (!path)
-		return (free(temp), free(p), error_handler(strerror(errno)), NULL);
+		return (free(temp), free(p), error_handler("malloc error"), NULL);
 	return (free(temp), free(p), path);
 }
 
@@ -120,6 +90,32 @@ char	*handle_node(t_data *data, char *var_name, char *message)
 	return (path);
 }
 
+char	*get_cd_path(char **input, t_data *data, int fd)
+{
+	char *path;
+
+	if (input[1][0] == '~' && ft_strlen(input[1]) == 1)
+		path = handle_node(data, "HOME", "minishell: cd: HOME not set");
+	else if ((input[1][0] == '~' && ft_strlen(input[1]) > 1)
+		|| get_first_ind(input[1], '~', 0) != -1)
+		path = extend_env_value(data, replace_tilde(input[1],
+					get_first_ind(input[1], '~', 0)));
+	else if (input[1][0] == '-' && ft_strlen(input[1]) == 1)
+	{
+		path = handle_node(data, "OLDPWD", "minishell: cd: OLDPWD not set");
+		if (path)
+		{
+			write(fd, path, ft_strlen(path));
+			write(fd, "\n", 1);
+		}
+	}
+	else
+		path = ft_strdup(input[1]);
+	if (get_first_ind(input[1], '$', 0) != -1)
+		path = extend_env_value(data, ft_strdup(input[1]));
+	return (path);
+}
+
 int	cd(char **input, t_data *data, t_ast *node)
 {
 	char		*path;
@@ -127,36 +123,13 @@ int	cd(char **input, t_data *data, t_ast *node)
 	int			fd;
 
 	path = NULL;
-	fd = 1;
-	if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_pipe_out == -1)
-		fd = node->cmd_data->fd_file_out;
+	fd = echo_set_fd(node);
 	if (arr_size(input) > 2)
-		return (error_handler("minishell: cd: too many arguments"),
-			EXIT_FAILURE);
+		return (error_handler("minishell: cd: too many arguments"), 1);
 	if (!input[1])
 		path = handle_node(data, "HOME", "minishell: cd: HOME not set");
 	else
-	{
-		if (input[1][0] == '~' && ft_strlen(input[1]) == 1)
-			path = handle_node(data, "HOME", "minishell: cd: HOME not set");
-		else if ((input[1][0] == '~' && ft_strlen(input[1]) > 1)
-			|| get_first_ind(input[1], '~', 0) != -1)
-			path = extend_env_value(data, replace_tilde(input[1],
-						get_first_ind(input[1], '~', 0)));
-		else if (input[1][0] == '-' && ft_strlen(input[1]) == 1)
-		{
-			path = handle_node(data, "OLDPWD", "minishell: cd: OLDPWD not set");
-			if (path)
-			{
-				write(fd, path, ft_strlen(path));
-				write(fd, "\n", 1);
-			}
-		}
-		else
-			path = ft_strdup(input[1]);
-		if (get_first_ind(input[1], '$', 0) != -1)
-			path = extend_env_value(data, ft_strdup(input[1]));
-	}
+		path = get_cd_path(input, data, fd);
 	if (path)
 	{
 		status = dir_check(path, " cd:");

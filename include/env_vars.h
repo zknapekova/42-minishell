@@ -53,5 +53,6 @@ char		*get_key_value_nf(char *var_to_extend, t_data *data, \
 	char *key_value);
 int			ft_strcmp(const char *s1, const char *s2);
 int			arr_size(char **arr);
+int			dir_check(char *path, char *cmd);
 
 #endif
