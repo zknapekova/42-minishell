@@ -164,7 +164,7 @@ t_env_node					*last_node(t_data *data);
 t_env_node					*search_env_list(t_data *data, char *var_name);
 void						free_all(t_data *data, int free_ast_ind);
 int							handle_new_env_value(t_data *data, char *key_value);
-int							export(t_data *data, char *input, t_ast *node);
+int							export(t_data *data, char **input, t_ast *node);
 int							pwd(t_ast *node);
 int							env_cmd(t_data *data, char **args, t_ast *node);
 int							unset(t_data *data, char **args);

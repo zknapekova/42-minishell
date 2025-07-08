@@ -35,12 +35,19 @@ int	print_env_list(t_data *data, t_ast *node, int export)
 	return (1);
 }
 
-int	export(t_data *data, char *input, t_ast *node)
+int	export(t_data *data, char **input, t_ast *node)
 {
-	if (input && !handle_new_env_value(data, input))
+	int	i;
+
+	i = 1;
+	if (!input[i] && !print_env_list(data, node, 1))
 		return (EXIT_FAILURE);
-	if (!input && !print_env_list(data, node, 1))
-		return (EXIT_FAILURE);
+	while (input[i])
+	{
+		if (!handle_new_env_value(data, input[i]))
+			return (EXIT_FAILURE);
+		i++;
+	}
 	return (EXIT_SUCCESS);
 }
 

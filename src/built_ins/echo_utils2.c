@@ -14,11 +14,15 @@ t_arg	*echo_set_node(int *i, t_ast *node, char *str)
 {
 	t_arg	*temp_node;
 
-	temp_node = node->cmd_data->args->next;
-	if (!ft_strcmp(str, "-n"))
+	temp_node = NULL;
+	if (node && node->cmd_data && node->cmd_data->args)
 	{
-		*i = 1;
-		temp_node = node->cmd_data->args->next->next;
+		temp_node = node->cmd_data->args->next;
+		if (!ft_strcmp(str, "-n"))
+		{
+			*i = 1;
+			temp_node = node->cmd_data->args->next->next;
+		}
 	}
 	return (temp_node);
 }

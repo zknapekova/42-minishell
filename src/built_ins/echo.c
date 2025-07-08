@@ -89,10 +89,10 @@ int	echo_cmd(char **input, t_data *data, t_ast *node)
 			return (error_handler(strerror(errno)), 1);
 		write(echo_set_fd(node), result, ft_strlen(result));
 		echo_write_space(input[i + 1], echo_set_fd(node), ft_strlen(result), result);
-		temp_node = temp_node->next;
+		if (temp_node)
+			temp_node = temp_node->next;
 	}
-	echo_write_new_line(input[1], echo_set_fd(node));
-	return (EXIT_SUCCESS);
+	return (echo_write_new_line(input[1], echo_set_fd(node)), EXIT_SUCCESS);
 }
 
 char	*extend_env_value_nf(t_data *data, char *key_value1)

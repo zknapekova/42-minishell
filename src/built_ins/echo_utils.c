@@ -63,11 +63,16 @@ char *echo_preprocessing(char *str, t_arg *temp_node, t_data *data)
 	if (get_first_ind(str, '~', 0) > -1 && str[get_first_ind(str, '~', 0) + 1] \
 	!='\0' && str[get_first_ind(str, '~', 0) + 1] != '/')
 		result = ft_strdup(str);
-	else if (get_first_ind(str, '~', 0) > -1 && temp_node->quote_type == QUOTE_NONE)
+	else if (get_first_ind(str, '~', 0) > -1 && temp_node)
 	{
-		temp = replace_tilde(str, get_first_ind(str, '~', 0));
-		result = extend_env_value(data, ft_strdup(temp));
-		free(temp);
+		if (temp_node->quote_type == QUOTE_NONE)
+		{
+			temp = replace_tilde(str, get_first_ind(str, '~', 0));
+			result = extend_env_value(data, ft_strdup(temp));
+			free(temp);
+		}
+		else
+			result = ft_strdup(str);
 	}
 	else
 		result = ft_strdup(str);
