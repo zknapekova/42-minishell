@@ -46,10 +46,26 @@ int	update_last_status(t_data *data, int status)
 	return (1);
 }
 
-void	wait_all_cmds(t_data *data, t_ast *node, int *status)
+void	get_status(t_ast *node, t_data *data)
 {
 	int	status1;
 
+	waitpid(node->cmd_data->pid, &status1, 0);
+	node->cmd_data->pid_waited = 1;
+	if (WIFEXITED(status1))
+	{
+		node->cmd_data->status = WEXITSTATUS(status1);
+		update_last_status(data, WEXITSTATUS(status1));
+	}
+	else if (WIFSIGNALED(status1))
+	{
+		node->cmd_data->status = 128 + WTERMSIG(status1);
+		update_last_status(data, 128 + WTERMSIG(status1));
+	}
+}
+
+void	wait_all_cmds(t_data *data, t_ast *node, int *status)
+{
 	if (!node)
 		return ;
 	if (node->type == NODE_COMMAND)
@@ -57,20 +73,7 @@ void	wait_all_cmds(t_data *data, t_ast *node, int *status)
 		if (node->cmd_data->pid == -1)
 			return ;
 		else if (node->cmd_data->pid != -2 && node->cmd_data->pid_waited == -1)
-		{
-			waitpid(node->cmd_data->pid, &status1, 0);
-			node->cmd_data->pid_waited = 1;
-			if (WIFEXITED(status1))
-			{
-				node->cmd_data->status = WEXITSTATUS(status1);
-				update_last_status(data, WEXITSTATUS(status1));
-			}
-			else if (WIFSIGNALED(status1))
-			{
-				node->cmd_data->status = 128 + WTERMSIG(status1);
-				update_last_status(data, 128 + WTERMSIG(status1));
-			}
-		}
+			get_status(node, data);
 		else if (node->cmd_data->pid == -2 && node->cmd_data->status != -10)
 			update_last_status(data, node->cmd_data->status);
 		if (node->cmd_data->status != -10)

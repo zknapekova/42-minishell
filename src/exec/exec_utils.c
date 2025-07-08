@@ -29,10 +29,24 @@ int	execute(t_data *data, t_ast *node, char **argv)
 			return (status);
 		env = create_env_arr(data);
 		if (execve(node->cmd_data->cmd_path, argv, env) == -1)
-			return (error_handler(strerror(errno)), free_argv(argv), free_all(data, 1), EXIT_FAILURE);
+			return (error_handler(strerror(errno)), \
+			free_argv(argv), free_all(data, 1), EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
+
+int	handle_exit(char **argv, t_data *data, int status)
+{
+	if (!ft_strcmp(argv[0], "exit"))
+	{
+		free_argv(argv);
+		free_all(data, 1);
+		exit(status);
+	}
+	free_argv(argv);
+	return (status);
+}
+
 
 int	process_cmds_redirs(t_data *data, t_ast *node)
 {
@@ -53,27 +67,12 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 		argv = get_argv(data, node->cmd_data->args);
 		if (!argv)
 			return (EXIT_SUCCESS);
-		if (check_built_ins(argv[0]) && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_pipe_out == -1)
-		{
-			execute_built_cmds(argv, data, &status, node);
-			if (!ft_strcmp(argv[0], "exit"))
-			{
-				free_argv(argv);
-				free_all(data, 1);
-				exit(status);
-			}
-			free_argv(argv);
-			return (status);
-		}
+		if (check_built_ins(argv[0]) && node->cmd_data->fd_pipe_in \
+		== -1 && node->cmd_data->fd_pipe_out == -1)
+			return (execute_built_cmds(argv, data, &status, node),
+			handle_exit(argv, data, status));
 		execute_child_process(data, node, &status, argv);
-		if (ft_strcmp(argv[0], "exit") == 0)
-		{
-			free_argv(argv);
-			free_all(data, 1);
-			exit(status);
-		}
-		free_argv(argv);
-		return (status);
+		return (handle_exit(argv, data, status));
 	}
 	return (status);
 }
