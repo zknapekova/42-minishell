@@ -19,7 +19,7 @@ SIGNAL_DIR = src/signal/
 SIGNAL_SRC = signal.c child_heredoc_signal.c
 
 GENERAL_DIR = src/general/
-GENERAL_SRC = main.c error_handler.c free_memory.c init.c
+GENERAL_SRC = main.c error_handler.c free_memory.c free_memory2.c init.c
 
 EXEC_DIR = src/exec/
 EXEC_SRC = argv_utils.c argv_utils2.c redir_utils.c heredoc.c get_cmd.c globbing.c globbing_utils.c globbing_utils2.c \
