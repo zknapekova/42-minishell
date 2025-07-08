@@ -15,8 +15,22 @@
 #include <errno.h>
 #include <string.h>
 
-//will be used for unset cmd
-// unset var1 var2 ->multiple variables can be specified
+void	free_node(t_env_node *node)
+{
+	free(node->key_value);
+	free(node->value);
+	free(node->key);
+	free(node);
+}
+
+int	compare_strings(char *str1, char *str2)
+{
+	if (ft_strncmp(str1, str2, ft_strlen(str2)) == 0 && \
+		ft_strlen(str2) == ft_strlen(str1))
+		return 1;
+	return 0;
+}
+
 int	delete_node(t_data *data, char *key)
 {
 	t_env_node	*prev;
@@ -25,28 +39,19 @@ int	delete_node(t_data *data, char *key)
 	if (data->head && key)
 	{
 		temp = data->head;
-		if (ft_strncmp(data->head->key, key, ft_strlen(key)) == 0 &&
-			ft_strlen(key) == ft_strlen(data->head->key))
+		if (compare_strings(data->head->key, key))
 		{
 			data->head = data->head->next;
-			free(temp->key_value);
-			free(temp->value);
-			free(temp->key);
-			free(temp);
+			free_node(temp);
 		}
 		temp = data->head;
 		prev = data->head;
 		while (temp)
 		{
-			if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0 && \
-				ft_strlen(key) == ft_strlen(temp->key))
+			if (compare_strings(temp->key, key))
 			{
 				prev->next = temp->next;
-				free(temp->key_value);
-				free(temp->value);
-				free(temp->key);
-				free(temp);
-				return (1);
+				return (free(temp), 1);
 			}
 			prev = temp;
 			temp = temp->next;

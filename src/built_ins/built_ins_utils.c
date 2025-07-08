@@ -43,7 +43,6 @@ argument required\n", argv[i]), 2);
 	return (EXIT_SUCCESS);
 }
 
-
 void	execute_built_cmds(char **argv, t_data *data, int *status, t_ast *node)
 {
 	if (get_first_ind(argv[0], '/', 0) != -1)

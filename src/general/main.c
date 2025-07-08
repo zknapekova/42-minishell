@@ -46,9 +46,7 @@ static void	loop(t_data *data)
 			free_token_list(&(data->tokens));
 			if (!data->ast || check_subshell_redirs(data->ast))
 				continue ;
-			// print_ast(data->ast, 0);
 			handle_cmds(data, data->ast);
-			data->tokens = NULL;
 			free_ast(data->ast);
 		}
 	}

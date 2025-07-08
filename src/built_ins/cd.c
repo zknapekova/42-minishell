@@ -18,7 +18,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-
 int	update_pwds(t_data *data)
 {
 	t_env_node	*old_pwd;
@@ -60,8 +59,6 @@ char	*replace_tilde(char *input, int ind)
 	if (ind != 0)
 	{
 		pre_tilde = ft_substr(input, 0, ind);
-		if (!pre_tilde)
-			return (error_handler("malloc error"), NULL);
 		temp = ft_strjoin(pre_tilde, "$HOME");
 		free(pre_tilde);
 	}
@@ -92,7 +89,7 @@ char	*handle_node(t_data *data, char *var_name, char *message)
 
 char	*get_cd_path(char **input, t_data *data, int fd)
 {
-	char *path;
+	char	*path;
 
 	if (input[1][0] == '~' && ft_strlen(input[1]) == 1)
 		path = handle_node(data, "HOME", "minishell: cd: HOME not set");
