@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   built_ins_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 23:38:24 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/07/08 23:40:15 by jgrigorj         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "main.h"
 #include "libft.h"
 #include "env_vars.h"
@@ -31,14 +43,15 @@ int	exit_cmd(char **argv)
 		if (!ft_is_str_digit(argv[1]))
 			return (ft_eprintf("minishell: exit: %s numeric \
 argument required\n", argv[1]), 2);
-		return(ft_atoi(argv[1]));
+		return (ft_atoi(argv[1]));
 	}
 	if (arr_size(argv) > 2)
 	{
 		if (!ft_is_str_digit(argv[1]))
 			return (ft_eprintf("minishell: exit: %s numeric \
 argument required\n", argv[i]), 2);
-		return (ft_eprintf("minishell: exit: too many arguments\n"), EXIT_FAILURE);
+		return (ft_eprintf("minishell: exit: too many arguments\n"), \
+		EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -69,9 +82,10 @@ void	execute_built_cmds(char **argv, t_data *data, int *status, t_ast *node)
 
 int	check_built_ins(char *cmd)
 {
-	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "unset") ||\
-		!ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "cd") ||
-		!ft_strcmp(cmd, "exit"))
+	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "pwd") \
+	|| !ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "env") \
+	|| !ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "cd") \
+	|| !ft_strcmp(cmd, "exit"))
 		return (1);
 	return (0);
 }

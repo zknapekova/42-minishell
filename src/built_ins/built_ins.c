@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   built_ins.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 23:41:44 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/07/08 23:41:50 by jgrigorj         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "env_vars.h"
 #include "libft.h"
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
-
 
 int	print_env_list(t_data *data, t_ast *node, int export)
 {
