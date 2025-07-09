@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 16:33:04 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/08 23:31:47 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 18:09:21 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ int	echo_cmd(char **input, t_data *data, t_ast *node)
 	if (arr_size(input) == 1)
 		return (write(1, "\n", 1), EXIT_SUCCESS);
 	i = 0;
-	temp_node = echo_set_node(&i, node, input[1]);
 	normalize_n_flag(input);
+	temp_node = echo_set_node(&i, node, input[1]);
 	while (input[++i])
 	{
 		if (!ft_strcmp(input[i], "''"))
