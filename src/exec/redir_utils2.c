@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir_utils2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/09 01:07:45 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/07/09 01:55:18 by jgrigorj         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "env_vars.h"
 #include "exec.h"
-#include "libft.h"
+#include "libft.h"	
 #include "main.h"
-#include "parser_utils.h" // for print_indent()
 #include <errno.h>
 #include <stdlib.h> //for NULL
 #include <string.h>
@@ -21,7 +32,6 @@ void	get_input_output_fd(int *input_fd, int *output_fd, t_ast *node)
 	else if (node->cmd_data->fd_pipe_in != -1)
 		*output_fd = node->cmd_data->fd_pipe_in;
 }
-
 
 int	input_output_redirect(t_data *data, t_redir *redir, t_ast *node)
 {
@@ -49,4 +59,37 @@ int	input_output_redirect(t_data *data, t_redir *redir, t_ast *node)
 			return (free(updated_path), EXIT_FAILURE);
 	}
 	return (free(updated_path), EXIT_SUCCESS);
+}
+
+void	replace_target_value(t_redir_target *target, char *str)
+{
+	free(target->value);
+	target->value = str;
+}
+
+void	handle_tilde_in_target(t_redir_target *target)
+{
+	int		tilde_ind;
+	char	*tilde_replaced;
+
+	tilde_ind = get_first_ind(target->value, '~', 0);
+	if (tilde_ind != -1 && target->quote_type == QUOTE_NONE)
+	{
+		tilde_replaced = replace_tilde(target->value, tilde_ind);
+		if (tilde_replaced)
+			replace_target_value(target, tilde_replaced);
+	}
+}
+
+char	*handle_env_expansion(t_data *data, t_redir_target *target)
+{
+	char	*tmp_str;
+
+	tmp_str = NULL;
+	if (get_first_ind(target->value, '$', 0) != -1
+		&& target->quote_type != QUOTE_SINGLE)
+		tmp_str = extend_env_value_nf(data, target->value);
+	else
+		tmp_str = ft_strdup(target->value);
+	return (tmp_str);
 }

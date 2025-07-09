@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 23:41:44 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/08 23:41:50 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:01:00 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ int	export(t_data *data, char **input, t_ast *node)
 int	env_cmd(t_data *data, char **argv, t_ast *node)
 {
 	if (arr_size(argv) > 1)
-		return (error_handler("No options or arguments allowed in env command."), EXIT_FAILURE);
+		return (error_handler("No options or arguments \
+allowed in env command."), EXIT_FAILURE);
 	if (!print_env_list(data, node, 0))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
@@ -85,7 +86,9 @@ int	pwd(t_ast *node)
 	cwd_print = add_new_line(cwd);
 	free(cwd);
 	fd = 1;
-	if (node->cmd_data->fd_file_out != -1 && node->cmd_data->fd_pipe_in == -1 && node->cmd_data->fd_pipe_out == -1)
+	if (node->cmd_data->fd_file_out != -1 \
+		&& node->cmd_data->fd_pipe_in == -1 \
+		&& node->cmd_data->fd_pipe_out == -1)
 		fd = node->cmd_data->fd_file_out;
 	if (write(fd, cwd_print, ft_strlen(cwd_print)) == -1)
 		return (error_handler(strerror(errno)), free(cwd_print), EXIT_FAILURE);

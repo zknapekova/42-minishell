@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 15:33:35 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/06/08 16:14:41 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:03:12 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void	free_node(t_env_node *node)
 
 int	compare_strings(char *str1, char *str2)
 {
-	if (ft_strncmp(str1, str2, ft_strlen(str2)) == 0 && \
-		ft_strlen(str2) == ft_strlen(str1))
-		return 1;
-	return 0;
+	if (ft_strncmp(str1, str2, ft_strlen(str2)) == 0
+		&& ft_strlen(str2) == ft_strlen(str1))
+		return (1);
+	return (0);
 }
 
 int	delete_node(t_data *data, char *key)
@@ -82,11 +82,11 @@ int	update_env_list(char *key_value, int eq_ind, t_data *data, int dollar_ind)
 	return (free(var_name), 1);
 }
 
-//This function should be called when prompt contains "export"
+// This function should be called when prompt contains "export"
 int	handle_new_env_value(t_data *data, char *key_value)
 {
-	int		eq_ind;
-	int		dollar_ind;
+	int	eq_ind;
+	int	dollar_ind;
 
 	update_dollar_eq_ind(&dollar_ind, &eq_ind, 0, key_value);
 	if (!validate_env_var_name(key_value, eq_ind))

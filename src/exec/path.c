@@ -1,19 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/09 01:11:01 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/07/09 01:15:20 by jgrigorj         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "env_vars.h"
+#include "exec.h"
 #include "libft.h"
 #include "main.h"
-#include "exec.h"
 #include "parser_utils.h"
-#include "env_vars.h"
-#include <fcntl.h> //for open function
-#include <unistd.h>
-#include <errno.h>
-#include <string.h>
 #include <dirent.h>
+#include <errno.h>
+#include <fcntl.h> //for open function
+#include <string.h>
+#include <unistd.h>
 
 // This function replaces ~ with $HOME variable
-//and checks if file or folder exists. execve
-//should be able to work with '.', '..' and '/'
-//thats why they are not handled here.
-//free_path: 0 - dont free the path, 1 - free the path
+// and checks if file or folder exists. execve
+// should be able to work with '.', '..' and '/'
+// thats why they are not handled here.
+// free_path: 0 - dont free the path, 1 - free the path
 char	*handle_path(char *path, int free_path, int folder, int existence_check)
 {
 	char	*result;
@@ -50,8 +62,8 @@ int	get_fd_file(char *path, t_redir_type type)
 	if (type == REDIR_INPUT)
 	{
 		if (access(path, R_OK) == -1)
-			return (ft_eprintf("minishell: %s: %s\n", path, \
-			strerror(errno)), fd);
+			return (ft_eprintf("minishell: %s: %s\n", path, strerror(errno)),
+				fd);
 		fd = open(path, O_RDONLY);
 	}
 	else if (type == REDIR_OUTPUT)
@@ -66,7 +78,7 @@ int	get_fd_file(char *path, t_redir_type type)
 char	**get_paths(t_data *data)
 {
 	t_env_node	*node;
-	char 		**paths;
+	char		**paths;
 
 	node = search_env_list(data, "PATH");
 	if (!node)
@@ -79,9 +91,9 @@ char	**get_paths(t_data *data)
 
 char	*find_cmd_path(char *cmd, char *com2, t_data *data, int *status)
 {
-	char 		**paths;
-	int			j;
-	char		*path;
+	char	**paths;
+	int		j;
+	char	*path;
 
 	paths = get_paths(data);
 	if (!paths)
@@ -101,14 +113,14 @@ char	*find_cmd_path(char *cmd, char *com2, t_data *data, int *status)
 	free(paths);
 	*status = 127;
 	if (get_first_ind(cmd, '/', 0) != -1)
-		return (ft_eprintf("minishell: %s: No such file or directory\n", cmd), NULL);
+		return (ft_eprintf("minishell: %s: No such file or directory\n", cmd),
+			NULL);
 	return (ft_eprintf("%s: command not found\n", cmd), NULL);
 }
 
-
 char	*get_cmd_path(char *cmd, t_data *data, int *status)
 {
-	char		*com2;
+	char	*com2;
 
 	if (get_first_ind(cmd, '/', 0) != -1)
 	{
@@ -118,8 +130,8 @@ directory\n", cmd), NULL);
 	}
 	if (!access(cmd, F_OK) && !access(cmd, X_OK) && !is_dir(cmd))
 		return (ft_strdup(cmd));
-	else if (!access(cmd, F_OK) && access(cmd, X_OK) != 0 && \
-	!is_dir(cmd) && get_first_ind(cmd, '.', 1) == -1)
+	else if (!access(cmd, F_OK) && access(cmd, X_OK) != 0 && !is_dir(cmd)
+		&& get_first_ind(cmd, '.', 1) == -1)
 		return (*status = 126, ft_eprintf("minishell: %s: Permission \
 denied\n", cmd), NULL);
 	com2 = ft_strjoin("/", cmd);

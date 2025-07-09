@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:00:36 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/09 00:08:08 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 01:55:04 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,15 @@
 #include "exec.h"
 #include "libft.h"
 #include "main.h"
-#include "parser_utils.h" // for print_indent()
 #include <errno.h>
 #include <stdlib.h> //for NULL
 #include <string.h>
 #include <sys/wait.h>
 
-static void	replace_target_value(t_redir_target *target, char *str);
-
-
-char	*process_target_str(t_data *data, t_redir_target *target)
-{
-	int		tilde_ind;
-	char	*tilde_replaced;
-	char	*tmp_str;
-	char	*target_str;
-
-	target_str = NULL;
-	tilde_ind = get_first_ind(target->value, '~', 0);
-	if (tilde_ind != -1 && target->quote_type != QUOTE_SINGLE)
-	{
-		tilde_replaced = replace_tilde(target->value, tilde_ind);
-		if (tilde_replaced)
-			replace_target_value(target, tilde_replaced);
-	}
-	if (get_first_ind(target->value, '$', 0) != -1
-		&& target->quote_type != QUOTE_SINGLE)
-		tmp_str = extend_env_value_nf(data, target->value);
-	else
-		tmp_str = ft_strdup(target->value);
-	if (!tmp_str)
-		return (free(target_str), error_handler("Error getting target_str"),
-			NULL);
-	target_str = ft_strjoin_ed(target_str, tmp_str, ft_strlen(tmp_str));
-	return (free(tmp_str), target_str);
-}
-
-
 char	*get_redir_target_str(t_data *data, t_redir_target *target)
 {
 	char			*target_str;
+	char			*tmp_str;
 	t_redir_target	*head;
 
 	target_str = NULL;
@@ -62,7 +31,12 @@ char	*get_redir_target_str(t_data *data, t_redir_target *target)
 	head = target;
 	while (target && target->value)
 	{
-		target_str = process_target_str(data, target);
+		handle_tilde_in_target(target);
+		tmp_str = handle_env_expansion(data, target);
+		if (!tmp_str)
+			return (free(target_str), error_handler("Err in target_str"), NULL);
+		target_str = ft_strjoin_ed(target_str, tmp_str, ft_strlen(tmp_str));
+		free(tmp_str);
 		if (!target_str)
 			return (error_handler("Error getting target_str"), NULL);
 		target = target->next;
@@ -95,7 +69,6 @@ int	ft_redirect(t_ast *node)
 	return (1);
 }
 
-
 int	handle_redir_files(t_redir *redir, t_data *data, t_ast *node)
 {
 	int		status;
@@ -117,10 +90,4 @@ int	handle_redir_files(t_redir *redir, t_data *data, t_ast *node)
 		redir = redir->next;
 	}
 	return (EXIT_SUCCESS);
-}
-
-static void	replace_target_value(t_redir_target *target, char *str)
-{
-	free(target->value);
-	target->value = str;
 }

@@ -1,13 +1,25 @@
-#include "exec.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/09 01:17:25 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/07/09 01:56:57 by jgrigorj         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "env_vars.h"
+#include "exec.h"
+#include "libft.h"
 #include "main.h"
 #include "parser_utils.h"
-#include "libft.h"
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/wait.h>
-#include <errno.h>
 #include <string.h>
+#include <sys/wait.h>
 
 int	execute(t_data *data, t_ast *node, char **argv)
 {
@@ -15,7 +27,7 @@ int	execute(t_data *data, t_ast *node, char **argv)
 	int		status;
 
 	if (!ft_redirect(node))
-		return EXIT_FAILURE;
+		return (EXIT_FAILURE);
 	close_pipes(data, data->ast);
 	if (check_built_ins(argv[0]))
 	{
@@ -30,7 +42,7 @@ int	execute(t_data *data, t_ast *node, char **argv)
 		env = create_env_arr(data);
 		if (execve(node->cmd_data->cmd_path, argv, env) == -1)
 			return (error_handler(strerror(errno)), \
-			free_argv(argv), free_all(data, 1), EXIT_FAILURE);
+	free_argv(argv), free_all(data, 1), EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -47,12 +59,11 @@ int	handle_exit(char **argv, t_data *data, int status)
 	return (status);
 }
 
-
 int	process_cmds_redirs(t_data *data, t_ast *node)
 {
-	char		**argv;
-	t_redir		*redir;
-	int 		status;
+	char	**argv;
+	t_redir	*redir;
+	int		status;
 
 	status = EXIT_SUCCESS;
 	if (node->cmd_data->redirs)
@@ -69,7 +80,7 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 			return (EXIT_SUCCESS);
 		if (check_built_ins(argv[0]) && node->cmd_data->fd_pipe_in \
 		== -1 && node->cmd_data->fd_pipe_out == -1)
-			return (execute_built_cmds(argv, data, &status, node),
+			return (execute_built_cmds(argv, data, &status, node), \
 			handle_exit(argv, data, status));
 		execute_child_process(data, node, &status, argv);
 		return (handle_exit(argv, data, status));
@@ -79,7 +90,7 @@ int	process_cmds_redirs(t_data *data, t_ast *node)
 
 void	find_cmds(t_data *data, t_ast *node, int *status)
 {
-	static int status_stat;
+	static int	status_stat;
 
 	*status = status_stat;
 	if (!node)
@@ -114,7 +125,7 @@ void	find_cmds(t_data *data, t_ast *node, int *status)
 	if (node->type == NODE_PIPE)
 	{
 		if (!open_pipe(node))
-				return ;
+			return ;
 	}
 	if (node->type == NODE_COMMAND && node->cmd_data)
 	{
@@ -139,9 +150,9 @@ void	find_cmds(t_data *data, t_ast *node, int *status)
 
 void	handle_cmds(t_data *data, t_ast *node)
 {
-	int		backup_stdin;
-	int		backup_stdout;
-	int		status;
+	int	backup_stdin;
+	int	backup_stdout;
+	int	status;
 
 	set_heredoc_flag(data->ast);
 	status = EXIT_SUCCESS;

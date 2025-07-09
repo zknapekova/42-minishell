@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 20:07:47 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/01 17:31:39 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 00:20:48 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,28 +88,4 @@ void	free_array(char **array)
 		i++;
 	}
 	free (array);
-}
-
-char	*get_exec_path(const char *cmd, t_data *data)
-{
-	char	*path;
-	
-	path = NULL;
-	(void)data;
-	if  (ft_strchr(cmd, '/'))
-	{
-		//path = get_path_from_env(cmd, data); //docasne, TODO: upravit
-		path = ft_strdup(path);
-		if (!path)
-			return (error_handler("Error getting cmd path"), NULL);
-		// ft_printf("Relative or absolute path found");
-	}
-	else
-	{
-		//path = get_path_from_env(cmd, data); //docasne, TODO: upravit
-		path = ft_strdup(path);
-		if (!path)
-			return (error_handler("Error getting cmd path"), NULL);
-	}
-	return (path);
 }

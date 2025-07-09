@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:15:04 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/07 01:29:13 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 00:49:59 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@ typedef struct s_file
 char	**get_argv(t_data *data, t_arg *args);
 char	*get_arg_str(t_data *data, t_arg **args);
 char	*handle_empty_quotes(t_arg **args);
-void	print_ast_argv(t_data *data, t_ast *node, int depth);
+// void	print_ast_argv(t_data *data, t_ast *node, int depth);
 int		get_list_len(t_arg *args);
 t_bool	fill_argv_list(t_data *data, char **argv, t_arg **args, int *i);
 void	free_argv(char **argv);
 char	*get_redir_target_str(t_data *data, t_redir_target *target);
+void	replace_target_value(t_redir_target *target, char *str);
+void	handle_tilde_in_target(t_redir_target *target);
+char	*handle_env_expansion(t_data *data, t_redir_target *target);
 void	setup_heredoc(char *target);
 char	*get_exec_path(const char *cmd, t_data *data);
 int		echo_cmd(char **input, t_data *data, t_ast *node);

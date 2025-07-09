@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dir_check.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/09 02:02:26 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/07/09 02:02:27 by jgrigorj         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/env_vars.h"
 #include "../libft/libft.h"
 #include <dirent.h>
@@ -6,18 +18,16 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-
 int	check_and_alter(char *path, char *cmd, DIR *dir)
 {
 	if (access(path, X_OK) == -1)
-		return (ft_eprintf("minishell:%s %s: Permission denied\n", cmd,
+		return (ft_eprintf("minishell:%s %s: Permission denied\n", cmd, \
 			path), closedir(dir), EXIT_FAILURE);
 	else if (!access(path, X_OK) && chdir(path) == -1)
 		return (error_handler(strerror(errno)), closedir(dir),
 			EXIT_FAILURE);
 	return (closedir(dir), EXIT_SUCCESS);
 }
-
 
 int	dir_check(char *path, char *cmd)
 {

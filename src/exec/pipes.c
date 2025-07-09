@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipes.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/09 01:08:03 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/07/09 01:55:42 by jgrigorj         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "exec.h"
 #include "env_vars.h"
 #include "main.h"
@@ -26,7 +38,7 @@ char	**create_env_arr(t_data *data)
 		temp = temp->next;
 	}
 	result[size] = NULL;
-	return result;
+	return (result);
 }
 
 static void	find_closest_in_cmd(t_ast *node, int fd)
@@ -61,9 +73,8 @@ int	open_pipe(t_ast *node)
 
 	if (pipe(fd) == -1)
 		return (error_handler(strerror(errno)), 0);
-//	ft_printf("pipe with fd[0]: %d fd[1]: %d\n", fd[0], fd[1]);
 	find_closest_in_cmd(node->left, fd[1]);
-	find_closest_out_cmd(node->right,  fd[0]);
+	find_closest_out_cmd(node->right, fd[0]);
 	return (1);
 }
 
@@ -75,12 +86,10 @@ void	close_pipes(t_data *data, t_ast *node)
 	{
 		if (node->cmd_data->fd_pipe_in > 1)
 		{
-//			ft_printf("2.fd %d closed\n", node->cmd_data->fd_pipe_in);
 			close(node->cmd_data->fd_pipe_in);
 		}
 		if (node->cmd_data->fd_pipe_out > 1)
 		{
-//			ft_printf("2.fd %d closed\n", node->cmd_data->fd_pipe_out);
 			close(node->cmd_data->fd_pipe_out);
 		}
 	}

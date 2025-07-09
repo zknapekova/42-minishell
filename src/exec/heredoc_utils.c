@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/09 01:57:37 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/07/09 01:58:19 by jgrigorj         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "env_vars.h"
 #include "exec.h"
 #include "libft.h"
@@ -17,7 +29,7 @@ void	heredoc_signal_handler(char *limiter, char *lim, t_data *data)
 
 void	heredoc_write_line(int fd, char *line)
 {
-	write(fd, line, ft_strlen(line)) ;
+	write(fd, line, ft_strlen(line));
 	free(line);
 }
 

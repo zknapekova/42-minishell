@@ -11,6 +11,7 @@
         "tuple": "c",
         "utility": "c",
         "string.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "parser_utils.h": "c"
     }
 }
