@@ -6,13 +6,13 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 00:13:08 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/09 00:01:55 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:53:29 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "exec.h"
 #include "libft.h"
 #include "main.h"
-#include "exec.h"
 #include <stdlib.h> //for NULL
 
 char	*handle_empty_quotes(t_arg **args)
@@ -47,4 +47,15 @@ t_bool	fill_argv_list(t_data *data, char **argv, t_arg **args, int *i)
 		argv[(*i)++] = arg_str;
 	}
 	return (true);
+}
+
+t_bool	should_extend_env(int dollar_ind, int len, t_arg **args)
+{
+	if ((dollar_ind != -1 && (len - 1 > dollar_ind
+				&& (ft_isalnum((*args)->value[dollar_ind + 1]) == 1
+					|| (*args)->value[dollar_ind + 1] == '?'))
+			&& (*args)->quote_type != QUOTE_SINGLE && len > 1))
+		return (true);
+	else
+		return (false);
 }

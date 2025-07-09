@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:15:04 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/09 00:49:59 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:54:02 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	*get_redir_target_str(t_data *data, t_redir_target *target);
 void	replace_target_value(t_redir_target *target, char *str);
 void	handle_tilde_in_target(t_redir_target *target);
 char	*handle_env_expansion(t_data *data, t_redir_target *target);
+t_bool	should_extend_env(int dollar_ind, int len, t_arg **args);
 void	setup_heredoc(char *target);
 char	*get_exec_path(const char *cmd, t_data *data);
 int		echo_cmd(char **input, t_data *data, t_ast *node);

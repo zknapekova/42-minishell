@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:55:18 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/09 00:06:57 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 02:54:57 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ char	*get_tmp_str(t_data *data, t_arg **args)
 	char	*tilde_replaced;
 
 	tilde_ind = get_first_ind((*args)->value, '~', 0);
-	if (tilde_ind > -1 && (*args)->quote_type == QUOTE_NONE)
+	if (tilde_ind > -1 && (*args)->quote_type == QUOTE_NONE \
+	&& !ft_strchr((*args)->value, '='))
 	{
 		tilde_replaced = replace_tilde((*args)->value, tilde_ind);
 		if (tilde_replaced)
@@ -88,10 +89,7 @@ char	*get_tmp_str(t_data *data, t_arg **args)
 	}
 	dollar_ind = get_first_ind((*args)->value, '$', 0);
 	len = ft_strlen((*args)->value);
-	if (dollar_ind != -1 && (len - 1 > dollar_ind
-			&& (ft_isalnum((*args)->value[dollar_ind + 1]) == 1
-				|| (*args)->value[dollar_ind + 1] == '?'))
-		&& (*args)->quote_type != QUOTE_SINGLE && len > 1)
+	if (should_extend_env(dollar_ind, len, args))
 		tmp_str = extend_env_value_nf(data, (*args)->value);
 	else if ((*args)->quote_type != QUOTE_NONE)
 		tmp_str = escape_wildcard((*args)->value);
