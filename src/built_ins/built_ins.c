@@ -12,6 +12,7 @@
 
 #include "env_vars.h"
 #include "libft.h"
+#include "built_ins.h"
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
@@ -28,8 +29,7 @@ int	print_env_list(t_data *data, t_ast *node, int export)
 		temp = data->head;
 		while (temp)
 		{
-			if (ft_strncmp(temp->key_value, "?=", 2) != 0 && \
-			ft_strncmp(temp->key_value, "EMPTY=", 6) != 0)
+			if (ft_print_env(temp->key_value))
 			{
 				print_key_value = add_new_line(temp->key_value);
 				if (!print_key_value)

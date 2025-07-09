@@ -89,3 +89,11 @@ int	check_built_ins(char *cmd)
 		return (1);
 	return (0);
 }
+
+int	ft_print_env(char *key_value)
+{
+	if (ft_strncmp(key_value, "?=", 2) != 0 && \
+			ft_strncmp(key_value, "EMPTY=", 6) != 0)
+		return 1;
+	return 0;
+}

@@ -15,5 +15,6 @@
 
 int		dir_check(char *path, char *cmd);
 void	normalize_n_flag(char **input);
+int		ft_print_env(char *key_value);
 
 #endif
