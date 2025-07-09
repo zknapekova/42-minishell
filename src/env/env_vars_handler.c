@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 15:33:35 by zuknapek          #+#    #+#             */
-/*   Updated: 2025/07/09 17:26:33 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:33:13 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,7 @@ int	handle_new_env_value(t_data *data, char *key_value)
 	update_dollar_eq_ind(&dollar_ind, &eq_ind, 0, key_value);
 	if (!validate_env_var_name(key_value, eq_ind))
 		return (ft_eprintf("minishell: export: '%s': not a valid \
-identifier\n",
-							key_value),
-				0);
+identifier\n", key_value), 0);
 	if (eq_ind == -1)
 		return (1);
 	if (dollar_ind != -1 && dollar_ind < eq_ind)
@@ -107,8 +105,6 @@ identifier\n",
 		key_value = ft_strdup(key_value);
 	if (!validate_env_var_name(key_value, get_first_ind(key_value, '=', 0)))
 		return (ft_eprintf("minishell: export: '%s': not a valid \
-identifier\n",
-							key_value),
-				0);
+identifier\n", key_value), 0);
 	return (update_env_list(key_value, eq_ind, data, dollar_ind));
 }
