@@ -27,7 +27,7 @@ void	exec_node_or(t_data *data, t_ast *node, int *status, int *status_stat)
 	update_last_status(data, *status_stat);
 	wait_all_cmds(data, data->ast, status_stat);
 	*status = *status_stat;
-	if (*status_stat == EXIT_SUCCESS)
+	if (*status_stat == EXIT_SUCCESS || *status_stat == 130)
 		return ;
 	find_cmds(data, node->right, status_stat);
 	update_last_status(data, *status_stat);
