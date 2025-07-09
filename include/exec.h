@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:15:04 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/09 17:25:52 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:07:35 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ void	free_array(char **array);
 int		open_pipe(t_ast *node);
 int		process_cmds_redirs(t_data *data, t_ast *node);
 void	find_cmds(t_data *data, t_ast *node, int *status);
+void	handle_logical(t_data *data, t_ast *node, int *status, \
+	int *status_stat);
+void	exec_node_or(t_data *data, t_ast *node, int *status, int *status_stat);
+void	exec_node_and(t_data *data, t_ast *node, int *status, int *status_stat);
+void	exec_node_cmd(t_data *data, t_ast *node, int *status, int *status_stat);
 void	handle_cmds(t_data *data, t_ast *node);
 void	close_pipes(t_data *data, t_ast *node);
 int		execute_heredoc(t_redir *redir, t_data *data, t_ast *node);

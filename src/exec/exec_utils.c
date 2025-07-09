@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 01:17:25 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/09 17:27:59 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:06:38 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,31 +95,9 @@ void	find_cmds(t_data *data, t_ast *node, int *status)
 	*status = status_stat;
 	if (!node)
 		return ;
-	if (node->type == NODE_OR)
+	if (node->type == NODE_OR || node->type == NODE_AND)
 	{
-		find_cmds(data, node->left, &status_stat);
-		update_last_status(data, status_stat);
-		wait_all_cmds(data, data->ast, &status_stat);
-		*status = status_stat;
-		if (status_stat == EXIT_SUCCESS)
-			return ;
-		find_cmds(data, node->right, &status_stat);
-		update_last_status(data, status_stat);
-		*status = status_stat;
-		return ;
-	}
-	if (node->type == NODE_AND)
-	{
-		find_cmds(data, node->left, &status_stat);
-		update_last_status(data, status_stat);
-		wait_all_cmds(data, data->ast, &status_stat);
-		*status = status_stat;
-		if (status_stat != EXIT_SUCCESS)
-			return ;
-		find_cmds(data, node->right, &status_stat);
-		update_last_status(data, status_stat);
-		wait_all_cmds(data, data->ast, &status_stat);
-		*status = status_stat;
+		handle_logical(data, node, status, &status_stat);
 		return ;
 	}
 	if (node->type == NODE_PIPE)
@@ -129,18 +107,7 @@ void	find_cmds(t_data *data, t_ast *node, int *status)
 	}
 	if (node->type == NODE_COMMAND && node->cmd_data)
 	{
-		status_stat = process_cmds_redirs(data, node);
-		node->cmd_data->status = status_stat;
-		if (node->cmd_data->fd_pipe_in > 1)
-			close(node->cmd_data->fd_pipe_in);
-		if (node->cmd_data->fd_pipe_out > 1)
-			close(node->cmd_data->fd_pipe_out);
-		if (node->cmd_data->fd_file_in > 1)
-			close(node->cmd_data->fd_file_in);
-		if (node->cmd_data->fd_file_out > 1)
-			close(node->cmd_data->fd_file_out);
-		update_last_status(data, status_stat);
-		*status = status_stat;
+		exec_node_cmd(data, node, status, &status_stat);
 		if (status_stat != EXIT_SUCCESS)
 			return ;
 	}
