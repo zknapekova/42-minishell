@@ -6,7 +6,7 @@
 /*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 23:38:24 by jgrigorj          #+#    #+#             */
-/*   Updated: 2025/07/08 23:40:15 by jgrigorj         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:14:00 by jgrigorj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,6 @@ int	ft_print_env(char *key_value)
 {
 	if (ft_strncmp(key_value, "?=", 2) != 0 && \
 			ft_strncmp(key_value, "EMPTY=", 6) != 0)
-		return 1;
-	return 0;
+		return (1);
+	return (0);
 }
