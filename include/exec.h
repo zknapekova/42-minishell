@@ -1,0 +1,103 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgrigorj <jgrigorj@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/22 18:15:04 by jgrigorj          #+#    #+#             */
+/*   Updated: 2025/07/10 17:14:50 by jgrigorj         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef EXEC_H
+# define EXEC_H
+
+# include "main.h"
+
+typedef struct s_file
+{
+	char			*name;
+	struct s_file	*next;
+}	t_file;
+
+char	**get_argv(t_data *data, t_arg *args);
+char	*get_arg_str(t_data *data, t_arg **args);
+char	*handle_empty_quotes(t_arg **args);
+int		get_list_len(t_arg *args);
+t_bool	fill_argv_list(t_data *data, char **argv, t_arg **args, int *i);
+void	free_argv(char **argv);
+char	*get_redir_target_str(t_data *data, t_redir_target *target);
+void	replace_target_value(t_redir_target *target, char *str);
+void	handle_tilde_in_target(t_redir_target *target);
+char	*handle_env_expansion(t_data *data, t_redir_target *target);
+t_bool	should_extend_env(int dollar_ind, int len, t_arg **args);
+void	setup_heredoc(char *target);
+char	*get_exec_path(const char *cmd, t_data *data);
+int		echo_cmd(char **input, t_data *data, t_ast *node);
+int		cd(char **input, t_data *data, t_ast *node);
+void	execute_built_cmds(char **argv, t_data *data, int *status, t_ast *node);
+int		check_built_ins(char *cmd);
+int		ft_redirect(t_ast *node);
+int		handle_redir_files(t_redir *redir, t_data *data, t_ast *node);
+int		ft_get_file_cont(char *lim, int fd, t_data *data);
+char	**create_env_arr(t_data *data);
+char	*escape_wildcard(char *str);
+void	get_input_output_fd(int *input_fd, int *output_fd, t_ast *node);
+int		input_output_redirect(t_data *data, t_redir *redir, t_ast *node);
+
+char	*get_path_from_env(const char *cmd, t_data *data);
+char	*handle_path(char *path, int free_path, int folder, \
+		int existence_check);
+int		get_fd_file(char *path, t_redir_type type);
+char	*get_cmd_path(char *cmd, t_data *data, int *status);
+int		arr_size(char **arr);
+void	free_array(char **array);
+int		open_pipe(t_ast *node);
+int		process_cmds_redirs(t_data *data, t_ast *node);
+void	find_cmds(t_data *data, t_ast *node, int *status);
+void	handle_logical(t_data *data, t_ast *node, int *status, \
+	int *status_stat);
+void	exec_node_or(t_data *data, t_ast *node, int *status, int *status_stat);
+void	exec_node_and(t_data *data, t_ast *node, int *status, int *status_stat);
+void	exec_node_cmd(t_data *data, t_ast *node, int *status, int *status_stat);
+void	handle_cmds(t_data *data, t_ast *node);
+void	close_pipes(t_data *data, t_ast *node);
+int		execute_heredoc(t_redir *redir, t_data *data, t_ast *node);
+int		update_last_status(t_data *data, int status);
+void	wait_all_cmds(t_data *data, t_ast *node, int *status);
+void	execute_child_process(t_data *data, t_ast *node, \
+		int *status, char **argv);
+int		execute(t_data *data, t_ast *node, char **argv);
+int		is_dir(char *path);
+void	heredoc_signal_handler(char *limiter, char *lim, t_data *data);
+void	heredoc_write_line(int fd, char *line);
+void	print_heredoc_error(char *lim);
+char	*get_line(char *line, char *limiter, t_data *data);
+char	*expand_line(char *line, t_data *data);
+
+// globbing
+char	**globe_argv(char **argv);
+char	**get_globbed_argv(char **new_argv, char *argv, t_bool *match_found);
+char	**get_unglobbed_argv(char **new_argv, char *argv, t_bool match_found);
+char	*globe_redir_target(char *target);
+char	*get_globbed_target(char *target, int *match_count);
+int		is_match(char *str, t_file *file_list);
+char	*handle_ambiguous_error(char *target, t_file *head);
+t_file	*append_file(t_file *head, const char *name);
+void	free_file_list(t_file *head);
+t_file	*get_cwd_file_list(void);
+int		match_star_pattern(char *pattern, char *str);
+int		is_in_cwd(char *str);
+char	**append_str_to_array(char **arr, char *str);
+char	*rm_escape_char(char *str);
+int		is_hidden_file(char *str);
+int		longer_strlen(char *str1, char *str2);
+t_file	*sorted_insert(t_file *head, t_file *new_node);
+t_file	*sort_file_list(t_file *head);
+void	remove_empty_strings(char **array);
+
+// signal in exec
+void	print_nl_after_sig(int status);
+
+#endif
